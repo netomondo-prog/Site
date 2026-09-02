@@ -57,7 +57,28 @@ Para receber também por e-mail, configure `SMTP_*` e `MAIL_TO` no `.env`.
 
 ## Deploy
 
-Qualquer host Node.js serve (Render, Railway, Fly.io, VPS com PM2, Docker).
+### Render (um clique)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/netomondo-prog/Site)
+
+1. Clique no botão acima e entre com a conta do GitHub.
+2. O Render lê o `render.yaml`, cria o serviço e gera `SESSION_SECRET` e `ADMIN_PASSWORD` automaticamente.
+3. Ao terminar, o site fica em `https://jtec-site.onrender.com` (ou nome parecido, se já existir).
+4. A senha do painel aparece em **Environment → ADMIN_PASSWORD** no dashboard do Render.
+
+No plano gratuito o serviço "dorme" após 15 minutos sem acesso e as edições feitas no painel
+não persistem entre deploys. Para manter as edições, use um plano pago com disco
+persistente e defina `DATA_DIR=/data` (veja o comentário no `render.yaml`).
+
+### Railway
+
+Crie um projeto a partir do repositório GitHub. O `railway.json` já define build e start.
+Adicione as variáveis `NODE_ENV=production`, `SESSION_SECRET` e `ADMIN_PASSWORD`.
+Para persistir os dados, adicione um Volume montado em `/data` e defina `DATA_DIR=/data`.
+
+### Outros hosts
+
+Qualquer host Node.js serve (Fly.io, VPS com PM2, Docker).
 
 ```bash
 docker build -t jtec-site .
