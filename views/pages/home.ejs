@@ -33,7 +33,7 @@
   <% } %>
 </section>
 
-<section class="stats" aria-label="Números da JTEC">
+<section class="stats" aria-label="Números da JTECK">
   <div class="container stats__grid">
     <% (site.stats || []).forEach((s) => { %>
       <div class="stat">
@@ -71,12 +71,12 @@
         <%- text.richText((site.about?.body || '').split(/\n\n/).slice(0, 2).join('\n\n')) %>
       </div>
       <div class="about-split__actions">
-        <a class="btn btn--primary" href="/empresa">Conheça a JTEC</a>
+        <a class="btn btn--primary" href="/empresa">Conheça a JTECK</a>
         <a class="link-arrow" href="/contato">Agende uma visita <%- include('../partials/icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a>
       </div>
     </div>
     <div class="about-split__card">
-      <h3 class="about-split__card-title">Por que a JTEC</h3>
+      <h3 class="about-split__card-title">Por que a JTECK</h3>
       <ul class="feature-list">
         <% (site.differentials || []).slice(0, 4).forEach((d) => { %>
           <li>

@@ -1,7 +1,7 @@
 {
-  "name": "jtec-site",
+  "name": "jteck-site",
   "version": "1.0.0",
-  "description": "Site institucional dinâmico da JTEC - Válvulas Industriais e Manutenção",
+  "description": "Site institucional dinâmico da JTECK - Válvulas Industriais e Manutenção",
   "main": "server.js",
   "private": true,
   "scripts": {

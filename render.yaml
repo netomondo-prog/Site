@@ -2,7 +2,7 @@
 # Deploy em um clique: https://render.com/deploy?repo=https://github.com/netomondo-prog/Site
 services:
   - type: web
-    name: jtec-site
+    name: jteck-site
     runtime: node
     plan: free
     region: oregon
@@ -29,11 +29,11 @@ services:
       - key: SMTP_PASS
         sync: false
       - key: MAIL_TO
-        value: contato@jtec.com.br
+        value: contato@jteck.com.br
     # Para manter as edições do painel entre deploys é preciso um disco
     # persistente (plano pago). Descomente as linhas abaixo e defina DATA_DIR.
     # disk:
-    #   name: jtec-data
+    #   name: jteck-data
     #   mountPath: /data
     #   sizeGB: 1
     # envVars:

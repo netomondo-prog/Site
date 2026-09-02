@@ -137,7 +137,7 @@ const SUBJECTS = [
 
 router.get('/contato', (req, res) => {
   res.render('pages/contato', {
-    meta: { title: 'Contato', description: 'Fale com a equipe técnica da JTEC. Atendimento comercial e emergências 24h.' },
+    meta: { title: 'Contato', description: 'Fale com a equipe técnica da JTECK. Atendimento comercial e emergências 24h.' },
     subjects: SUBJECTS,
     values: { subject: req.query.assunto || '' },
     errors: {},

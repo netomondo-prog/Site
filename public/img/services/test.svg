@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
   <defs>
-    <linearGradient id="stg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b2a3d"/><stop offset="1" stop-color="#15a3ad"/></linearGradient>
+    <linearGradient id="stg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#12315f"/><stop offset="1" stop-color="#3b74d1"/></linearGradient>
     <linearGradient id="ststeel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
     
   <pattern id="stp" width="80" height="70" patternUnits="userSpaceOnUse">
@@ -13,7 +13,7 @@
   <rect width="800" height="420" fill="url(#stp)"/>
   <rect width="800" height="420" fill="url(#stglow)"/>
   <text x="48" y="380" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#ffffff" fill-opacity=".85" letter-spacing="1">TESTES, CALIBRAÇÃO E CERTIFICAÇÃO</text>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#ststeel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#ststeel)">
     
   <g transform="translate(400 110) scale(0.9)">
     <rect x="0" y="150" width="360" height="24" rx="4" fill="#c9d3d9"/>
@@ -28,18 +28,18 @@
       <rect x="176" y="86" width="48" height="74" rx="6" fill="#ffffff"/>
       <polyline points="184,96 216,101.6 184,107.2 216,112.8 184,118.4 216,124 184,129.6 216,135.2 184,140.8 216,146.4 184,152" fill="none" stroke="#f28c28" stroke-width="3" stroke-linejoin="round"/>
       <rect x="168" y="66" width="64" height="24" rx="6"/>
-      <circle cx="200" cy="78" r="5" fill="#0b2a3d" stroke="none"/>
+      <circle cx="200" cy="78" r="5" fill="#12315f" stroke="none"/>
       <path d="M226 76L292 52" stroke-width="5"/><circle cx="292" cy="52" r="6" fill="#f28c28" stroke="#f28c28"/>
-      <path d="M160 190h20" stroke="#15a3ad" stroke-width="2"/>
-      <text x="200" y="196" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#0f6e73" stroke="none">JTEC</text>
+      <path d="M160 190h20" stroke="#3b74d1" stroke-width="2"/>
+      <text x="200" y="196" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#1b4b9c" stroke="none">JTECK</text>
     </g></g>
     <circle cx="270" cy="80" r="42" fill="#ffffff"/>
-    <circle cx="270" cy="80" r="32" fill="#12384f" stroke="none"/>
+    <circle cx="270" cy="80" r="32" fill="#16305a" stroke="none"/>
     <path d="M270 80L286 62" stroke="#f28c28" stroke-width="3"/>
     <circle cx="270" cy="80" r="4" fill="#f28c28" stroke="none"/>
     <path d="M250 120v30M290 120v30" stroke="#8fa0aa" stroke-width="6"/>
     <path d="M160 150v-20h60" fill="none" stroke="#8fa0aa" stroke-width="6"/>
-    <rect x="200" y="106" width="30" height="30" rx="4" fill="#15a3ad"/>
+    <rect x="200" y="106" width="30" height="30" rx="4" fill="#3b74d1"/>
   </g>
   </g>
 </svg>

@@ -11,7 +11,7 @@ function safeEqual(a, b) {
 
 function checkCredentials(user, password) {
   const expectedUser = process.env.ADMIN_USER || 'admin';
-  const expectedPass = process.env.ADMIN_PASSWORD || 'jtec2026';
+  const expectedPass = process.env.ADMIN_PASSWORD || 'jteck2026';
   return safeEqual(user, expectedUser) && safeEqual(password, expectedPass);
 }
 

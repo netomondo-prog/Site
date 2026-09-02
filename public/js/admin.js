@@ -1,4 +1,4 @@
-/* JTEC - scripts do painel */
+/* JTECK - scripts do painel */
 (function () {
   'use strict';
 

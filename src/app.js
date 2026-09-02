@@ -41,7 +41,7 @@ app.use(
 
 app.use(
   session({
-    name: 'jtec.sid',
+    name: 'jteck.sid',
     secret: process.env.SESSION_SECRET || 'dev-secret-troque-em-producao',
     resave: false,
     saveUninitialized: false,

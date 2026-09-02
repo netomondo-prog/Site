@@ -1,6 +1,6 @@
-# JTEC – Site institucional dinâmico
+# JTECK – Site institucional dinâmico
 
-Site institucional da **JTEC Válvulas Industriais** (empresa fictícia) com conteúdo
+Site institucional da **JTECK Valve Service** com conteúdo
 gerenciável por painel administrativo, formulário de contato, blog técnico,
 catálogo de produtos e botão flutuante de WhatsApp.
 
@@ -20,7 +20,7 @@ cp .env.example .env   # ajuste as variáveis
 npm run dev            # http://localhost:3000
 ```
 
-Painel: `http://localhost:3000/admin` (usuário e senha em `.env`, padrão `admin` / `jtec2026`).
+Painel: `http://localhost:3000/admin` (usuário e senha em `.env`, padrão `admin` / `jteck2026`).
 
 ## Estrutura
 
@@ -63,7 +63,7 @@ Para receber também por e-mail, configure `SMTP_*` e `MAIL_TO` no `.env`.
 
 1. Clique no botão acima e entre com a conta do GitHub.
 2. O Render lê o `render.yaml`, cria o serviço e gera `SESSION_SECRET` e `ADMIN_PASSWORD` automaticamente.
-3. Ao terminar, o site fica em `https://jtec-site.onrender.com` (ou nome parecido, se já existir).
+3. Ao terminar, o site fica em `https://jteck-site.onrender.com` (ou nome parecido, se já existir).
 4. A senha do painel aparece em **Environment → ADMIN_PASSWORD** no dashboard do Render.
 
 No plano gratuito o serviço "dorme" após 15 minutos sem acesso e as edições feitas no painel
@@ -96,8 +96,8 @@ conteúdo, edite os JSON em `data/` e exporte de novo.
 Qualquer host Node.js serve (Fly.io, VPS com PM2, Docker).
 
 ```bash
-docker build -t jtec-site .
-docker run -p 3000:3000 -e SESSION_SECRET=... -e ADMIN_PASSWORD=... -v jtec-data:/data -e DATA_DIR=/data jtec-site
+docker build -t jteck-site .
+docker run -p 3000:3000 -e SESSION_SECRET=... -e ADMIN_PASSWORD=... -v jteck-data:/data -e DATA_DIR=/data jteck-site
 ```
 
 Em produção defina `NODE_ENV=production`, um `SESSION_SECRET` forte, uma senha de admin

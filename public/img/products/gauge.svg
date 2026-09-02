@@ -4,17 +4,17 @@
     <linearGradient id="gsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
   </defs>
   <rect width="400" height="300" fill="url(#gbg)"/>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
     
-    <circle cx="200" cy="150" r="96" fill="#0f6e73" stroke="#0b2a3d" stroke-width="4"/>
-    <circle cx="200" cy="150" r="80" fill="#12384f" stroke="none"/>
-    <rect x="146" y="118" width="108" height="46" rx="6" fill="#dfe9c8" stroke="#0b2a3d" stroke-width="2"/>
-    <text x="200" y="152" text-anchor="middle" font-family="Inter, Arial" font-size="26" font-weight="800" fill="#0b2a3d" stroke="none">0.00</text>
-    <text x="243" y="160" text-anchor="end" font-family="Inter, Arial" font-size="8" fill="#0b2a3d" stroke="none">psi</text>
+    <circle cx="200" cy="150" r="96" fill="#1b4b9c" stroke="#12315f" stroke-width="4"/>
+    <circle cx="200" cy="150" r="80" fill="#16305a" stroke="none"/>
+    <rect x="146" y="118" width="108" height="46" rx="6" fill="#dfe9c8" stroke="#12315f" stroke-width="2"/>
+    <text x="200" y="152" text-anchor="middle" font-family="Inter, Arial" font-size="26" font-weight="800" fill="#12315f" stroke="none">0.00</text>
+    <text x="243" y="160" text-anchor="end" font-family="Inter, Arial" font-size="8" fill="#12315f" stroke="none">psi</text>
     <text x="200" y="104" text-anchor="middle" font-family="Inter, Arial" font-size="9" font-weight="700" fill="#ffffff" stroke="none">JT-DG 300</text>
     <circle cx="176" cy="188" r="7" fill="#f28c28" stroke="none"/>
     <circle cx="200" cy="188" r="7" fill="#ffffff" stroke="none"/>
-    <circle cx="224" cy="188" r="7" fill="#15a3ad" stroke="none"/>
+    <circle cx="224" cy="188" r="7" fill="#3b74d1" stroke="none"/>
     <rect x="186" y="246" width="28" height="22" rx="2" fill="#c9d3d9"/>
     <path d="M192 268v14M200 268v14M208 268v14" stroke="#8fa0aa"/>
   </g>

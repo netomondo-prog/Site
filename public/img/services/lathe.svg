@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
   <defs>
-    <linearGradient id="slg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#123a52"/><stop offset="1" stop-color="#0b2a3d"/></linearGradient>
+    <linearGradient id="slg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a3f78"/><stop offset="1" stop-color="#12315f"/></linearGradient>
     <linearGradient id="slsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
     
   <pattern id="slp" width="80" height="70" patternUnits="userSpaceOnUse">
@@ -13,14 +13,14 @@
   <rect width="800" height="420" fill="url(#slp)"/>
   <rect width="800" height="420" fill="url(#slglow)"/>
   <text x="48" y="380" font-family="Inter, Arial" font-size="20" font-weight="700" fill="#ffffff" fill-opacity=".85" letter-spacing="1">USINAGEM E RECUPERAÇÃO</text>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#slsteel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#slsteel)">
     
   <g transform="translate(390 110) scale(0.9)">
     <rect x="0" y="120" width="380" height="90" rx="8" fill="#e9eef1"/>
     <rect x="0" y="40" width="380" height="80" rx="8" fill="#ffffff"/>
-    <rect x="20" y="52" width="110" height="56" rx="6" fill="#12384f"/>
-    <rect x="30" y="60" width="90" height="40" rx="3" fill="#9dd6dc"/>
-    <polyline points="38,90 55,84 66,70 82,72 92,86 112,80" fill="none" stroke="#0b2a3d" stroke-width="2"/>
+    <rect x="20" y="52" width="110" height="56" rx="6" fill="#16305a"/>
+    <rect x="30" y="60" width="90" height="40" rx="3" fill="#a9c4ef"/>
+    <polyline points="38,90 55,84 66,70 82,72 92,86 112,80" fill="none" stroke="#12315f" stroke-width="2"/>
     <circle cx="180" cy="80" r="22" fill="#8fa0aa"/>
     <circle cx="180" cy="80" r="10" fill="#ffffff"/>
     <rect x="200" y="72" width="120" height="16" rx="3" fill="#c9d3d9"/>

@@ -8,7 +8,7 @@
  *
  * Uso:
  *   node scripts/export-static.js                    # caminhos relativos (funciona em qualquer pasta)
- *   BASE_PATH=/jtec node scripts/export-static.js    # caminhos absolutos a partir de /jtec
+ *   BASE_PATH=/jteck node scripts/export-static.js    # caminhos absolutos a partir de /jteck
  *   SITE_URL=https://exemplo.com.br node scripts/export-static.js   # URL usada em og:url e compartilhamento
  *
  * Diferenças em relação ao site dinâmico:
@@ -103,7 +103,7 @@ function transform(html, pagePath) {
   return out;
 }
 
-const STATIC_JS = `/* JTEC - comportamento da versão estática (hospedagem sem Node.js) */
+const STATIC_JS = `/* JTECK - comportamento da versão estática (hospedagem sem Node.js) */
 (function () {
   'use strict';
   var params = new URLSearchParams(location.search);
@@ -127,7 +127,7 @@ const STATIC_JS = `/* JTEC - comportamento da versão estática (hospedagem sem 
         if (!valid) ok = false;
       });
       if (!ok) return;
-      var text = 'Olá! Contato pelo site JTEC.\\n' +
+      var text = 'Olá! Contato pelo site JTECK.\\n' +
         'Nome: ' + v('name') + '\\nE-mail: ' + v('email') + '\\nEmpresa: ' + (v('company') || '-') +
         '\\nTelefone: ' + v('phone') + '\\nCidade/UF: ' + (v('city') || '-') + '/' + (v('state') || '-') +
         '\\nAssunto: ' + v('subject') + '\\n\\n' + v('message');

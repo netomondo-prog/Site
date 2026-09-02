@@ -1,4 +1,4 @@
-/* JTEC - scripts do site público */
+/* JTECK - scripts do site público */
 (function () {
   'use strict';
 

@@ -5,31 +5,31 @@
   </defs>
   <circle cx="260" cy="230" r="200" fill="url(#hphalo)"/>
   <circle cx="260" cy="230" r="190" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2" stroke-dasharray="10 14"/>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#hpsteel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#hpsteel)">
     
   <g transform="translate(20 60) scale(.8)">
-    <circle cx="200" cy="150" r="96" fill="#0f6e73" stroke="#0b2a3d" stroke-width="4"/>
-    <circle cx="200" cy="150" r="80" fill="#12384f" stroke="none"/>
-    <rect x="146" y="118" width="108" height="46" rx="6" fill="#dfe9c8" stroke="#0b2a3d" stroke-width="2"/>
-    <text x="200" y="152" text-anchor="middle" font-family="Inter, Arial" font-size="26" font-weight="800" fill="#0b2a3d" stroke="none">0.00</text>
-    <text x="243" y="160" text-anchor="end" font-family="Inter, Arial" font-size="8" fill="#0b2a3d" stroke="none">psi</text>
+    <circle cx="200" cy="150" r="96" fill="#1b4b9c" stroke="#12315f" stroke-width="4"/>
+    <circle cx="200" cy="150" r="80" fill="#16305a" stroke="none"/>
+    <rect x="146" y="118" width="108" height="46" rx="6" fill="#dfe9c8" stroke="#12315f" stroke-width="2"/>
+    <text x="200" y="152" text-anchor="middle" font-family="Inter, Arial" font-size="26" font-weight="800" fill="#12315f" stroke="none">0.00</text>
+    <text x="243" y="160" text-anchor="end" font-family="Inter, Arial" font-size="8" fill="#12315f" stroke="none">psi</text>
     <text x="200" y="104" text-anchor="middle" font-family="Inter, Arial" font-size="9" font-weight="700" fill="#ffffff" stroke="none">JT-DG 300</text>
     <circle cx="176" cy="188" r="7" fill="#f28c28" stroke="none"/>
     <circle cx="200" cy="188" r="7" fill="#ffffff" stroke="none"/>
-    <circle cx="224" cy="188" r="7" fill="#15a3ad" stroke="none"/>
+    <circle cx="224" cy="188" r="7" fill="#3b74d1" stroke="none"/>
     <rect x="186" y="246" width="28" height="22" rx="2" fill="#c9d3d9"/>
     <path d="M192 268v14M200 268v14M208 268v14" stroke="#8fa0aa"/></g>
   <g transform="translate(210 40) scale(.8)">
-    <rect x="120" y="40" width="160" height="240" rx="26" fill="#0f6e73" stroke="#0b2a3d"/>
-    <rect x="132" y="52" width="136" height="216" rx="18" fill="#12384f" stroke="none"/>
-    <rect x="146" y="68" width="108" height="76" rx="6" fill="#dfe9c8" stroke="#0b2a3d" stroke-width="2"/>
-    <polyline points="152,130 170,128 178,100 190,98 196,120 214,118 222,84 236,86 248,110" fill="none" stroke="#0b2a3d" stroke-width="2.5"/>
+    <rect x="120" y="40" width="160" height="240" rx="26" fill="#1b4b9c" stroke="#12315f"/>
+    <rect x="132" y="52" width="136" height="216" rx="18" fill="#16305a" stroke="none"/>
+    <rect x="146" y="68" width="108" height="76" rx="6" fill="#dfe9c8" stroke="#12315f" stroke-width="2"/>
+    <polyline points="152,130 170,128 178,100 190,98 196,120 214,118 222,84 236,86 248,110" fill="none" stroke="#12315f" stroke-width="2.5"/>
     <path d="M152 138h100" stroke="#8fa0aa" stroke-width="1"/>
     <text x="200" y="164" text-anchor="middle" font-family="Inter, Arial" font-size="11" font-weight="700" fill="#ffffff" stroke="none">JT-REC 550</text>
-    <circle cx="200" cy="205" r="26" fill="#0b2a3d" stroke="#15a3ad" stroke-width="2"/>
+    <circle cx="200" cy="205" r="26" fill="#12315f" stroke="#3b74d1" stroke-width="2"/>
     <path d="M200 189v12M200 209v12M184 205h12M204 205h12" stroke="#ffffff" stroke-width="2"/>
     <circle cx="160" cy="246" r="8" fill="#f28c28" stroke="none"/>
-    <circle cx="240" cy="246" r="8" fill="#15a3ad" stroke="none"/>
+    <circle cx="240" cy="246" r="8" fill="#3b74d1" stroke="none"/>
     <rect x="186" y="280" width="28" height="20" rx="3" fill="#c9d3d9"/>
     <path d="M200 300v6" stroke="#8fa0aa"/></g>
   <g transform="translate(160 150) scale(.9)">
@@ -42,10 +42,10 @@
       <rect x="176" y="86" width="48" height="74" rx="6" fill="#ffffff"/>
       <polyline points="184,96 216,101.6 184,107.2 216,112.8 184,118.4 216,124 184,129.6 216,135.2 184,140.8 216,146.4 184,152" fill="none" stroke="#f28c28" stroke-width="3" stroke-linejoin="round"/>
       <rect x="168" y="66" width="64" height="24" rx="6"/>
-      <circle cx="200" cy="78" r="5" fill="#0b2a3d" stroke="none"/>
+      <circle cx="200" cy="78" r="5" fill="#12315f" stroke="none"/>
       <path d="M226 76L292 52" stroke-width="5"/><circle cx="292" cy="52" r="6" fill="#f28c28" stroke="#f28c28"/>
-      <path d="M160 190h20" stroke="#15a3ad" stroke-width="2"/>
-      <text x="200" y="196" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#0f6e73" stroke="none">JTEC</text>
+      <path d="M160 190h20" stroke="#3b74d1" stroke-width="2"/>
+      <text x="200" y="196" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#1b4b9c" stroke="none">JTECK</text>
     </g></g>
   </g>
 </svg>

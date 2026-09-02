@@ -8,7 +8,7 @@ const fs = require('fs');
 const os = require('os');
 
 // Usa um diretório de dados temporário para não sujar data/messages.json
-process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'jtec-test-'));
+process.env.DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'jteck-test-'));
 process.env.SESSION_SECRET = 'test';
 process.env.ADMIN_PASSWORD = 'secret';
 
@@ -63,7 +63,7 @@ test('home contém botão de WhatsApp e logotipo', async () => {
   const res = await request('GET', '/');
   assert.ok(res.body.includes('whatsapp-float'));
   assert.ok(res.body.includes('wa.me/'));
-  assert.ok(res.body.includes('JTEC'));
+  assert.ok(res.body.includes('JTECK'));
 });
 
 test('404 para rotas inexistentes', async () => {

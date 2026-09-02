@@ -4,9 +4,9 @@
     <linearGradient id="gsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
   </defs>
   <rect width="400" height="300" fill="url(#gbg)"/>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
     
-    <polyline points="90,70 130,80.71428571428571 90,91.42857142857143 130,102.14285714285714 90,112.85714285714286 130,123.57142857142857 90,134.28571428571428 130,145 90,155.71428571428572 130,166.42857142857144 90,177.14285714285714 130,187.85714285714286 90,198.57142857142858 130,209.28571428571428 90,220" fill="none" stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round"/>
+    <polyline points="90,70 130,80.71428571428571 90,91.42857142857143 130,102.14285714285714 90,112.85714285714286 130,123.57142857142857 90,134.28571428571428 130,145 90,155.71428571428572 130,166.42857142857144 90,177.14285714285714 130,187.85714285714286 90,198.57142857142858 130,209.28571428571428 90,220" fill="none" stroke="#12315f" stroke-width="3" stroke-linejoin="round"/>
     <circle cx="210" cy="110" r="46" fill="url(#gsteel)"/>
     <circle cx="210" cy="110" r="22" fill="#ffffff"/>
     <circle cx="210" cy="220" r="40" fill="#c9d3d9"/>
@@ -14,6 +14,6 @@
     <rect x="290" y="70" width="14" height="190" rx="4"/>
     <path d="M280 70h34v14h-34z" fill="#8fa0aa"/>
     <ellipse cx="120" cy="250" rx="42" ry="12" fill="#f28c28" stroke="#f28c28"/>
-    <ellipse cx="120" cy="250" rx="24" ry="6" fill="#ffffff" stroke="#0b2a3d" stroke-width="2"/>
+    <ellipse cx="120" cy="250" rx="24" ry="6" fill="#ffffff" stroke="#12315f" stroke-width="2"/>
   </g>
 </svg>

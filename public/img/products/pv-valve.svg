@@ -4,7 +4,7 @@
     <linearGradient id="gsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
   </defs>
   <rect width="400" height="300" fill="url(#gbg)"/>
-  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
+  <g stroke="#12315f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
     
     <rect x="120" y="250" width="160" height="16" rx="3" fill="#c9d3d9"/><circle cx="136" cy="258" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="168" cy="258" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="200" cy="258" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="232" cy="258" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="264" cy="258" r="3.52" fill="#8fa0aa" stroke="none"/>
     <rect x="150" y="196" width="100" height="54" rx="8"/>
@@ -12,8 +12,8 @@
     <path d="M110 150a45 45 0 0 1 90 0" fill="#ffffff"/>
     <path d="M200 150a45 45 0 0 1 90 0" fill="#ffffff"/>
     <circle cx="155" cy="128" r="10" fill="#f28c28" stroke="#f28c28"/>
-    <circle cx="245" cy="128" r="10" fill="#15a3ad" stroke="#15a3ad"/>
+    <circle cx="245" cy="128" r="10" fill="#3b74d1" stroke="#3b74d1"/>
     <path d="M120 175h60M220 175h60" stroke="#8fa0aa" stroke-width="2"/>
-    <text x="200" y="182" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#0f6e73" stroke="none">JTEC</text>
+    <text x="200" y="182" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#1b4b9c" stroke="none">JTECK</text>
   </g>
 </svg>

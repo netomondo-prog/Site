@@ -1,12 +1,12 @@
 {
-  "name": "JTEC",
-  "legalName": "JTEC Válvulas Industriais Ltda.",
+  "name": "JTECK",
+  "legalName": "JTECK Valve Service Ltda.",
   "tagline": "Válvulas industriais, manutenção e testes com certificação",
   "phone": "+55 (19) 3245-2758",
   "phoneAlt": "+55 (19) 99999-0000",
   "whatsapp": "5519999990000",
-  "whatsappMessage": "Olá! Vim pelo site da JTEC e gostaria de um orçamento.",
-  "email": "contato@jtec.com.br",
+  "whatsappMessage": "Olá! Vim pelo site da JTECK e gostaria de um orçamento.",
+  "email": "contato@jteck.com.br",
   "hours": "Segunda a sexta, das 8h às 18h",
   "emergency": "Plantão 24h para paradas e emergências",
   "address": {
@@ -23,7 +23,7 @@
     "youtube": ""
   },
   "seo": {
-    "description": "JTEC: manutenção, testes e comercialização de válvulas de segurança, alívio e controle. Laboratório próprio, atendimento in loco e plantão 24h em Campinas/SP.",
+    "description": "JTECK: manutenção, testes e comercialização de válvulas de segurança, alívio e controle. Laboratório próprio, atendimento in loco e plantão 24h em Campinas/SP.",
     "keywords": "válvulas de segurança, manutenção de válvulas, PSV, válvula de alívio, calibração de válvulas, RTS, NR-13, Campinas"
   },
   "hero": [
@@ -122,7 +122,7 @@
   ],
   "about": {
     "headline": "Mais de 20 anos cuidando do que protege a sua planta",
-    "body": "A JTEC nasceu em Campinas/SP com um propósito simples: fazer manutenção de válvulas de segurança e alívio com o rigor que a função exige. Hoje somos referência em manutenção, testes e comercialização de válvulas industriais para indústrias de óleo e gás, petroquímica, açúcar e etanol, papel e celulose, energia e naval.\n\nTrabalhamos dentro do conceito moderno de manutenção: cada válvula é testada de acordo com a sua classe de pressão e devolvida com certificado. Nosso corpo técnico tem mais de 20 anos de experiência e acompanha o cliente da manutenção até a aplicação, com serviços de logística de retirada e entrega, palestras, apoio na especificação de produtos e plantão 24 horas.\n\nCuidamos das válvulas com cautela e método para evitar que o usuário final precise trocá-las ou reconstruí-las em um curto período. O resultado é uma planta mais segura, com menos paradas não planejadas e um custo de manutenção mais previsível.",
+    "body": "A JTECK nasceu em Campinas/SP com um propósito simples: fazer manutenção de válvulas de segurança e alívio com o rigor que a função exige. Hoje somos referência em manutenção, testes e comercialização de válvulas industriais para indústrias de óleo e gás, petroquímica, açúcar e etanol, papel e celulose, energia e naval.\n\nTrabalhamos dentro do conceito moderno de manutenção: cada válvula é testada de acordo com a sua classe de pressão e devolvida com certificado. Nosso corpo técnico tem mais de 20 anos de experiência e acompanha o cliente da manutenção até a aplicação, com serviços de logística de retirada e entrega, palestras, apoio na especificação de produtos e plantão 24 horas.\n\nCuidamos das válvulas com cautela e método para evitar que o usuário final precise trocá-las ou reconstruí-las em um curto período. O resultado é uma planta mais segura, com menos paradas não planejadas e um custo de manutenção mais previsível.",
     "mission": "Garantir a segurança e a disponibilidade dos processos industriais por meio de válvulas confiáveis, testadas e certificadas.",
     "vision": "Ser a empresa de referência em manutenção e comercialização de válvulas industriais no Brasil.",
     "values": [

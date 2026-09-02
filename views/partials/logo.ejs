@@ -1,22 +1,28 @@
 <%
-  // Logotipo fictício da JTEC (SVG inline). variant: 'dark' (padrão) | 'light'
+  // Logotipo JTECK Valve Service (SVG vetorial). variant: 'dark' (padrão) | 'light'
   const v = typeof variant !== 'undefined' ? variant : 'dark';
-  const wordColor = v === 'light' ? '#ffffff' : '#0b2a3d';
-  const tagColor = v === 'light' ? 'rgba(255,255,255,.75)' : '#0f6e73';
+  const blue = v === 'light' ? '#ffffff' : '#1b4b9c';
+  const gray = v === 'light' ? '#b9c3d3' : '#8c8c8c';
   const uid = 'lg' + Math.random().toString(36).slice(2, 7);
 %>
-<svg class="logo logo--<%= v %>" viewBox="0 0 236 56" role="img" aria-label="JTEC Válvulas Industriais" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="<%= uid %>" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#15a3ad"/>
-      <stop offset="1" stop-color="#0b2a3d"/>
-    </linearGradient>
-  </defs>
-  <rect x="2" y="4" width="48" height="48" rx="13" fill="url(#<%= uid %>)"/>
-  <circle cx="26" cy="29" r="15" fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="3"/>
-  <circle cx="26" cy="29" r="15" fill="none" stroke="#ffffff" stroke-opacity=".9" stroke-width="3" stroke-dasharray="6 17" stroke-linecap="round"/>
-  <path d="M32 16v16.5a6.5 6.5 0 0 1-13 0" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-  <path d="M24 16h13" fill="none" stroke="#f28c28" stroke-width="5" stroke-linecap="round"/>
-  <text x="60" y="37" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-weight="800" font-size="31" letter-spacing="1.5" fill="<%= wordColor %>">JTEC</text>
-  <text x="61" y="50" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-weight="600" font-size="8.6" letter-spacing="2.6" fill="<%= tagColor %>">VÁLVULAS INDUSTRIAIS</text>
+<svg class="logo logo--<%= v %>" viewBox="0 0 1000 250" role="img" aria-label="JTECK Valve Service" xmlns="http://www.w3.org/2000/svg">
+  <defs><clipPath id="<%= uid %>"><rect x="790" y="25" width="170" height="140"/></clipPath></defs>
+  <g fill="none" stroke="<%= blue %>" stroke-width="40">
+    <path d="M145 25V118Q145 145 118 145H50Q30 145 30 125V110"/>
+  </g>
+  <g fill="<%= blue %>">
+    <rect x="185" y="25" width="185" height="40"/>
+    <rect x="257" y="25" width="40" height="140"/>
+  </g>
+  <g fill="<%= gray %>">
+    <rect x="395" y="25" width="175" height="37"/>
+    <rect x="395" y="76.5" width="175" height="37"/>
+    <rect x="395" y="128" width="175" height="37"/>
+    <rect x="790" y="25" width="40" height="140"/>
+  </g>
+  <g fill="none" stroke="<%= gray %>" stroke-width="40">
+    <path d="M765 45H660Q620 45 620 85V105Q620 145 660 145H765"/>
+    <g clip-path="url(#<%= uid %>)"><path d="M835 95L980 0M835 95L980 190"/></g>
+  </g>
+  <text x="30" y="232" textLength="930" lengthAdjust="spacingAndGlyphs" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-weight="600" font-size="46" letter-spacing="12" fill="<%= blue %>">VALVE SERVICE</text>
 </svg>
