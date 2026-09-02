@@ -76,6 +76,21 @@ Crie um projeto a partir do repositório GitHub. O `railway.json` já define bui
 Adicione as variáveis `NODE_ENV=production`, `SESSION_SECRET` e `ADMIN_PASSWORD`.
 Para persistir os dados, adicione um Volume montado em `/data` e defina `DATA_DIR=/data`.
 
+### Hospedagem por FTP (versão estática)
+
+Para servidores sem Node.js (hospedagem compartilhada, aprovação do cliente), exporte o site
+como arquivos estáticos:
+
+```bash
+npm run export                     # gera a pasta dist/
+BASE_PATH=/jtec npm run export     # se o site ficar em uma subpasta, ex.: dominio.com/jtec
+```
+
+Envie **o conteúdo** da pasta `dist/` para a raiz do domínio (ou para a subpasta informada em
+`BASE_PATH`). Nessa versão o formulário de contato envia a mensagem pelo WhatsApp, a busca de
+produtos filtra na própria página e o painel administrativo não existe. Para atualizar o
+conteúdo, edite os JSON em `data/` e exporte de novo.
+
 ### Outros hosts
 
 Qualquer host Node.js serve (Fly.io, VPS com PM2, Docker).
