@@ -82,12 +82,12 @@ Para servidores sem Node.js (hospedagem compartilhada, aprovação do cliente), 
 como arquivos estáticos:
 
 ```bash
-npm run export                     # gera a pasta dist/
-BASE_PATH=/jtec npm run export     # se o site ficar em uma subpasta, ex.: dominio.com/jtec
+npm run export                                    # gera a pasta dist/ com caminhos relativos
+SITE_URL=https://dominio.com.br/pasta npm run export   # define a URL usada em og:url e compartilhamento
 ```
 
-Envie **o conteúdo** da pasta `dist/` para a raiz do domínio (ou para a subpasta informada em
-`BASE_PATH`). Nessa versão o formulário de contato envia a mensagem pelo WhatsApp, a busca de
+Os caminhos são relativos, então o conteúdo de `dist/` funciona tanto na raiz do domínio quanto
+em qualquer subpasta. Envie **o conteúdo** da pasta `dist/` (não a pasta em si) para o FTP. Nessa versão o formulário de contato envia a mensagem pelo WhatsApp, a busca de
 produtos filtra na própria página e o painel administrativo não existe. Para atualizar o
 conteúdo, edite os JSON em `data/` e exporte de novo.
 

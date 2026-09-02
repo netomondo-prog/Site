@@ -7,8 +7,9 @@
  * compartilhada, etc.).
  *
  * Uso:
- *   node scripts/export-static.js              # links a partir da raiz do domínio
- *   BASE_PATH=/jtec node scripts/export-static.js   # site em uma subpasta
+ *   node scripts/export-static.js                    # caminhos relativos (funciona em qualquer pasta)
+ *   BASE_PATH=/jtec node scripts/export-static.js    # caminhos absolutos a partir de /jtec
+ *   SITE_URL=https://exemplo.com.br node scripts/export-static.js   # URL usada em og:url e compartilhamento
  *
  * Diferenças em relação ao site dinâmico:
  *  - o formulário de contato envia a mensagem pelo WhatsApp (não há servidor);
@@ -25,6 +26,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const BASE = String(process.env.BASE_PATH || '').replace(/\/$/, '');
+const SITE_URL = String(process.env.SITE_URL || '').replace(/\/$/, '');
 
 const app = require('../src/app');
 const store = require('../src/lib/store');
@@ -65,8 +67,12 @@ function staticPath(urlPath) {
   return p === '/' ? '/' : `${p}/`;
 }
 
-function transform(html) {
+function transform(html, pagePath) {
   let out = html;
+
+  // URLs absolutas do servidor local (og:url, compartilhamento, JSON-LD)
+  out = out.replace(/http:\/\/127\.0\.0\.1:\d+/g, SITE_URL);
+  out = out.replace(/http%3A%2F%2F127\.0\.0\.1%3A\d+/g, encodeURIComponent(SITE_URL));
 
   // Links com query string viram pastas
   out = out.replace(/href="\/produtos\?categoria=([^"&]+)(?:&amp;[^"]*)?"/g, (m, c) => `href="/produtos/categoria/${c}/"`);
@@ -85,10 +91,14 @@ function transform(html) {
   // Script de comportamento estático (formulário → WhatsApp, busca local)
   out = out.replace('</body>', '<script src="/js/static.js" defer></script>\n</body>');
 
-  // Prefixo de subpasta, se houver
   if (BASE) {
+    // Caminhos absolutos a partir da subpasta informada
     out = out.replace(/(href|src|action)="\/(?!\/)/g, `$1="${BASE}/`);
-    out = out.replace(/url\("\/img\//g, `url("${BASE}/img/`);
+  } else {
+    // Caminhos relativos: funcionam na raiz do domínio ou em qualquer subpasta
+    const depth = pagePath.split('/').filter(Boolean).length;
+    const prefix = depth ? '../'.repeat(depth) : './';
+    out = out.replace(/(href|src|action)="\/(?!\/)([^"]*)"/g, (m, attr, rest) => `${attr}="${prefix}${rest}"`);
   }
   return out;
 }
@@ -176,19 +186,20 @@ const STATIC_JS = `/* JTEC - comportamento da versão estática (hospedagem sem 
   for (const p of paths) {
     const { status, body } = await fetchText(base, p);
     if (status !== 200) throw new Error(`Falha ao renderizar ${p}: HTTP ${status}`);
-    const target = path.join(DIST, staticPath(p), 'index.html');
+    const sp = staticPath(p);
+    const target = path.join(DIST, sp, 'index.html');
     fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, transform(body));
+    fs.writeFileSync(target, transform(body, sp));
     count++;
   }
 
   const notFound = await fetchText(base, '/pagina-inexistente');
-  fs.writeFileSync(path.join(DIST, '404.html'), transform(notFound.body));
-  fs.writeFileSync(path.join(DIST, '.htaccess'), `ErrorDocument 404 ${BASE}/404.html\nDirectoryIndex index.html\n`);
+  fs.writeFileSync(path.join(DIST, '404.html'), transform(notFound.body, '/'));
+  fs.writeFileSync(path.join(DIST, '.htaccess'), `DirectoryIndex index.html\n${BASE ? `ErrorDocument 404 ${BASE}/404.html\n` : ''}`);
   fs.writeFileSync(path.join(DIST, 'robots.txt'), 'User-agent: *\nAllow: /\n');
 
   server.close();
-  console.log(`Exportadas ${count} páginas para ${path.relative(ROOT, DIST)}/${BASE ? ` (base: ${BASE})` : ''}`);
+  console.log(`Exportadas ${count} páginas para ${path.relative(ROOT, DIST)}/ (${BASE ? `base: ${BASE}` : 'caminhos relativos'})`);
 })().catch((err) => {
   console.error(err);
   process.exit(1);
