@@ -1,0 +1,56 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: post.title, subtitle: post.excerpt, breadcrumbs: [{ label: 'Blog', href: '/blog' }, { label: post.title }] }) %>
+
+<section class="section">
+  <div class="container layout-sidebar">
+    <article class="layout-sidebar__main article">
+      <div class="article__meta">
+        <span><%- include('../partials/icon', { name: 'user', cls: 'icon icon--sm' }) %> <%= post.author || site.name %></span>
+        <span><%- include('../partials/icon', { name: 'calendar', cls: 'icon icon--sm' }) %> <%= text.formatDate(post.date) %></span>
+        <span><%- include('../partials/icon', { name: 'clock', cls: 'icon icon--sm' }) %> <%= text.readingTime(post.body) %> min de leitura</span>
+      </div>
+      <% if (post.cover) { %>
+        <figure class="detail-figure"><img src="<%= post.cover %>" alt="" width="800" height="420"></figure>
+      <% } %>
+      <div class="prose prose--article">
+        <%- text.richText(post.body) %>
+      </div>
+      <% if ((post.tags || []).length) { %>
+        <div class="article__tags">
+          <% post.tags.forEach((t) => { %><a class="chip chip--sm" href="/blog?tag=<%= encodeURIComponent(t) %>"><%= t %></a><% }) %>
+        </div>
+      <% } %>
+      <div class="article__share">
+        <span>Compartilhar:</span>
+        <a href="https://wa.me/?text=<%= encodeURIComponent(post.title + ' ' + currentUrl) %>" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<%= encodeURIComponent(currentUrl) %>" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:?subject=<%= encodeURIComponent(post.title) %>&body=<%= encodeURIComponent(currentUrl) %>">E-mail</a>
+      </div>
+    </article>
+
+    <aside class="layout-sidebar__aside">
+      <div class="aside-box aside-box--primary">
+        <h3>Fale com um especialista</h3>
+        <p>Tire dúvidas sobre manutenção, normas e especificação de válvulas com a equipe técnica da JTEC.</p>
+        <a class="btn btn--accent btn--block" href="/contato?assunto=Suporte%20técnico">Enviar mensagem</a>
+        <a class="btn btn--whatsapp btn--block" href="<%= whatsappLink() %>" target="_blank" rel="noopener"><%- include('../partials/icon', { name: 'whatsapp', cls: 'icon icon--sm' }) %> WhatsApp</a>
+      </div>
+      <% if (others.length) { %>
+      <div class="aside-box">
+        <h3>Leia também</h3>
+        <ul class="aside-posts">
+          <% others.forEach((p) => { %>
+            <li>
+              <a href="/blog/<%= p.slug %>"><%= p.title %></a>
+              <small><%= text.formatDate(p.date) %></small>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+    </aside>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

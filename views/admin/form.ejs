@@ -1,0 +1,47 @@
+<%
+  const isNew = !item;
+  const pageTitle = `${isNew ? 'Novo' : 'Editar'} ${resource.singular.toLowerCase()}`;
+%>
+<%- include('_head', { title: pageTitle }) %>
+
+<form class="panel form form--admin" method="post" action="/admin/<%= resourceKey %>/<%= isNew ? 'novo' : item.id %>">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% resource.fields.forEach((f) => { %>
+    <% const val = values[f.name]; const err = errors[f.name]; %>
+    <div class="field<%= err ? ' has-error' : '' %><%= f.type === 'checkbox' ? ' field--check' : '' %>">
+      <% if (f.type === 'checkbox') { %>
+        <label><input type="checkbox" name="<%= f.name %>"<%= val ? ' checked' : '' %>> <%= f.label %></label>
+      <% } else { %>
+        <label for="f-<%= f.name %>"><%= f.label %><%= f.required ? '*' : '' %></label>
+        <% if (f.type === 'textarea' || f.type === 'rich' || f.type === 'lines' || f.type === 'specs') { %>
+          <textarea id="f-<%= f.name %>" name="<%= f.name %>" rows="<%= f.rows || 4 %>"<%= f.required ? ' required' : '' %>><%= val %></textarea>
+          <% if (f.type === 'rich') { %>
+            <small class="help">Formatação: linha em branco separa parágrafos; "- " inicia lista; "## " cria subtítulo; "> " cria destaque; **negrito** e *itálico*. HTML também é aceito.</small>
+          <% } %>
+        <% } else if (f.type === 'select') { %>
+          <% const opts = f.optionsFrom ? (site[f.optionsFrom] || []).map((o) => ({ value: o.slug, label: o.name })) : (f.options || []).map((o) => ({ value: o, label: o })); %>
+          <select id="f-<%= f.name %>" name="<%= f.name %>">
+            <option value="">Selecione</option>
+            <% opts.forEach((o) => { %><option value="<%= o.value %>"<%= val === o.value ? ' selected' : '' %>><%= o.label %></option><% }) %>
+          </select>
+        <% } else if (f.type === 'image') { %>
+          <div class="image-field">
+            <input id="f-<%= f.name %>" name="<%= f.name %>" type="text" value="<%= val %>" placeholder="/img/products/exemplo.svg ou https://...">
+            <% if (val) { %><img class="image-field__preview" src="<%= val %>" alt=""><% } %>
+          </div>
+          <small class="help">Informe o caminho de uma imagem em /public/img ou uma URL externa.</small>
+        <% } else { %>
+          <input id="f-<%= f.name %>" name="<%= f.name %>" type="<%= f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : 'text' %>" value="<%= val %>"<%= f.required ? ' required' : '' %>>
+        <% } %>
+        <% if (f.help) { %><small class="help"><%= f.help %></small><% } %>
+      <% } %>
+      <% if (err) { %><span class="field__error"><%= err %></span><% } %>
+    </div>
+  <% }) %>
+  <div class="form__actions form__actions--sticky">
+    <button class="btn btn--primary" type="submit">Salvar</button>
+    <a class="btn btn--outline" href="/admin/<%= resourceKey %>">Cancelar</a>
+  </div>
+</form>
+
+<%- include('_foot') %>

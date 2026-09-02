@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Entrar | Painel <%= site.name %></title>
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body admin-body--login">
+  <div class="login">
+    <div class="login__brand"><%- include('../partials/logo', { variant: 'light' }) %></div>
+    <form class="login__form" method="post" action="/admin/login">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <h1>Área restrita</h1>
+      <p>Entre para gerenciar o conteúdo do site.</p>
+      <% if (error) { %><div class="alert alert--error"><%= error %></div><% } %>
+      <div class="field">
+        <label for="user">Usuário</label>
+        <input id="user" name="user" type="text" required autocomplete="username" autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" required autocomplete="current-password">
+      </div>
+      <button class="btn btn--primary btn--block" type="submit">Entrar</button>
+      <a class="login__back" href="/">Voltar para o site</a>
+    </form>
+  </div>
+</body>
+</html>

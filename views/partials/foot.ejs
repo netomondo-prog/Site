@@ -1,0 +1,61 @@
+</main>
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__col footer__about">
+      <%- include('logo', { variant: 'light' }) %>
+      <p><%= site.seo?.description %></p>
+      <div class="footer__social">
+        <% if (site.social?.instagram) { %><a href="<%= site.social.instagram %>" target="_blank" rel="noopener" aria-label="Instagram"><%- include('icon', { name: 'instagram' }) %></a><% } %>
+        <% if (site.social?.linkedin) { %><a href="<%= site.social.linkedin %>" target="_blank" rel="noopener" aria-label="LinkedIn"><%- include('icon', { name: 'linkedin' }) %></a><% } %>
+        <% if (site.social?.youtube) { %><a href="<%= site.social.youtube %>" target="_blank" rel="noopener" aria-label="YouTube"><%- include('icon', { name: 'youtube' }) %></a><% } %>
+      </div>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title">Navegação</h3>
+      <ul class="footer__links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/empresa">Empresa</a></li>
+        <li><a href="/servicos">Serviços</a></li>
+        <li><a href="/produtos">Produtos</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title">Serviços</h3>
+      <ul class="footer__links">
+        <% (typeof footerServices !== 'undefined' ? footerServices : []).forEach((s) => { %>
+          <li><a href="/servicos/<%= s.slug %>"><%= s.title %></a></li>
+        <% }) %>
+        <li><a href="/servicos">Todos os serviços</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h3 class="footer__title">Contato</h3>
+      <ul class="footer__contact">
+        <li><%- include('icon', { name: 'pin' }) %><span><%= site.address.street %><br><%= site.address.district %>, <%= site.address.city %>/<%= site.address.state %><br>CEP <%= site.address.zip %></span></li>
+        <li><%- include('icon', { name: 'phone' }) %><a href="tel:<%= site.phone.replace(/[^\d+]/g, '') %>"><%= site.phone %></a></li>
+        <li><%- include('icon', { name: 'whatsapp' }) %><a href="<%= whatsappLink() %>" target="_blank" rel="noopener"><%= text.formatPhone(site.whatsapp) %></a></li>
+        <li><%- include('icon', { name: 'mail' }) %><a href="mailto:<%= site.email %>"><%= site.email %></a></li>
+        <li><%- include('icon', { name: 'clock' }) %><span><%= site.hours %><br><%= site.emergency %></span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <span>&copy; <%= new Date().getFullYear() %> <%= site.legalName || site.name %>. Todos os direitos reservados.</span>
+      <span><a href="/admin" class="footer__admin">Área restrita</a></span>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="<%= whatsappLink() %>" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+  <span class="whatsapp-float__pulse"></span>
+  <%- include('icon', { name: 'whatsapp', cls: 'icon whatsapp-float__icon' }) %>
+  <span class="whatsapp-float__label">Fale pelo WhatsApp</span>
+</a>
+
+<script src="/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="bfg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b2a3d"/><stop offset="1" stop-color="#15a3ad"/></linearGradient>
+    <linearGradient id="bfsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
+    
+  <pattern id="bfp" width="80" height="70" patternUnits="userSpaceOnUse">
+    <path d="M40 0L80 70H0z" fill="none" stroke="#ffffff" stroke-opacity=".14"/>
+    <path d="M0 0L40 70 80 0" fill="none" stroke="#ffffff" stroke-opacity=".07"/>
+  </pattern>
+    <radialGradient id="bfglow" cx=".72" cy=".5" r=".5"><stop offset="0" stop-color="#ffffff" stop-opacity=".18"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bfg)"/>
+  <rect width="800" height="450" fill="url(#bfp)"/>
+  <rect width="800" height="450" fill="url(#bfglow)"/>
+  
+  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#bfsteel)">
+    
+  <g transform="translate(470 90)">
+    <circle cx="120" cy="120" r="110" fill="#ffffff"/>
+    <circle cx="120" cy="120" r="96" fill="#12384f" stroke="none"/>
+    <path d="M204 120L212 120" stroke="#ffffff" stroke-width="3"/><path d="M192.74613391789285 162L199.67433714816838 166" stroke="#ffffff" stroke-width="3"/><path d="M162 192.74613391789285L166 199.67433714816835" stroke="#ffffff" stroke-width="3"/><path d="M120 204L120 212" stroke="#ffffff" stroke-width="3"/><path d="M78.00000000000003 192.74613391789285L74.00000000000003 199.67433714816838" stroke="#ffffff" stroke-width="3"/><path d="M47.25386608210715 162L40.32566285183164 166" stroke="#ffffff" stroke-width="3"/><path d="M36 120.00000000000001L28 120.00000000000001" stroke="#ffffff" stroke-width="3"/><path d="M47.25386608210715 78L40.32566285183165 74" stroke="#ffffff" stroke-width="3"/><path d="M77.99999999999997 47.253866082107166L73.99999999999996 40.325662851831666" stroke="#ffffff" stroke-width="3"/><path d="M119.99999999999999 36L119.99999999999999 28" stroke="#ffffff" stroke-width="3"/><path d="M162 47.25386608210715L166 40.32566285183165" stroke="#ffffff" stroke-width="3"/><path d="M192.74613391789282 77.99999999999997L199.67433714816832 73.99999999999996" stroke="#ffffff" stroke-width="3"/>
+    <path d="M120 120V54" stroke="#f28c28" stroke-width="6"/>
+    <path d="M120 120l44 26" stroke="#ffffff" stroke-width="6"/>
+    <circle cx="120" cy="120" r="8" fill="#f28c28" stroke="none"/>
+  </g>
+  <g transform="translate(180 260) scale(.55)">
+    <g transform="translate(0 0) scale(1)">
+      <rect x="140" y="262" width="120" height="16" rx="3" fill="#c9d3d9"/><circle cx="155" cy="270" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="185" cy="270" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="215" cy="270" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="245" cy="270" r="3.52" fill="#8fa0aa" stroke="none"/><rect x="172" y="222" width="56" height="40"/>
+      <rect x="150" y="158" width="100" height="66" rx="14"/>
+      
+      <rect x="86" y="172" width="64" height="38"/>
+      <rect x="70" y="156" width="16" height="70" rx="3" fill="#c9d3d9"/><circle cx="78" cy="167.66666666666666" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="78" cy="191" r="3.52" fill="#8fa0aa" stroke="none"/><circle cx="78" cy="214.33333333333334" r="3.52" fill="#8fa0aa" stroke="none"/>
+      <rect x="176" y="86" width="48" height="74" rx="6" fill="#ffffff"/>
+      <polyline points="184,96 216,101.6 184,107.2 216,112.8 184,118.4 216,124 184,129.6 216,135.2 184,140.8 216,146.4 184,152" fill="none" stroke="#f28c28" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="168" y="66" width="64" height="24" rx="6"/>
+      <circle cx="200" cy="78" r="5" fill="#0b2a3d" stroke="none"/>
+      <path d="M226 76L292 52" stroke-width="5"/><circle cx="292" cy="52" r="6" fill="#f28c28" stroke="#f28c28"/>
+      <path d="M160 190h20" stroke="#15a3ad" stroke-width="2"/>
+      <text x="200" y="196" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="#0f6e73" stroke="none">JTEC</text>
+    </g></g>
+  </g>
+</svg>

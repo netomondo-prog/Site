@@ -1,0 +1,6 @@
+<article class="card service-card">
+  <div class="service-card__icon"><%- include('icon', { name: service.icon || 'valve' }) %></div>
+  <h3 class="card__title"><a href="/servicos/<%= service.slug %>"><%= service.title %></a></h3>
+  <p class="card__text"><%= service.short %></p>
+  <a class="link-arrow" href="/servicos/<%= service.slug %>">Saiba mais <%- include('icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a>
+</article>

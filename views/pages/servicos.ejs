@@ -1,0 +1,33 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: 'Serviços', subtitle: 'Manutenção, testes, usinagem e treinamento para válvulas de segurança, alívio e controle.', breadcrumbs: [{ label: 'Serviços' }] }) %>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--3">
+      <% services.forEach((service) => { %>
+        <%- include('../partials/service-card', { service }) %>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Como trabalhamos</span>
+      <h2 class="section__title">Do diagnóstico à certificação</h2>
+    </div>
+    <ol class="steps">
+      <% (site.process || []).forEach((step, i) => { %>
+        <li class="step">
+          <span class="step__number"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3 class="step__title"><%= step.title %></h3>
+          <p class="step__text"><%= step.text %></p>
+        </li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

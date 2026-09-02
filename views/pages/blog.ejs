@@ -1,0 +1,29 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: 'Blog técnico', subtitle: 'Boas práticas de manutenção, normas e dicas para quem cuida de válvulas industriais.', breadcrumbs: [{ label: 'Blog' }] }) %>
+
+<section class="section">
+  <div class="container">
+    <% if (tags.length) { %>
+      <nav class="chips chips--center" aria-label="Tags">
+        <a class="chip<%= !tag ? ' is-active' : '' %>" href="/blog">Todos</a>
+        <% tags.forEach((t) => { %><a class="chip<%= tag === t ? ' is-active' : '' %>" href="/blog?tag=<%= encodeURIComponent(t) %>"><%= t %></a><% }) %>
+      </nav>
+    <% } %>
+
+    <% if (posts.length) { %>
+      <div class="grid grid--3">
+        <% posts.forEach((post) => { %>
+          <%- include('../partials/post-card', { post }) %>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty">
+        <h2>Nenhum artigo publicado ainda</h2>
+        <p>Em breve teremos conteúdo técnico por aqui.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

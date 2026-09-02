@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <linearGradient id="gbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef3f5"/></linearGradient>
+    <linearGradient id="gsteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9eef1"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#d5dde2"/></linearGradient>
+  </defs>
+  <rect width="400" height="320" fill="url(#gbg)"/>
+  <g stroke="#0b2a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="url(#gsteel)">
+    
+    <rect x="120" y="40" width="160" height="240" rx="26" fill="#0f6e73" stroke="#0b2a3d"/>
+    <rect x="132" y="52" width="136" height="216" rx="18" fill="#12384f" stroke="none"/>
+    <rect x="146" y="68" width="108" height="76" rx="6" fill="#dfe9c8" stroke="#0b2a3d" stroke-width="2"/>
+    <polyline points="152,130 170,128 178,100 190,98 196,120 214,118 222,84 236,86 248,110" fill="none" stroke="#0b2a3d" stroke-width="2.5"/>
+    <path d="M152 138h100" stroke="#8fa0aa" stroke-width="1"/>
+    <text x="200" y="164" text-anchor="middle" font-family="Inter, Arial" font-size="11" font-weight="700" fill="#ffffff" stroke="none">JT-REC 550</text>
+    <circle cx="200" cy="205" r="26" fill="#0b2a3d" stroke="#15a3ad" stroke-width="2"/>
+    <path d="M200 189v12M200 209v12M184 205h12M204 205h12" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="160" cy="246" r="8" fill="#f28c28" stroke="none"/>
+    <circle cx="240" cy="246" r="8" fill="#15a3ad" stroke="none"/>
+    <rect x="186" y="280" width="28" height="20" rx="3" fill="#c9d3d9"/>
+    <path d="M200 300v6" stroke="#8fa0aa"/>
+  </g>
+</svg>

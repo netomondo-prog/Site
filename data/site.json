@@ -1,0 +1,145 @@
+{
+  "name": "JTEC",
+  "legalName": "JTEC Válvulas Industriais Ltda.",
+  "tagline": "Válvulas industriais, manutenção e testes com certificação",
+  "phone": "+55 (19) 3245-2758",
+  "phoneAlt": "+55 (19) 99999-0000",
+  "whatsapp": "5519999990000",
+  "whatsappMessage": "Olá! Vim pelo site da JTEC e gostaria de um orçamento.",
+  "email": "contato@jtec.com.br",
+  "hours": "Segunda a sexta, das 8h às 18h",
+  "emergency": "Plantão 24h para paradas e emergências",
+  "address": {
+    "street": "Rua Antônio Haddad, 76",
+    "district": "Parque Via Norte",
+    "city": "Campinas",
+    "state": "SP",
+    "zip": "13065-000",
+    "mapsQuery": "Rua Antônio Haddad, 76, Parque Via Norte, Campinas - SP"
+  },
+  "social": {
+    "instagram": "https://instagram.com/",
+    "linkedin": "https://linkedin.com/",
+    "youtube": ""
+  },
+  "seo": {
+    "description": "JTEC: manutenção, testes e comercialização de válvulas de segurança, alívio e controle. Laboratório próprio, atendimento in loco e plantão 24h em Campinas/SP.",
+    "keywords": "válvulas de segurança, manutenção de válvulas, PSV, válvula de alívio, calibração de válvulas, RTS, NR-13, Campinas"
+  },
+  "hero": [
+    {
+      "kicker": "Manutenção especializada",
+      "title": "Sua válvula de segurança testada, calibrada e certificada",
+      "subtitle": "Laboratório próprio, equipe técnica com mais de 20 anos de experiência e emissão de RTS conforme ASME e API.",
+      "cta": "Solicitar orçamento",
+      "link": "/contato?assunto=Solicitar%20orçamento",
+      "cta2": "Ver serviços",
+      "link2": "/servicos",
+      "theme": "valve"
+    },
+    {
+      "kicker": "Paradas de fábrica e offshore",
+      "title": "Atendimento in loco com laboratório móvel",
+      "subtitle": "Levamos a bancada de testes até a sua planta ou plataforma. Menos tempo de parada, mais controle sobre o cronograma.",
+      "cta": "Conhecer atendimento in loco",
+      "link": "/servicos/atendimento-in-loco",
+      "cta2": "Falar com um técnico",
+      "link2": "/contato",
+      "theme": "field"
+    },
+    {
+      "kicker": "Produtos e instrumentação",
+      "title": "Válvulas e instrumentos das melhores marcas do mercado",
+      "subtitle": "Válvulas de segurança, controle, bloqueio e instrumentos de pressão de referência com pronta entrega e suporte técnico.",
+      "cta": "Ver produtos",
+      "link": "/produtos",
+      "cta2": "",
+      "link2": "",
+      "theme": "products"
+    }
+  ],
+  "stats": [
+    { "value": "20+", "label": "anos de experiência técnica" },
+    { "value": "24h", "label": "plantão para emergências" },
+    { "value": "ISO 9001", "label": "sistema de gestão da qualidade" },
+    { "value": "100%", "label": "das válvulas testadas com certificado" }
+  ],
+  "differentials": [
+    {
+      "icon": "shield",
+      "title": "Certificado em cada válvula",
+      "text": "Toda válvula sai da nossa bancada com Relatório de Teste e Serviço (RTS) e etiqueta de rastreabilidade."
+    },
+    {
+      "icon": "clock",
+      "title": "Prazo que cabe na sua parada",
+      "text": "Planejamos o serviço junto com a sua equipe de manutenção para cumprir a janela da parada."
+    },
+    {
+      "icon": "field",
+      "title": "Atendimento onde você está",
+      "text": "Laboratório móvel para testes e reparos em campo, plataformas offshore e unidades remotas."
+    },
+    {
+      "icon": "wrench",
+      "title": "Reparo em vez de troca",
+      "text": "Recuperamos internos e usinamos componentes, prolongando a vida útil e reduzindo o custo total."
+    },
+    {
+      "icon": "gauge",
+      "title": "Instrumentação rastreável",
+      "text": "Manômetros e registradores de referência calibrados, com rastreabilidade à RBC."
+    },
+    {
+      "icon": "training",
+      "title": "Equipe do cliente capacitada",
+      "text": "Treinamos operadores e mantenedores para inspeção, dimensionamento e cuidados básicos com válvulas."
+    }
+  ],
+  "process": [
+    {
+      "title": "Diagnóstico",
+      "text": "Recebemos a válvula ou visitamos a planta, identificamos o modelo, a aplicação e o histórico de falhas."
+    },
+    {
+      "title": "Proposta técnica",
+      "text": "Enviamos orçamento detalhado com escopo, peças, prazo e o tipo de teste exigido pela norma."
+    },
+    {
+      "title": "Reparo e testes",
+      "text": "Desmontagem, limpeza, lapidação, substituição de peças, montagem e testes de abertura e vedação."
+    },
+    {
+      "title": "Certificação e entrega",
+      "text": "Emissão do RTS, etiqueta de identificação, lacre e entrega com logística própria."
+    }
+  ],
+  "productCategories": [
+    { "slug": "valvulas-de-seguranca", "name": "Válvulas de segurança e alívio" },
+    { "slug": "valvulas-de-controle", "name": "Válvulas de controle e bloqueio" },
+    { "slug": "instrumentacao", "name": "Instrumentação e calibração" },
+    { "slug": "pecas", "name": "Peças e sobressalentes" }
+  ],
+  "about": {
+    "headline": "Mais de 20 anos cuidando do que protege a sua planta",
+    "body": "A JTEC nasceu em Campinas/SP com um propósito simples: fazer manutenção de válvulas de segurança e alívio com o rigor que a função exige. Hoje somos referência em manutenção, testes e comercialização de válvulas industriais para indústrias de óleo e gás, petroquímica, açúcar e etanol, papel e celulose, energia e naval.\n\nTrabalhamos dentro do conceito moderno de manutenção: cada válvula é testada de acordo com a sua classe de pressão e devolvida com certificado. Nosso corpo técnico tem mais de 20 anos de experiência e acompanha o cliente da manutenção até a aplicação, com serviços de logística de retirada e entrega, palestras, apoio na especificação de produtos e plantão 24 horas.\n\nCuidamos das válvulas com cautela e método para evitar que o usuário final precise trocá-las ou reconstruí-las em um curto período. O resultado é uma planta mais segura, com menos paradas não planejadas e um custo de manutenção mais previsível.",
+    "mission": "Garantir a segurança e a disponibilidade dos processos industriais por meio de válvulas confiáveis, testadas e certificadas.",
+    "vision": "Ser a empresa de referência em manutenção e comercialização de válvulas industriais no Brasil.",
+    "values": [
+      "Segurança em primeiro lugar",
+      "Transparência técnica com o cliente",
+      "Compromisso com prazos",
+      "Melhoria contínua",
+      "Respeito ao meio ambiente"
+    ]
+  },
+  "certifications": [
+    { "name": "ISO 9001", "text": "Sistema de Gestão da Qualidade" },
+    { "name": "ASME / API", "text": "Testes conforme ASME Seções I e VIII e API RP 527" },
+    { "name": "NR-13", "text": "Manutenção alinhada aos requisitos de inspeção de vasos e caldeiras" }
+  ],
+  "cta": {
+    "title": "Precisa de manutenção ou de uma válvula nova?",
+    "text": "Envie os dados da válvula (tag, modelo, pressão de ajuste, fluido) e receba uma proposta técnica em até 24 horas úteis."
+  }
+}

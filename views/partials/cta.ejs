@@ -1,0 +1,12 @@
+<section class="cta-band">
+  <div class="container cta-band__inner">
+    <div>
+      <h2 class="cta-band__title"><%= site.cta?.title %></h2>
+      <p class="cta-band__text"><%= site.cta?.text %></p>
+    </div>
+    <div class="cta-band__actions">
+      <a class="btn btn--accent" href="/contato?assunto=Solicitar%20orçamento">Solicitar orçamento</a>
+      <a class="btn btn--whatsapp" href="<%= whatsappLink() %>" target="_blank" rel="noopener"><%- include('icon', { name: 'whatsapp', cls: 'icon icon--sm' }) %> WhatsApp</a>
+    </div>
+  </div>
+</section>

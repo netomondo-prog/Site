@@ -1,0 +1,14 @@
+<article class="card post-card">
+  <a class="post-card__media" href="/blog/<%= post.slug %>">
+    <img src="<%= post.cover || '/img/blog/default.svg' %>" alt="" loading="lazy" width="400" height="220">
+  </a>
+  <div class="post-card__body">
+    <div class="post-card__meta">
+      <span><%- include('icon', { name: 'calendar', cls: 'icon icon--sm' }) %> <%= text.formatDate(post.date) %></span>
+      <span><%= text.readingTime(post.body) %> min de leitura</span>
+    </div>
+    <h3 class="card__title"><a href="/blog/<%= post.slug %>"><%= post.title %></a></h3>
+    <p class="card__text"><%= post.excerpt %></p>
+    <a class="link-arrow" href="/blog/<%= post.slug %>">Ler artigo <%- include('icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a>
+  </div>
+</article>

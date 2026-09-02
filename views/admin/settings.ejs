@@ -1,0 +1,82 @@
+<%- include('_head', { title: 'Configurações do site' }) %>
+<% const v = values; %>
+
+<form class="form form--admin" method="post" action="/admin/configuracoes">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+
+  <div class="panel">
+    <h2 class="panel__title">Identidade</h2>
+    <div class="form__row">
+      <div class="field"><label for="name">Nome</label><input id="name" name="name" type="text" value="<%= v.name %>" required></div>
+      <div class="field"><label for="legalName">Razão social</label><input id="legalName" name="legalName" type="text" value="<%= v.legalName || '' %>"></div>
+    </div>
+    <div class="field"><label for="tagline">Slogan</label><input id="tagline" name="tagline" type="text" value="<%= v.tagline || '' %>"></div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel__title">Contato</h2>
+    <div class="form__row">
+      <div class="field"><label for="phone">Telefone</label><input id="phone" name="phone" type="text" value="<%= v.phone || '' %>"></div>
+      <div class="field"><label for="phoneAlt">Telefone alternativo</label><input id="phoneAlt" name="phoneAlt" type="text" value="<%= v.phoneAlt || '' %>"></div>
+    </div>
+    <div class="form__row">
+      <div class="field"><label for="whatsapp">WhatsApp (somente números, com DDI)</label><input id="whatsapp" name="whatsapp" type="text" value="<%= v.whatsapp || '' %>" placeholder="5519999990000"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" value="<%= v.email || '' %>"></div>
+    </div>
+    <div class="field"><label for="whatsappMessage">Mensagem inicial do WhatsApp</label><input id="whatsappMessage" name="whatsappMessage" type="text" value="<%= v.whatsappMessage || '' %>"></div>
+    <div class="form__row">
+      <div class="field"><label for="hours">Horário de atendimento</label><input id="hours" name="hours" type="text" value="<%= v.hours || '' %>"></div>
+      <div class="field"><label for="emergency">Texto do plantão</label><input id="emergency" name="emergency" type="text" value="<%= v.emergency || '' %>"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel__title">Endereço</h2>
+    <div class="form__row">
+      <div class="field"><label for="street">Rua e número</label><input id="street" name="street" type="text" value="<%= v.address?.street || '' %>"></div>
+      <div class="field"><label for="district">Bairro</label><input id="district" name="district" type="text" value="<%= v.address?.district || '' %>"></div>
+    </div>
+    <div class="form__row">
+      <div class="field"><label for="city">Cidade</label><input id="city" name="city" type="text" value="<%= v.address?.city || '' %>"></div>
+      <div class="field field--sm"><label for="state">UF</label><input id="state" name="state" type="text" value="<%= v.address?.state || '' %>" maxlength="2"></div>
+      <div class="field"><label for="zip">CEP</label><input id="zip" name="zip" type="text" value="<%= v.address?.zip || '' %>"></div>
+    </div>
+    <div class="field"><label for="mapsQuery">Endereço para o mapa (Google Maps)</label><input id="mapsQuery" name="mapsQuery" type="text" value="<%= v.address?.mapsQuery || '' %>"></div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel__title">Redes sociais</h2>
+    <div class="form__row">
+      <div class="field"><label for="instagram">Instagram (URL)</label><input id="instagram" name="instagram" type="url" value="<%= v.social?.instagram || '' %>"></div>
+      <div class="field"><label for="linkedin">LinkedIn (URL)</label><input id="linkedin" name="linkedin" type="url" value="<%= v.social?.linkedin || '' %>"></div>
+      <div class="field"><label for="youtube">YouTube (URL)</label><input id="youtube" name="youtube" type="url" value="<%= v.social?.youtube || '' %>"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel__title">Página "Empresa"</h2>
+    <div class="field"><label for="aboutHeadline">Título</label><input id="aboutHeadline" name="aboutHeadline" type="text" value="<%= v.about?.headline || '' %>"></div>
+    <div class="field">
+      <label for="aboutBody">Texto institucional</label>
+      <textarea id="aboutBody" name="aboutBody" rows="10"><%= v.about?.body || '' %></textarea>
+      <small class="help">Linha em branco separa parágrafos. Os dois primeiros parágrafos aparecem também na home.</small>
+    </div>
+    <div class="form__row">
+      <div class="field"><label for="mission">Missão</label><textarea id="mission" name="mission" rows="3"><%= v.about?.mission || '' %></textarea></div>
+      <div class="field"><label for="vision">Visão</label><textarea id="vision" name="vision" rows="3"><%= v.about?.vision || '' %></textarea></div>
+      <div class="field"><label for="values">Valores (um por linha)</label><textarea id="values" name="values" rows="3"><%= (v.about?.values || []).join('\n') %></textarea></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel__title">SEO</h2>
+    <div class="field"><label for="seoDescription">Descrição do site (meta description)</label><textarea id="seoDescription" name="seoDescription" rows="3" maxlength="200"><%= v.seo?.description || '' %></textarea></div>
+    <div class="field"><label for="seoKeywords">Palavras-chave</label><input id="seoKeywords" name="seoKeywords" type="text" value="<%= v.seo?.keywords || '' %>"></div>
+  </div>
+
+  <div class="form__actions form__actions--sticky">
+    <button class="btn btn--primary" type="submit">Salvar configurações</button>
+  </div>
+</form>
+
+<%- include('_foot') %>

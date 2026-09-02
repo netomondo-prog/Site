@@ -1,0 +1,25 @@
+<%- include('_head', { title: 'Mensagem de ' + message.name }) %>
+
+<div class="panel message">
+  <dl class="message__meta">
+    <div><dt>Recebida em</dt><dd><%= text.formatDateTime(message.createdAt) %></dd></div>
+    <div><dt>Assunto</dt><dd><%= message.subject %></dd></div>
+    <div><dt>Nome</dt><dd><%= message.name %></dd></div>
+    <div><dt>Empresa</dt><dd><%= message.company || '-' %></dd></div>
+    <div><dt>E-mail</dt><dd><a href="mailto:<%= message.email %>"><%= message.email %></a></dd></div>
+    <div><dt>Telefone</dt><dd><a href="tel:<%= (message.phone || '').replace(/\D/g, '') %>"><%= message.phone || '-' %></a></dd></div>
+    <div><dt>Cidade/UF</dt><dd><%= message.city || '-' %> / <%= message.state || '-' %></dd></div>
+  </dl>
+  <div class="message__body"><%- text.escapeHtml(message.message).replace(/\n/g, '<br>') %></div>
+  <div class="form__actions">
+    <a class="btn btn--primary" href="mailto:<%= message.email %>?subject=Re: <%= encodeURIComponent(message.subject) %>">Responder por e-mail</a>
+    <% if (message.phone) { %><a class="btn btn--whatsapp" href="https://wa.me/55<%= message.phone.replace(/\D/g, '') %>" target="_blank" rel="noopener">Responder no WhatsApp</a><% } %>
+    <a class="btn btn--outline" href="/admin/mensagens">Voltar</a>
+    <form method="post" action="/admin/mensagens/<%= message.id %>/excluir" data-confirm="Excluir esta mensagem?">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <button class="btn btn--danger" type="submit">Excluir</button>
+    </form>
+  </div>
+</div>
+
+<%- include('_foot') %>

@@ -1,0 +1,54 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: service.title, subtitle: service.short, breadcrumbs: [{ label: 'Serviços', href: '/servicos' }, { label: service.title }] }) %>
+
+<section class="section">
+  <div class="container layout-sidebar">
+    <article class="layout-sidebar__main">
+      <% if (service.image) { %>
+        <figure class="detail-figure">
+          <img src="<%= service.image %>" alt="<%= service.title %>" width="800" height="420">
+        </figure>
+      <% } %>
+      <div class="prose">
+        <%- text.richText(service.body) %>
+      </div>
+
+      <% if ((service.items || []).length) { %>
+        <div class="detail-block">
+          <h2>O que está incluso</h2>
+          <ul class="check-list check-list--grid">
+            <% service.items.forEach((item) => { %><li><%- include('../partials/icon', { name: 'check', cls: 'icon icon--sm' }) %> <%= item %></li><% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% if ((service.benefits || []).length) { %>
+        <div class="detail-block detail-block--highlight">
+          <h2>Benefícios para a sua planta</h2>
+          <ul class="check-list">
+            <% service.benefits.forEach((item) => { %><li><%- include('../partials/icon', { name: 'check', cls: 'icon icon--sm' }) %> <%= item %></li><% }) %>
+          </ul>
+        </div>
+      <% } %>
+    </article>
+
+    <aside class="layout-sidebar__aside">
+      <div class="aside-box aside-box--primary">
+        <h3>Solicite um orçamento</h3>
+        <p>Envie tag, modelo, pressão de ajuste e fluido da válvula. Respondemos em até 24 horas úteis.</p>
+        <a class="btn btn--accent btn--block" href="/contato?assunto=Manutenção%20de%20válvulas">Pedir orçamento</a>
+        <a class="btn btn--whatsapp btn--block" href="<%= whatsappLink('Olá! Gostaria de um orçamento para: ' + service.title) %>" target="_blank" rel="noopener"><%- include('../partials/icon', { name: 'whatsapp', cls: 'icon icon--sm' }) %> Falar no WhatsApp</a>
+        <p class="aside-box__note"><%= site.emergency %></p>
+      </div>
+      <div class="aside-box">
+        <h3>Outros serviços</h3>
+        <ul class="aside-links">
+          <% others.forEach((s) => { %><li><a href="/servicos/<%= s.slug %>"><%- include('../partials/icon', { name: 'arrow', cls: 'icon icon--sm' }) %> <%= s.title %></a></li><% }) %>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>
