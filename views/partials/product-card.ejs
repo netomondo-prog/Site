@@ -1,0 +1,18 @@
+<%
+  const cats = site.productCategories || [];
+  const cat = cats.find((c) => c.slug === product.category);
+%>
+<article class="card product-card">
+  <a class="product-card__media" href="/produtos/<%= product.slug %>">
+    <img src="<%= product.image || '/img/products/placeholder.svg' %>" alt="<%= product.name %>" loading="lazy" width="320" height="240">
+  </a>
+  <div class="product-card__body">
+    <% if (cat) { %><span class="badge"><%= cat.name %></span><% } %>
+    <h3 class="card__title"><a href="/produtos/<%= product.slug %>"><%= product.name %></a></h3>
+    <p class="card__text"><%= product.short %></p>
+    <div class="product-card__actions">
+      <a class="link-arrow" href="/produtos/<%= product.slug %>">Ver detalhes <%- include('icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a>
+      <a class="btn btn--sm btn--outline" href="/contato?assunto=Compra%20de%20produtos">Cotar</a>
+    </div>
+  </div>
+</article>

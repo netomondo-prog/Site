@@ -1,0 +1,13 @@
+<%- include('../partials/head', { meta: { title } }) %>
+<section class="section error-page">
+  <div class="container">
+    <span class="section__kicker">Ops</span>
+    <h1 class="section__title"><%= title %></h1>
+    <p class="section__lead"><%= message %></p>
+    <div class="error-page__actions">
+      <a class="btn btn--primary" href="/">Voltar para a home</a>
+      <a class="btn btn--outline" href="/contato">Falar com a JTEC</a>
+    </div>
+  </div>
+</section>
+<%- include('../partials/foot') %>

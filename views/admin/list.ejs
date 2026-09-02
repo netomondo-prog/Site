@@ -1,0 +1,50 @@
+<%
+  const titleField = resource.fields.find((f) => f.isTitle || f.name === 'title').name;
+  const actionsHtml = `<a class="btn btn--primary btn--sm" href="/admin/${resourceKey}/novo">+ Novo ${resource.singular.toLowerCase()}</a>`;
+%>
+<%- include('_head', { title: resource.label, actions: actionsHtml }) %>
+
+<div class="panel">
+  <% if (items.length) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <% if (resource.fields.some((f) => f.name === 'category')) { %><th>Categoria</th><% } %>
+          <% if (resource.fields.some((f) => f.name === 'date')) { %><th>Data</th><% } %>
+          <% if (resource.fields.some((f) => f.name === 'order')) { %><th>Ordem</th><% } %>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach((item) => { %>
+          <tr>
+            <td>
+              <strong><%= item[titleField] %></strong>
+              <% if (item.slug && resource.publicPath) { %><br><small class="muted"><%= resource.publicPath %>/<%= item.slug %></small><% } %>
+            </td>
+            <% if (resource.fields.some((f) => f.name === 'category')) { %>
+              <td><%= (site.productCategories || []).find((c) => c.slug === item.category)?.name || item.category || '-' %></td>
+            <% } %>
+            <% if (resource.fields.some((f) => f.name === 'date')) { %><td><%= text.formatDate(item.date) %></td><% } %>
+            <% if (resource.fields.some((f) => f.name === 'order')) { %><td><%= item.order ?? '-' %></td><% } %>
+            <td><span class="status status--<%= item.published === false ? 'off' : 'on' %>"><%= item.published === false ? 'Rascunho' : 'Publicado' %></span></td>
+            <td class="table__actions">
+              <% if (resource.publicPath && item.published !== false) { %><a class="btn btn--sm btn--ghost-dark" href="<%= resource.publicPath %>/<%= item.slug %>" target="_blank" rel="noopener" title="Ver no site"><%- include('../partials/icon', { name: 'external', cls: 'icon icon--sm' }) %></a><% } %>
+              <a class="btn btn--sm btn--outline" href="/admin/<%= resourceKey %>/<%= item.id %>"><%- include('../partials/icon', { name: 'edit', cls: 'icon icon--sm' }) %> Editar</a>
+              <form method="post" action="/admin/<%= resourceKey %>/<%= item.id %>/excluir" data-confirm="Excluir &quot;<%= item[titleField] %>&quot;? Esta ação não pode ser desfeita.">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <button class="btn btn--sm btn--danger" type="submit"><%- include('../partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhum item cadastrado. <a href="/admin/<%= resourceKey %>/novo">Criar o primeiro</a>.</p>
+  <% } %>
+</div>
+
+<%- include('_foot') %>

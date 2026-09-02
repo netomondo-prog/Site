@@ -1,0 +1,92 @@
+<%
+  const m = Object.assign({ title: '', description: site.seo?.description || '', image: '' }, typeof meta !== 'undefined' && meta ? meta : {});
+  const fullTitle = m.title ? `${m.title} | ${site.name}` : `${site.name} | ${site.tagline}`;
+  const isActive = (href) => (href === '/' ? path === '/' : path.startsWith(href));
+  const nav = [
+    { href: '/', label: 'Home' },
+    { href: '/empresa', label: 'Empresa' },
+    { href: '/servicos', label: 'Serviços' },
+    { href: '/produtos', label: 'Produtos' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contato', label: 'Contato' },
+  ];
+%><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= fullTitle %></title>
+  <meta name="description" content="<%= m.description %>">
+  <% if (site.seo?.keywords) { %><meta name="keywords" content="<%= site.seo.keywords %>"><% } %>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="<%= site.name %>">
+  <meta property="og:title" content="<%= fullTitle %>">
+  <meta property="og:description" content="<%= m.description %>">
+  <meta property="og:url" content="<%= currentUrl %>">
+  <% if (m.image) { %><meta property="og:image" content="<%= m.image %>"><% } %>
+  <meta name="theme-color" content="#0b2a3d">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <% if (path === '/') { %>
+  <script type="application/ld+json">
+  <%- JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: site.legalName || site.name,
+    description: site.seo?.description,
+    telephone: site.phone,
+    email: site.email,
+    url: currentUrl,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.address?.street,
+      addressLocality: site.address?.city,
+      addressRegion: site.address?.state,
+      postalCode: site.address?.zip,
+      addressCountry: 'BR',
+    },
+    openingHours: site.hours,
+  }) %>
+  </script>
+  <% } %>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+<div class="topbar">
+  <div class="container topbar__inner">
+    <div class="topbar__info">
+      <a href="tel:<%= site.phone.replace(/[^\d+]/g, '') %>"><%- include('icon', { name: 'phone', cls: 'icon icon--sm' }) %> <%= site.phone %></a>
+      <a href="mailto:<%= site.email %>"><%- include('icon', { name: 'mail', cls: 'icon icon--sm' }) %> <%= site.email %></a>
+      <span class="topbar__hours"><%- include('icon', { name: 'clock', cls: 'icon icon--sm' }) %> <%= site.hours %></span>
+    </div>
+    <div class="topbar__right">
+      <span class="topbar__emergency"><%= site.emergency %></span>
+    </div>
+  </div>
+</div>
+
+<header class="header" id="topo">
+  <div class="container header__inner">
+    <a class="header__brand" href="/" aria-label="<%= site.name %> - página inicial">
+      <%- include('logo', { variant: 'dark' }) %>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu">
+      <%- include('icon', { name: 'menu', cls: 'icon nav-toggle__open' }) %>
+      <%- include('icon', { name: 'close', cls: 'icon nav-toggle__close' }) %>
+    </button>
+    <nav class="nav" id="menu-principal" aria-label="Menu principal">
+      <ul class="nav__list">
+        <% nav.forEach((item) => { %>
+          <li><a class="nav__link<%= isActive(item.href) ? ' is-active' : '' %>" href="<%= item.href %>"<%= isActive(item.href) ? ' aria-current="page"' : '' %>><%= item.label %></a></li>
+        <% }) %>
+      </ul>
+      <a class="btn btn--primary nav__cta" href="/contato?assunto=Solicitar%20orçamento">Solicitar orçamento</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">

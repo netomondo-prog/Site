@@ -1,0 +1,97 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: 'A empresa', subtitle: site.about?.headline, breadcrumbs: [{ label: 'Empresa' }] }) %>
+
+<section class="section">
+  <div class="container about-split about-split--page">
+    <div class="about-split__text prose">
+      <%- text.richText(site.about?.body) %>
+    </div>
+    <figure class="about-split__figure">
+      <img src="/img/empresa.svg" alt="Laboratório de testes de válvulas da JTEC" width="560" height="420">
+      <figcaption>Laboratório de testes em <%= site.address.city %>/<%= site.address.state %></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="grid grid--3 mvv">
+      <div class="mvv__item">
+        <span class="mvv__icon"><%- include('../partials/icon', { name: 'star' }) %></span>
+        <h2 class="mvv__title">Missão</h2>
+        <p><%= site.about?.mission %></p>
+      </div>
+      <div class="mvv__item">
+        <span class="mvv__icon"><%- include('../partials/icon', { name: 'search' }) %></span>
+        <h2 class="mvv__title">Visão</h2>
+        <p><%= site.about?.vision %></p>
+      </div>
+      <div class="mvv__item">
+        <span class="mvv__icon"><%- include('../partials/icon', { name: 'shield' }) %></span>
+        <h2 class="mvv__title">Valores</h2>
+        <ul class="check-list">
+          <% (site.about?.values || []).forEach((v) => { %><li><%- include('../partials/icon', { name: 'check', cls: 'icon icon--sm' }) %> <%= v %></li><% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Diferenciais</span>
+      <h2 class="section__title">O que você pode esperar da JTEC</h2>
+    </div>
+    <div class="grid grid--3">
+      <% (site.differentials || []).forEach((d) => { %>
+        <div class="card diff-card">
+          <span class="service-card__icon"><%- include('../partials/icon', { name: d.icon }) %></span>
+          <h3 class="card__title"><%= d.title %></h3>
+          <p class="card__text"><%= d.text %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Qualidade</span>
+      <h2 class="section__title">Gestão da qualidade e normas</h2>
+      <p class="section__lead">A JTEC trabalha para entregar sempre o mesmo padrão de serviço. Nosso sistema de gestão é certificado ISO 9001 e os testes seguem os códigos reconhecidos pela indústria.</p>
+    </div>
+    <div class="certs certs--page">
+      <% (site.certifications || []).forEach((c) => { %>
+        <div class="cert">
+          <%- include('../partials/icon', { name: 'shield' }) %>
+          <div><strong><%= c.name %></strong><span><%= c.text %></span></div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Segmentos</span>
+      <h2 class="section__title">Onde atuamos</h2>
+    </div>
+    <div class="grid grid--3 segments segments--light">
+      <% segments.forEach((seg) => { %>
+        <div class="segment">
+          <span class="segment__icon"><%- include('../partials/icon', { name: seg.icon }) %></span>
+          <div>
+            <h3 class="segment__title"><%= seg.name %></h3>
+            <p class="segment__text"><%= seg.short %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

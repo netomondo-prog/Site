@@ -1,0 +1,59 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: product.name, subtitle: product.short, breadcrumbs: [{ label: 'Produtos', href: '/produtos' }].concat(category ? [{ label: category.name, href: '/produtos?categoria=' + category.slug }] : []).concat([{ label: product.name }]) }) %>
+
+<section class="section">
+  <div class="container product-detail">
+    <div class="product-detail__media">
+      <img src="<%= product.image || '/img/products/placeholder.svg' %>" alt="<%= product.name %>" width="560" height="420">
+    </div>
+    <div class="product-detail__info">
+      <% if (category) { %><span class="badge"><%= category.name %></span><% } %>
+      <div class="prose">
+        <%- text.richText(product.body) %>
+      </div>
+
+      <% if ((product.specs || []).length) { %>
+        <h2 class="product-detail__h2">Especificações técnicas</h2>
+        <table class="specs">
+          <tbody>
+            <% product.specs.forEach((s) => { %>
+              <tr><th scope="row"><%= s.label %></th><td><%= s.value %></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+
+      <% if ((product.applications || []).length) { %>
+        <h2 class="product-detail__h2">Aplicações</h2>
+        <ul class="tag-list">
+          <% product.applications.forEach((a) => { %><li><%= a %></li><% }) %>
+        </ul>
+      <% } %>
+
+      <div class="product-detail__actions">
+        <a class="btn btn--accent" href="/contato?assunto=Compra%20de%20produtos">Solicitar cotação</a>
+        <a class="btn btn--whatsapp" href="<%= whatsappLink('Olá! Gostaria de cotar o produto: ' + product.name) %>" target="_blank" rel="noopener"><%- include('../partials/icon', { name: 'whatsapp', cls: 'icon icon--sm' }) %> Cotar pelo WhatsApp</a>
+      </div>
+      <p class="product-detail__note">Precisa de ajuda para especificar? Nossa equipe técnica auxilia no dimensionamento e na seleção do modelo correto para a sua aplicação.</p>
+    </div>
+  </div>
+</section>
+
+<% if (related.length) { %>
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__head section__head--row">
+      <h2 class="section__title">Produtos relacionados</h2>
+      <a class="btn btn--outline" href="/produtos">Ver catálogo</a>
+    </div>
+    <div class="grid grid--3">
+      <% related.forEach((p) => { %>
+        <%- include('../partials/product-card', { product: p }) %>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

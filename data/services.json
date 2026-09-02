@@ -1,0 +1,150 @@
+[
+  {
+    "id": "srv1",
+    "slug": "manutencao-de-valvulas-de-seguranca",
+    "title": "Manutenção de válvulas de segurança e alívio",
+    "short": "Reparo, calibração e teste de PSVs conforme ASME e API, com emissão de RTS e rastreabilidade.",
+    "icon": "valve",
+    "image": "/img/services/psv.svg",
+    "body": "A válvula de segurança é o último recurso de proteção de um vaso de pressão ou caldeira. Por isso, a manutenção precisa seguir um procedimento rigoroso e ser documentada.\n\nNa JTEC, cada válvula passa por um roteiro padronizado: teste de recepção (como recebida), desmontagem, limpeza, avaliação técnica, recuperação ou troca de componentes, montagem, ajuste de pressão e testes finais de abertura e vedação.\n\n## Normas aplicadas\n\nRealizamos os testes de acordo com ASME Seção I (caldeiras), ASME Seção VIII (vasos de pressão) e API RP 527 (estanqueidade da sede). O serviço atende aos requisitos de inspeção da NR-13.\n\n## Marcas atendidas\n\nAtendemos válvulas de todas as marcas e fabricantes, nacionais e importadas, convencionais, balanceadas com fole e pilotadas.",
+    "items": [
+      "Teste de recepção conforme ASME/API (pressão de abertura como recebida)",
+      "Avaliação técnica e emissão de Relatório de Teste e Serviço (RTS)",
+      "Limpeza com jato e desmontagem completa",
+      "Lapidação e polimento de sede e disco",
+      "Substituição de juntas, cupilhas e componentes desgastados",
+      "Reusinagem de componentes, quando necessário",
+      "Ajuste da pressão de abertura e teste com duas repetibilidades",
+      "Teste de vedação (estanqueidade) conforme API RP 527",
+      "Etiqueta de identificação, lacre e rastreabilidade"
+    ],
+    "benefits": [
+      "Conformidade com NR-13 e com o plano de inspeção",
+      "Redução de vazamentos e perdas de produto",
+      "Vida útil prolongada e menor custo de reposição",
+      "Histórico documentado de cada válvula (tag)"
+    ],
+    "order": 1,
+    "published": true
+  },
+  {
+    "id": "srv2",
+    "slug": "manutencao-de-valvulas-de-controle-e-bloqueio",
+    "title": "Manutenção de válvulas de controle e bloqueio",
+    "short": "Reparo de válvulas globo, esfera, borboleta, retenção e plugue, incluindo atuadores e posicionadores.",
+    "icon": "control",
+    "image": "/img/services/control.svg",
+    "body": "Válvulas de controle e bloqueio sofrem com erosão, cavitação, corrosão e desgaste de vedação. Quando começam a passar fluido ou a responder mal ao sinal de controle, o processo perde eficiência e segurança.\n\nFazemos o diagnóstico completo, o reparo do corpo e dos internos e o teste de vedação de acordo com a classe da válvula. Também atuamos em atuadores pneumáticos e posicionadores, com calibração de curso e de sinal.\n\n## Linha de reparo\n\nAtendemos válvulas globo, esfera, borboleta, retenção, gaveta e plugue, em todas as classes de pressão e diâmetros até 24\".",
+    "items": [
+      "Diagnóstico de válvulas de controle e de ventilação de tanque",
+      "Reparo de válvulas globo, esfera, borboleta, retenção, gaveta e plugue",
+      "Recuperação de sede, obturador e haste",
+      "Troca de gaxetas, juntas e vedações",
+      "Calibração de atuadores e posicionadores",
+      "Teste de vedação conforme classe (ANSI/FCI 70-2)",
+      "Teste hidrostático do corpo"
+    ],
+    "benefits": [
+      "Controle de processo mais preciso",
+      "Fim de vazamentos internos e externos",
+      "Menos consumo de energia e de produto"
+    ],
+    "order": 2,
+    "published": true
+  },
+  {
+    "id": "srv3",
+    "slug": "testes-calibracao-e-certificacao",
+    "title": "Testes, calibração e certificação",
+    "short": "Bancadas de teste para vapor, ar, gás e líquido, com instrumentos de referência rastreáveis e emissão de laudos.",
+    "icon": "test",
+    "image": "/img/services/test.svg",
+    "body": "Nosso laboratório conta com bancadas para teste de válvulas de segurança com ar, nitrogênio, água e vapor, cobrindo pressões de ajuste de 0,5 a 6.000 psig.\n\nOs instrumentos de referência (manômetros digitais e registradores de pressão) são calibrados em laboratórios acreditados pela RBC, garantindo a rastreabilidade das medições. Cada teste é gravado e anexado ao relatório.\n\n## Testes disponíveis\n\nAlém dos testes de abertura e vedação de PSVs, realizamos testes hidrostáticos em corpo de válvulas, teste de estanqueidade de sede em válvulas de bloqueio e teste de funcionamento de válvulas de controle.",
+    "items": [
+      "Teste de abertura (set pressure) com registro gráfico",
+      "Teste de vedação da sede conforme API RP 527",
+      "Teste hidrostático do corpo e do castelo",
+      "Teste de estanqueidade em válvulas de bloqueio",
+      "Emissão de RTS e certificado de calibração",
+      "Gravação dos dados de teste para auditoria"
+    ],
+    "benefits": [
+      "Rastreabilidade metrológica para auditorias",
+      "Evidência documental para a NR-13",
+      "Testes reproduzíveis e sem retrabalho"
+    ],
+    "order": 3,
+    "published": true
+  },
+  {
+    "id": "srv4",
+    "slug": "atendimento-in-loco",
+    "title": "Atendimento in loco e paradas de fábrica",
+    "short": "Laboratório móvel e equipe embarcada para manutenção em campo, offshore e paradas programadas.",
+    "icon": "field",
+    "image": "/img/services/field.svg",
+    "body": "Em paradas de fábrica o tempo é o recurso mais caro. Retirar dezenas de válvulas, transportá-las até uma oficina e devolvê-las nem sempre cabe no cronograma.\n\nPor isso a JTEC oferece o laboratório móvel: um contêiner equipado com bancada de teste, ferramental completo e instrumentação calibrada que é instalado dentro da sua planta ou embarcado na plataforma.\n\n## Como funciona\n\nNossa equipe levanta a lista de válvulas com a manutenção do cliente, prepara peças de reposição antes da parada e executa o serviço dentro da janela combinada. Ao final, entregamos o relatório consolidado com o RTS de cada tag.\n\n## Offshore e naval\n\nTemos histórico de atendimento em plataformas, FPSOs e embarcações, com técnicos certificados para embarque (CBSP, HUET) e experiência em ambientes de alta exigência de segurança.",
+    "items": [
+      "Laboratório móvel em contêiner com bancada de teste",
+      "Planejamento da parada junto com a equipe de manutenção",
+      "Testes in situ com equipamento de teste a quente",
+      "Reparo e calibração de válvulas de segurança e controle em campo",
+      "Serviço de campo em plataformas, FPSOs e embarcações",
+      "Relatório consolidado da parada por tag"
+    ],
+    "benefits": [
+      "Menor tempo de parada e menos logística",
+      "Cronograma sob controle do cliente",
+      "Equipe com certificações para embarque"
+    ],
+    "order": 4,
+    "published": true
+  },
+  {
+    "id": "srv5",
+    "slug": "usinagem-e-recuperacao-de-componentes",
+    "title": "Usinagem e recuperação de componentes",
+    "short": "Centro de usinagem e tornos CNC para fabricar e recuperar sedes, discos, hastes e flanges.",
+    "icon": "lathe",
+    "image": "/img/services/lathe.svg",
+    "body": "Nem toda peça de reposição está disponível no prazo da manutenção, principalmente em válvulas importadas ou fora de linha. Nossa área de usinagem resolve isso fabricando ou recuperando os componentes internamente.\n\nContamos com centro de usinagem vertical, tornos CNC e torno convencional, além de equipamento de lapidação de precisão, para trabalhar aço carbono, aços liga, inox e ligas especiais.\n\n## Serviços de usinagem\n\nFabricação de sedes, discos, hastes, guias, buchas e flanges; recuperação de faces de flange; reusinagem de sedes e polimento de superfícies de vedação.",
+    "items": [
+      "Fabricação de sedes, discos, hastes, guias e buchas",
+      "Recuperação de faces de flange e superfícies de vedação",
+      "Reusinagem de sedes e lapidação de precisão",
+      "Usinagem em aço carbono, aço liga, inox e ligas especiais",
+      "Controle dimensional com certificado"
+    ],
+    "benefits": [
+      "Peças fora de linha voltam a ter reposição",
+      "Prazo independente de importação",
+      "Custo menor do que a troca da válvula"
+    ],
+    "order": 5,
+    "published": true
+  },
+  {
+    "id": "srv6",
+    "slug": "treinamento-e-consultoria",
+    "title": "Treinamento e consultoria técnica",
+    "short": "Capacitação de operadores e mantenedores, apoio à especificação e dimensionamento de válvulas.",
+    "icon": "training",
+    "image": "/img/services/training.svg",
+    "body": "Grande parte das falhas em válvulas de segurança tem origem em especificação incorreta, instalação inadequada ou falta de inspeção. Nosso time compartilha a experiência de campo com a sua equipe.\n\n## Treinamentos\n\nOferecemos palestras e cursos in company sobre funcionamento, inspeção, dimensionamento e cuidados básicos com válvulas de segurança, alívio e controle, com carga horária adaptada à rotina da planta.\n\n## Consultoria\n\nApoiamos a engenharia na especificação de novas válvulas, na elaboração do plano de manutenção por tag, no controle de planilhas de inspeção e na adequação à NR-13.",
+    "items": [
+      "Palestras e cursos in company sobre válvulas de segurança",
+      "Treinamento de operadores e mantenedores",
+      "Apoio à especificação e dimensionamento",
+      "Elaboração do plano de manutenção por tag",
+      "Levantamento e controle de planilha de válvulas",
+      "Assistência técnica 24 horas"
+    ],
+    "benefits": [
+      "Menos falhas por erro de operação ou especificação",
+      "Plano de manutenção alinhado à NR-13",
+      "Equipe autônoma para inspeções de rotina"
+    ],
+    "order": 6,
+    "published": true
+  }
+]

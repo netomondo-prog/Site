@@ -1,0 +1,184 @@
+[
+  {
+    "id": "prd1",
+    "slug": "valvula-de-seguranca-jt-100",
+    "name": "Válvula de segurança JT-100 (ASME Seção I)",
+    "category": "valvulas-de-seguranca",
+    "short": "Válvula de segurança para caldeiras e geração de vapor, com bocal integral e alavanca de teste.",
+    "image": "/img/products/psv-flanged.svg",
+    "body": "A série JT-100 é indicada para proteção de caldeiras e superaquecedores conforme ASME Seção I. O projeto com bocal integral e disco de aço inoxidável garante abertura rápida e estanqueidade após o fechamento.\n\nDisponível em conexões flangeadas, com alavanca de teste e opção de castelo aberto ou fechado.",
+    "specs": [
+      { "label": "Código", "value": "ASME Seção I" },
+      { "label": "Materiais", "value": "corpo em aço carbono ou aço liga; internos em aço inoxidável" },
+      { "label": "Vedação", "value": "metal-metal" },
+      { "label": "Temperatura", "value": "até 1020 °F (549 °C)" },
+      { "label": "Tamanhos", "value": "1.1/2\" a 6\"" },
+      { "label": "Conexões", "value": "flangeadas ANSI 150 a 2500" }
+    ],
+    "applications": ["Caldeiras aquatubulares e flamotubulares", "Superaquecedores", "Linhas de vapor de alta pressão"],
+    "featured": true,
+    "order": 1,
+    "published": true
+  },
+  {
+    "id": "prd2",
+    "slug": "valvula-de-seguranca-jt-200",
+    "name": "Válvula de segurança JT-200 (ASME Seção VIII)",
+    "category": "valvulas-de-seguranca",
+    "short": "Válvula convencional para vasos de pressão, ar, gás e vapor até 600 psig.",
+    "image": "/img/products/psv-standard.svg",
+    "body": "A série JT-200 protege vasos de pressão e sistemas de ar comprimido, gás e vapor conforme ASME Seção VIII. Construção robusta com corpo e castelo em aço carbono ou aço liga e internos em aço inoxidável.\n\nOpção de vedação metal-metal ou com sede macia (soft seat) para serviços que exigem estanqueidade superior.",
+    "specs": [
+      { "label": "Código", "value": "ASME Seções I e VIII" },
+      { "label": "Pressão de ajuste", "value": "até 600 psig para vapor" },
+      { "label": "Materiais", "value": "corpo e castelo em aço carbono ou aço liga; internos em aço inoxidável" },
+      { "label": "Vedação", "value": "metal-metal ou sede macia" },
+      { "label": "Temperatura", "value": "até 1000 °F (538 °C)" },
+      { "label": "Tamanhos", "value": "1\" a 8\"" }
+    ],
+    "applications": ["Vasos de pressão", "Sistemas de ar comprimido", "Trocadores de calor", "Linhas de gás"],
+    "featured": true,
+    "order": 2,
+    "published": true
+  },
+  {
+    "id": "prd3",
+    "slug": "valvula-de-seguranca-jt-300-balanceada",
+    "name": "Válvula de segurança JT-300 balanceada com fole",
+    "category": "valvulas-de-seguranca",
+    "short": "Válvula balanceada para aplicações com contrapressão variável e fluidos corrosivos.",
+    "image": "/img/products/psv-bellows.svg",
+    "body": "A série JT-300 utiliza fole de balanceamento para compensar a contrapressão na descarga e proteger a mola e as guias do contato com o fluido. É a escolha correta para coletores de alívio com contrapressão variável e para produtos corrosivos.",
+    "specs": [
+      { "label": "Código", "value": "ASME Seção VIII, API 526" },
+      { "label": "Materiais", "value": "corpo em aço carbono ou aço liga; internos e fole em aço inoxidável" },
+      { "label": "Vedação", "value": "metal-metal" },
+      { "label": "Temperatura", "value": "até 1020 °F (549 °C)" },
+      { "label": "Contrapressão", "value": "até 50% da pressão de ajuste" },
+      { "label": "Orifícios", "value": "D a T conforme API 526" }
+    ],
+    "applications": ["Coletores de alívio (flare)", "Refinarias e petroquímicas", "Fluidos corrosivos"],
+    "featured": true,
+    "order": 3,
+    "published": true
+  },
+  {
+    "id": "prd4",
+    "slug": "valvula-de-alivio-de-pressao-e-vacuo-jt-pv",
+    "name": "Válvula de alívio de pressão e vácuo JT-PV",
+    "category": "valvulas-de-seguranca",
+    "short": "Proteção de tanques atmosféricos contra sobrepressão e vácuo durante enchimento e esvaziamento.",
+    "image": "/img/products/pv-valve.svg",
+    "body": "A válvula JT-PV protege tanques de armazenamento contra sobrepressão e vácuo causados por movimentação de produto e variações de temperatura, reduzindo perdas por evaporação e emissões.\n\nDisponível com pesos ou molas e conexão para tubulação de recolhimento de vapores.",
+    "specs": [
+      { "label": "Pressão de ajuste", "value": "30 a 375 psig (versão de mola)" },
+      { "label": "Tamanhos", "value": "1.1/2\" a 4\"" },
+      { "label": "Materiais", "value": "alumínio, aço carbono ou aço inoxidável" },
+      { "label": "Vedação", "value": "sede macia (PTFE)" },
+      { "label": "Norma", "value": "API 2000" }
+    ],
+    "applications": ["Tanques de armazenamento", "Terminais e bases de distribuição", "Indústria química"],
+    "featured": false,
+    "order": 4,
+    "published": true
+  },
+  {
+    "id": "prd5",
+    "slug": "valvula-globo-jt-g",
+    "name": "Válvula globo JT-G",
+    "category": "valvulas-de-controle",
+    "short": "Válvula globo flangeada para bloqueio e regulagem de vapor, água e óleo.",
+    "image": "/img/products/globe-valve.svg",
+    "body": "Válvula globo com castelo aparafusado, haste ascendente e sede substituível. Indicada para serviços de bloqueio e regulagem em linhas de vapor, condensado, água e óleo térmico.",
+    "specs": [
+      { "label": "Classes", "value": "ANSI 150, 300 e 600" },
+      { "label": "Tamanhos", "value": "1/2\" a 12\"" },
+      { "label": "Materiais", "value": "aço carbono WCB, aço inoxidável CF8M" },
+      { "label": "Vedação", "value": "metal-metal com sede estelitada" },
+      { "label": "Norma", "value": "ASME B16.34, BS 1873" }
+    ],
+    "applications": ["Linhas de vapor e condensado", "Óleo térmico", "Água de processo"],
+    "featured": false,
+    "order": 5,
+    "published": true
+  },
+  {
+    "id": "prd6",
+    "slug": "valvula-de-esfera-jt-e",
+    "name": "Válvula de esfera JT-E",
+    "category": "valvulas-de-controle",
+    "short": "Válvula de esfera tripartida passagem plena, com opção de atuador pneumático ou elétrico.",
+    "image": "/img/products/ball-valve.svg",
+    "body": "Válvula de esfera tripartida com passagem plena, sede em PTFE e haste antiexpulsão. Pode ser fornecida com alavanca ou com atuador pneumático ou elétrico e flange ISO 5211 para automação.",
+    "specs": [
+      { "label": "Classes", "value": "ANSI 150 e 300; roscada 1000 WOG" },
+      { "label": "Tamanhos", "value": "1/4\" a 8\"" },
+      { "label": "Materiais", "value": "aço carbono WCB, aço inoxidável CF8M" },
+      { "label": "Vedação", "value": "PTFE ou PTFE reforçado" },
+      { "label": "Automação", "value": "flange ISO 5211" }
+    ],
+    "applications": ["Bloqueio rápido", "Utilidades", "Sistemas automatizados"],
+    "featured": false,
+    "order": 6,
+    "published": true
+  },
+  {
+    "id": "prd7",
+    "slug": "registrador-de-pressao-jt-rec-550",
+    "name": "Registrador de pressão de referência JT-REC 550",
+    "category": "instrumentacao",
+    "short": "Gauge e registrador de dados de pressão absoluta e diferencial com 0,025% de precisão de leitura.",
+    "image": "/img/products/recorder.svg",
+    "body": "O JT-REC 550 é o instrumento de referência para teste de válvulas de segurança, calibração de transmissores e registro de eventos de pressão. Mede pressão absoluta até 15.000 psi / 1000 bar / 100 MPa e pressão diferencial com até 0,025% de precisão de leitura.\n\nRegistra switch, tensão, corrente e temperatura, armazena 500.000 pontos de dados e captura 10 leituras por segundo em dois módulos independentes. Exporta os dados via USB para relatório.",
+    "specs": [
+      { "label": "Faixa", "value": "até 15.000 psi / 1000 bar / 100 MPa" },
+      { "label": "Precisão", "value": "0,025% da leitura" },
+      { "label": "Medições", "value": "pressão, switch, tensão, corrente e temperatura" },
+      { "label": "Memória", "value": "500.000 pontos de dados" },
+      { "label": "Taxa de aquisição", "value": "10 leituras por segundo em dois módulos" },
+      { "label": "Certificado", "value": "calibração rastreável à RBC" }
+    ],
+    "applications": ["Teste de válvulas de segurança", "Calibração de transmissores", "Registro de picos de pressão"],
+    "featured": true,
+    "order": 7,
+    "published": true
+  },
+  {
+    "id": "prd8",
+    "slug": "manometro-digital-jt-dg-300",
+    "name": "Manômetro digital JT-DG 300",
+    "category": "instrumentacao",
+    "short": "Manômetro digital de referência com 0,1% de precisão, ideal para campo e bancada.",
+    "image": "/img/products/gauge.svg",
+    "body": "Manômetro digital robusto, com display de alto contraste e proteção IP65, para uso em campo e bancadas de teste. Opções de faixa de 30 a 10.000 psi e unidades selecionáveis (psi, bar, kPa, kgf/cm²).",
+    "specs": [
+      { "label": "Faixas", "value": "30 a 10.000 psi" },
+      { "label": "Precisão", "value": "0,1% do fundo de escala" },
+      { "label": "Proteção", "value": "IP65" },
+      { "label": "Conexão", "value": "1/4\" NPT macho" },
+      { "label": "Alimentação", "value": "bateria com 1.500 h de autonomia" }
+    ],
+    "applications": ["Bancadas de teste", "Verificação de manômetros em campo", "Comissionamento"],
+    "featured": false,
+    "order": 8,
+    "published": true
+  },
+  {
+    "id": "prd9",
+    "slug": "pecas-e-sobressalentes",
+    "name": "Peças e sobressalentes para válvulas",
+    "category": "pecas",
+    "short": "Molas, discos, sedes, foles, juntas e kits de reparo para válvulas de todas as marcas.",
+    "image": "/img/products/parts.svg",
+    "body": "Mantemos estoque de peças de reposição para as principais marcas de válvulas de segurança e controle, além de fabricar componentes sob medida na nossa área de usinagem.\n\nEnvie o modelo, o tamanho e o número de série da válvula para receber a lista de peças compatíveis.",
+    "specs": [
+      { "label": "Itens", "value": "molas, discos, sedes, bocais, guias, foles, hastes, juntas e gaxetas" },
+      { "label": "Kits", "value": "kits de reparo completos por modelo" },
+      { "label": "Fabricação", "value": "peças sob medida em aço carbono, inox e ligas especiais" }
+    ],
+    "applications": ["Manutenção própria do cliente", "Estoque de parada", "Válvulas fora de linha"],
+    "featured": false,
+    "order": 9,
+    "published": true
+  }
+]

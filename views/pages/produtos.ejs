@@ -1,0 +1,39 @@
+<%- include('../partials/head') %>
+<%- include('../partials/page-hero', { title: current ? current.name : 'Produtos', subtitle: 'Válvulas de segurança, controle, instrumentação de referência e peças de reposição com suporte técnico.', breadcrumbs: current ? [{ label: 'Produtos', href: '/produtos' }, { label: current.name }] : [{ label: 'Produtos' }] }) %>
+
+<section class="section">
+  <div class="container">
+    <div class="catalog-toolbar">
+      <nav class="chips" aria-label="Categorias">
+        <a class="chip<%= !category ? ' is-active' : '' %>" href="/produtos<%= q ? '?q=' + encodeURIComponent(q) : '' %>">Todos</a>
+        <% categories.forEach((c) => { %>
+          <a class="chip<%= category === c.slug ? ' is-active' : '' %>" href="/produtos?categoria=<%= c.slug %><%= q ? '&q=' + encodeURIComponent(q) : '' %>"><%= c.name %></a>
+        <% }) %>
+      </nav>
+      <form class="search" method="get" action="/produtos" role="search">
+        <% if (category) { %><input type="hidden" name="categoria" value="<%= category %>"><% } %>
+        <label class="sr-only" for="busca">Buscar produtos</label>
+        <input id="busca" type="search" name="q" value="<%= q %>" placeholder="Buscar por nome, norma ou material">
+        <button type="submit" aria-label="Buscar"><%- include('../partials/icon', { name: 'search', cls: 'icon icon--sm' }) %></button>
+      </form>
+    </div>
+
+    <% if (products.length) { %>
+      <p class="results-count"><%= products.length %> produto<%= products.length === 1 ? '' : 's' %><%= q ? ` para "${q}"` : '' %></p>
+      <div class="grid grid--3">
+        <% products.forEach((product) => { %>
+          <%- include('../partials/product-card', { product }) %>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty">
+        <h2>Nenhum produto encontrado</h2>
+        <p>Não encontrou o que procura? Trabalhamos com várias marcas e fabricamos peças sob medida.</p>
+        <a class="btn btn--primary" href="/contato?assunto=Compra%20de%20produtos">Fale com a equipe comercial</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>

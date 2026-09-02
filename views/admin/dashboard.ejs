@@ -1,0 +1,44 @@
+<%- include('_head', { title: 'Início' }) %>
+
+<div class="tiles">
+  <a class="tile" href="/admin/servicos"><span class="tile__value"><%= counts.services %></span><span class="tile__label">Serviços</span></a>
+  <a class="tile" href="/admin/produtos"><span class="tile__value"><%= counts.products %></span><span class="tile__label">Produtos</span></a>
+  <a class="tile" href="/admin/blog"><span class="tile__value"><%= counts.posts %></span><span class="tile__label">Artigos</span></a>
+  <a class="tile tile--accent" href="/admin/mensagens"><span class="tile__value"><%= counts.unread %></span><span class="tile__label">Mensagens não lidas</span></a>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <h2>Últimas mensagens</h2>
+    <a class="btn btn--sm btn--outline" href="/admin/mensagens">Ver todas</a>
+  </div>
+  <% if (recentMessages.length) { %>
+    <table class="table">
+      <thead><tr><th>Data</th><th>Nome</th><th>Assunto</th><th></th></tr></thead>
+      <tbody>
+        <% recentMessages.forEach((m) => { %>
+          <tr class="<%= m.read ? '' : 'is-unread' %>">
+            <td><%= text.formatDateTime(m.createdAt) %></td>
+            <td><%= m.name %><br><small><%= m.company || m.email %></small></td>
+            <td><%= m.subject %></td>
+            <td class="table__actions"><a class="btn btn--sm btn--outline" href="/admin/mensagens/<%= m.id %>">Abrir</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhuma mensagem recebida ainda.</p>
+  <% } %>
+</div>
+
+<div class="panel">
+  <div class="panel__head"><h2>Atalhos</h2></div>
+  <div class="shortcuts">
+    <a class="btn btn--outline" href="/admin/produtos/novo">+ Novo produto</a>
+    <a class="btn btn--outline" href="/admin/servicos/novo">+ Novo serviço</a>
+    <a class="btn btn--outline" href="/admin/blog/novo">+ Novo artigo</a>
+    <a class="btn btn--outline" href="/admin/configuracoes">Editar telefone, WhatsApp e endereço</a>
+  </div>
+</div>
+
+<%- include('_foot') %>

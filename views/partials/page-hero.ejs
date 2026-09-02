@@ -1,0 +1,18 @@
+<%
+  const crumbs = typeof breadcrumbs !== 'undefined' ? breadcrumbs : [];
+  const sub = typeof subtitle !== 'undefined' ? subtitle : '';
+%>
+<section class="page-hero">
+  <div class="page-hero__pattern" aria-hidden="true"></div>
+  <div class="container page-hero__inner">
+    <nav class="breadcrumbs" aria-label="Você está aqui">
+      <a href="/">Home</a>
+      <% crumbs.forEach((c) => { %>
+        <span aria-hidden="true">/</span>
+        <% if (c.href) { %><a href="<%= c.href %>"><%= c.label %></a><% } else { %><span aria-current="page"><%= c.label %></span><% } %>
+      <% }) %>
+    </nav>
+    <h1 class="page-hero__title"><%= title %></h1>
+    <% if (sub) { %><p class="page-hero__subtitle"><%= sub %></p><% } %>
+  </div>
+</section>

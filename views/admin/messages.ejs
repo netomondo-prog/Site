@@ -1,0 +1,30 @@
+<%- include('_head', { title: 'Mensagens recebidas' }) %>
+
+<div class="panel">
+  <% if (messages.length) { %>
+    <table class="table">
+      <thead><tr><th>Data</th><th>Contato</th><th>Assunto</th><th>Mensagem</th><th></th></tr></thead>
+      <tbody>
+        <% messages.forEach((m) => { %>
+          <tr class="<%= m.read ? '' : 'is-unread' %>">
+            <td><%= text.formatDateTime(m.createdAt) %></td>
+            <td><strong><%= m.name %></strong><br><small><%= m.company || '' %><%= m.company ? ' · ' : '' %><%= m.email %></small></td>
+            <td><%= m.subject %></td>
+            <td class="muted"><%= text.excerpt(m.message, 80) %></td>
+            <td class="table__actions">
+              <a class="btn btn--sm btn--outline" href="/admin/mensagens/<%= m.id %>">Abrir</a>
+              <form method="post" action="/admin/mensagens/<%= m.id %>/excluir" data-confirm="Excluir esta mensagem?">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <button class="btn btn--sm btn--danger" type="submit"><%- include('../partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhuma mensagem recebida pelo formulário de contato.</p>
+  <% } %>
+</div>
+
+<%- include('_foot') %>

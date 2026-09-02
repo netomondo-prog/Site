@@ -1,0 +1,178 @@
+<%- include('../partials/head') %>
+
+<section class="hero" aria-label="Destaques">
+  <div class="hero__slides">
+    <% (site.hero || []).forEach((slide, i) => { %>
+      <div class="hero__slide hero__slide--<%= slide.theme || 'valve' %><%= i === 0 ? ' is-active' : '' %>" data-slide="<%= i %>">
+        <div class="hero__pattern" aria-hidden="true"></div>
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <% if (slide.kicker) { %><span class="hero__kicker"><%= slide.kicker %></span><% } %>
+            <h<%= i === 0 ? '1' : '2' %> class="hero__title"><%= slide.title %></h<%= i === 0 ? '1' : '2' %>>
+            <p class="hero__subtitle"><%= slide.subtitle %></p>
+            <div class="hero__actions">
+              <% if (slide.cta) { %><a class="btn btn--accent btn--lg" href="<%= slide.link %>"><%= slide.cta %></a><% } %>
+              <% if (slide.cta2) { %><a class="btn btn--ghost btn--lg" href="<%= slide.link2 %>"><%= slide.cta2 %> <%- include('../partials/icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a><% } %>
+            </div>
+          </div>
+          <div class="hero__art" aria-hidden="true">
+            <img src="/img/hero-<%= slide.theme || 'valve' %>.svg" alt="" width="520" height="420">
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <% if ((site.hero || []).length > 1) { %>
+    <div class="hero__controls container">
+      <button class="hero__btn" type="button" data-dir="-1" aria-label="Slide anterior">&#8249;</button>
+      <div class="hero__dots" role="tablist">
+        <% site.hero.forEach((s, i) => { %><button type="button" class="hero__dot<%= i === 0 ? ' is-active' : '' %>" data-goto="<%= i %>" aria-label="Ir para o slide <%= i + 1 %>"></button><% }) %>
+      </div>
+      <button class="hero__btn" type="button" data-dir="1" aria-label="Próximo slide">&#8250;</button>
+    </div>
+  <% } %>
+</section>
+
+<section class="stats" aria-label="Números da JTEC">
+  <div class="container stats__grid">
+    <% (site.stats || []).forEach((s) => { %>
+      <div class="stat">
+        <strong class="stat__value"><%= s.value %></strong>
+        <span class="stat__label"><%= s.label %></span>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section" id="servicos">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">O que fazemos</span>
+      <h2 class="section__title">Serviços para válvulas industriais</h2>
+      <p class="section__lead">Da manutenção de válvulas de segurança ao treinamento da sua equipe: tudo o que a sua planta precisa para operar com segurança e dentro da norma.</p>
+    </div>
+    <div class="grid grid--3">
+      <% services.forEach((service) => { %>
+        <%- include('../partials/service-card', { service }) %>
+      <% }) %>
+    </div>
+    <div class="section__foot">
+      <a class="btn btn--outline" href="/servicos">Ver todos os serviços</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" id="sobre">
+  <div class="container about-split">
+    <div class="about-split__text">
+      <span class="section__kicker">A empresa</span>
+      <h2 class="section__title"><%= site.about?.headline %></h2>
+      <div class="prose">
+        <%- text.richText((site.about?.body || '').split(/\n\n/).slice(0, 2).join('\n\n')) %>
+      </div>
+      <div class="about-split__actions">
+        <a class="btn btn--primary" href="/empresa">Conheça a JTEC</a>
+        <a class="link-arrow" href="/contato">Agende uma visita <%- include('../partials/icon', { name: 'arrow', cls: 'icon icon--sm' }) %></a>
+      </div>
+    </div>
+    <div class="about-split__card">
+      <h3 class="about-split__card-title">Por que a JTEC</h3>
+      <ul class="feature-list">
+        <% (site.differentials || []).slice(0, 4).forEach((d) => { %>
+          <li>
+            <span class="feature-list__icon"><%- include('../partials/icon', { name: d.icon }) %></span>
+            <div>
+              <strong><%= d.title %></strong>
+              <p><%= d.text %></p>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="produtos">
+  <div class="container">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="section__kicker">Produtos</span>
+        <h2 class="section__title">Válvulas e instrumentação em destaque</h2>
+      </div>
+      <a class="btn btn--outline" href="/produtos">Ver catálogo completo</a>
+    </div>
+    <div class="grid grid--4">
+      <% products.forEach((product) => { %>
+        <%- include('../partials/product-card', { product }) %>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section--dark" id="segmentos">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Segmentos atendidos</span>
+      <h2 class="section__title">Experiência nos setores mais exigentes</h2>
+    </div>
+    <div class="grid grid--3 segments">
+      <% segments.forEach((seg) => { %>
+        <div class="segment">
+          <span class="segment__icon"><%- include('../partials/icon', { name: seg.icon }) %></span>
+          <div>
+            <h3 class="segment__title"><%= seg.name %></h3>
+            <p class="segment__text"><%= seg.short %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como-funciona">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__kicker">Como trabalhamos</span>
+      <h2 class="section__title">Um processo claro, do diagnóstico à certificação</h2>
+    </div>
+    <ol class="steps">
+      <% (site.process || []).forEach((step, i) => { %>
+        <li class="step">
+          <span class="step__number"><%= String(i + 1).padStart(2, '0') %></span>
+          <h3 class="step__title"><%= step.title %></h3>
+          <p class="step__text"><%= step.text %></p>
+        </li>
+      <% }) %>
+    </ol>
+    <div class="certs">
+      <% (site.certifications || []).forEach((c) => { %>
+        <div class="cert">
+          <%- include('../partials/icon', { name: 'shield' }) %>
+          <div><strong><%= c.name %></strong><span><%= c.text %></span></div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<% if (posts.length) { %>
+<section class="section section--alt" id="blog">
+  <div class="container">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="section__kicker">Blog técnico</span>
+        <h2 class="section__title">Conteúdo para quem cuida de válvulas</h2>
+      </div>
+      <a class="btn btn--outline" href="/blog">Ver todos os artigos</a>
+    </div>
+    <div class="grid grid--3">
+      <% posts.forEach((post) => { %>
+        <%- include('../partials/post-card', { post }) %>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<%- include('../partials/cta') %>
+<%- include('../partials/foot') %>
