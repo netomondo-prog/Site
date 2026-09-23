@@ -1,0 +1,79 @@
+<%- include('../_head', { title }) %>
+<%- include('_nav') %>
+<% const cfg = wa.config; %>
+
+<div class="tiles">
+  <a class="tile" href="/admin/whatsapp/grupos"><span class="tile__value"><%= counts.groups %></span><span class="tile__label">Grupos de interesse</span></a>
+  <a class="tile" href="/admin/whatsapp/grupos"><span class="tile__value"><%= counts.contacts %></span><span class="tile__label">Contatos (<%= counts.optOut %> descadastrados)</span></a>
+  <a class="tile" href="/admin/whatsapp/kits"><span class="tile__value"><%= counts.kits %></span><span class="tile__label">Kits de mídia</span></a>
+  <a class="tile tile--accent" href="/admin/whatsapp/campanhas"><span class="tile__value"><%= counts.campaigns %></span><span class="tile__label">Campanhas</span></a>
+</div>
+
+<div class="panel">
+  <div class="panel__head">
+    <h2>Conexão com a API oficial</h2>
+    <a class="btn btn--sm btn--outline" href="https://business.facebook.com/wa/manage/" target="_blank" rel="noopener">Abrir WhatsApp Manager</a>
+  </div>
+  <% if (cfg.dryRun) { %>
+    <div class="alert alert--warn">
+      <strong>Modo simulação.</strong> As credenciais da WhatsApp Cloud API ainda não foram configuradas, então nenhuma mensagem real é enviada.
+      Você já pode montar grupos, kits e campanhas; os envios aparecem como simulados.
+      Siga o guia <code>docs/whatsapp-api-setup.md</code> para cadastrar o número e preencha as variáveis abaixo.
+    </div>
+  <% } %>
+  <% if (apiError) { %><div class="alert alert--error">Erro ao consultar a API: <%= apiError %></div><% } %>
+  <table class="table table--kv">
+    <tbody>
+      <tr><th>WHATSAPP_TOKEN</th><td><%= cfg.token ? 'configurado' : '— não configurado' %></td></tr>
+      <tr><th>WHATSAPP_PHONE_NUMBER_ID</th><td><%= cfg.phoneNumberId || '— não configurado' %></td></tr>
+      <tr><th>WHATSAPP_BUSINESS_ACCOUNT_ID</th><td><%= cfg.businessAccountId || '— não configurado (necessário para listar os modelos)' %></td></tr>
+      <tr><th>WHATSAPP_APP_SECRET</th><td><%= cfg.appSecret ? 'configurado (assinatura do webhook validada)' : '— não configurado (recomendado)' %></td></tr>
+      <tr><th>WHATSAPP_VERIFY_TOKEN</th><td><%= cfg.verifyToken ? 'configurado' : '— não configurado (necessário para o webhook)' %></td></tr>
+      <tr><th>URL do webhook</th><td><code><%= webhookUrl %></code> <small class="muted">(use HTTPS em produção; assine o campo <em>messages</em>)</small></td></tr>
+      <tr><th>Versão da Graph API</th><td><%= cfg.version %> · até <%= cfg.rate %> mensagens/segundo</td></tr>
+      <% if (info) { %>
+        <tr><th>Número</th><td><strong><%= info.display_phone_number %></strong> — <%= info.verified_name %></td></tr>
+        <tr><th>Qualidade</th><td><%= info.quality_rating || '-' %></td></tr>
+        <tr><th>Status do nome</th><td><%= info.name_status || '-' %> · verificação: <%= info.code_verification_status || '-' %> · plataforma: <%= info.platform_type || '-' %></td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<% if (!cfg.dryRun) { %>
+<div class="panel">
+  <div class="panel__head"><h2>Modelos de mensagem (templates)</h2></div>
+  <% if (templates.length) { %>
+    <table class="table">
+      <thead><tr><th>Nome</th><th>Idioma</th><th>Categoria</th><th>Status</th><th>Cabeçalho</th></tr></thead>
+      <tbody>
+        <% templates.forEach((t) => { const h = (t.components || []).find((c) => c.type === 'HEADER'); %>
+          <tr>
+            <td><code><%= t.name %></code></td>
+            <td><%= t.language %></td>
+            <td><%= t.category %></td>
+            <td><span class="status status--<%= t.status === 'APPROVED' ? 'on' : 'off' %>"><%= t.status %></span></td>
+            <td><%= h ? h.format : '-' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhum modelo encontrado. Crie em WhatsApp Manager → Modelos de mensagem.</p>
+  <% } %>
+</div>
+<% } %>
+
+<div class="panel">
+  <div class="panel__head">
+    <h2>Últimas campanhas</h2>
+    <a class="btn btn--sm btn--primary" href="/admin/whatsapp/campanhas/nova">+ Nova campanha</a>
+  </div>
+  <% if (campaigns.length) { %>
+    <%- include('_campaign-table', { campaigns }) %>
+  <% } else { %>
+    <p class="muted">Nenhuma campanha ainda. O fluxo é: <strong>1.</strong> criar um grupo e importar a lista → <strong>2.</strong> montar o kit de mídia → <strong>3.</strong> criar a campanha.</p>
+  <% } %>
+</div>
+
+<%- include('../_foot') %>

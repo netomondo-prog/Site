@@ -1,0 +1,74 @@
+<%- include('../_head', { title: 'Campanha: ' + title, actions: '<a class="btn btn--sm btn--outline" href="/admin/whatsapp/campanhas/' + campaign.id + '/relatorio.csv">Baixar relatório</a>' }) %>
+<%- include('_nav') %>
+<% const st = campaign.status; const kitLabels = { none: '-', pending: 'Aguardando resposta', sending: 'Enviando', delivered: 'Entregue', failed: 'Falhou' }; const statusLabels = { queued: 'Na fila', sent: 'Enviada', delivered: 'Entregue', read: 'Lida', failed: 'Falhou', canceled: 'Cancelada' }; %>
+
+<% if (st === 'running') { %><meta http-equiv="refresh" content="10"><% } %>
+
+<div class="panel">
+  <div class="panel__head">
+    <h2><span class="status status--<%= st %>"><%= wa.statusLabels[st] || st %></span> <%= campaign.simulated ? '(simulação)' : '' %></h2>
+    <div class="shortcuts">
+      <% if (['draft', 'scheduled', 'paused'].includes(st)) { %>
+        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/iniciar" data-confirm="<%= st === 'paused' ? 'Retomar o envio?' : 'Iniciar o disparo agora?' %>"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--primary" type="submit"><%= st === 'paused' ? 'Retomar' : 'Disparar agora' %></button></form>
+      <% } %>
+      <% if (st === 'running') { %>
+        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/pausar"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--outline" type="submit">Pausar</button></form>
+      <% } %>
+      <% if (['running', 'paused', 'scheduled'].includes(st)) { %>
+        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/cancelar" data-confirm="Cancelar a campanha? As mensagens ainda na fila não serão enviadas."><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit">Cancelar</button></form>
+      <% } %>
+      <% if (!['running'].includes(st)) { %>
+        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/excluir" data-confirm="Excluir a campanha e o histórico de envios?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit"><%- include('../../partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button></form>
+      <% } %>
+    </div>
+  </div>
+  <dl class="message__meta">
+    <div><dt>Kit</dt><dd><% if (kit) { %><a href="/admin/whatsapp/kits/<%= kit.id %>"><%= kit.name %></a> · <code><%= kit.templateName %></code><% } else { %>excluído<% } %></dd></div>
+    <div><dt>Grupos</dt><dd><%= groups.map((g) => g.name).join(', ') || '-' %></dd></div>
+    <div><dt><%= campaign.startedAt ? 'Início' : campaign.scheduledAt ? 'Agendada para' : 'Criada em' %></dt><dd><%= text.formatDateTime(campaign.startedAt || campaign.scheduledAt || campaign.createdAt) %><%= campaign.finishedAt ? ' → ' + text.formatDateTime(campaign.finishedAt) : '' %></dd></div>
+  </dl>
+  <% if (preview) { %><p>Serão enviadas <strong><%= preview.total %></strong> mensagens (<%= preview.optedOut %> descadastrados ignorados).</p><% } %>
+  <% if (campaign.optedOut) { %><p class="muted"><%= campaign.optedOut %> contatos descadastrados foram ignorados.</p><% } %>
+  <% if (campaign.lastError) { %><div class="alert alert--error"><%= campaign.lastError %></div><% } %>
+</div>
+
+<% if (stats.total) { %>
+  <% const pct = (n) => stats.total ? Math.round((n / stats.total) * 100) : 0; %>
+  <div class="tiles tiles--6">
+    <div class="tile"><span class="tile__value"><%= stats.total %></span><span class="tile__label">Destinatários</span></div>
+    <div class="tile"><span class="tile__value"><%= stats.sentTotal %></span><span class="tile__label">Enviadas (<%= pct(stats.sentTotal) %>%)</span></div>
+    <div class="tile"><span class="tile__value"><%= stats.deliveredTotal %></span><span class="tile__label">Entregues (<%= pct(stats.deliveredTotal) %>%)</span></div>
+    <div class="tile"><span class="tile__value"><%= stats.read %></span><span class="tile__label">Lidas (<%= pct(stats.read) %>%)</span></div>
+    <a class="tile tile--accent" href="?filtro=responderam"><span class="tile__value"><%= stats.replied %></span><span class="tile__label">Responderam · <%= stats.kitDelivered %> kits entregues</span></a>
+    <a class="tile" href="?filtro=falhas"><span class="tile__value"><%= stats.failed %></span><span class="tile__label">Falhas<%= stats.queued ? ' · ' + stats.queued + ' na fila' : '' %></span></a>
+  </div>
+  <div class="progress"><span style="width: <%= 100 - pct(stats.queued) %>%"></span></div>
+
+  <div class="panel">
+    <div class="panel__head">
+      <h2>Envios</h2>
+      <nav class="subnav subnav--sm">
+        <% [['', 'Todos'], ['responderam', 'Responderam'], ['kit', 'Kit entregue'], ['pendentes', 'Aguardando resposta'], ['falhas', 'Falhas']].forEach(([k, l]) => { %>
+          <a class="subnav__link<%= filter === k ? ' is-active' : '' %>" href="?filtro=<%= k %>"><%= l %></a>
+        <% }) %>
+      </nav>
+    </div>
+    <table class="table">
+      <thead><tr><th>Contato</th><th>Status</th><th>Enviada</th><th>Resposta</th><th>Kit</th></tr></thead>
+      <tbody>
+        <% records.forEach((r) => { %>
+          <tr>
+            <td><strong><%= r.name || '-' %></strong><br><small><%= wa.phone.format(r.phone) %></small></td>
+            <td><span class="status status--msg-<%= r.status %>"><%= statusLabels[r.status] || r.status %></span><% if (r.error) { %><br><small class="field__error"><%= r.error %></small><% } %></td>
+            <td><small><%= r.sentAt ? text.formatDateTime(r.sentAt) : '-' %></small></td>
+            <td><small><%= r.repliedAt ? text.formatDateTime(r.repliedAt) : '-' %></small><% if (r.lastReply) { %><br><small class="muted">“<%= r.lastReply.slice(0, 80) %>”</small><% } %></td>
+            <td><small><%= kitLabels[r.kitStatus] || r.kitStatus %></small><% if (r.kitError) { %><br><small class="field__error"><%= r.kitError %></small><% } %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <p class="muted"><small>Mostrando <%= records.length %> de <%= matched %>. O relatório completo está no CSV.</small></p>
+  </div>
+<% } %>
+
+<%- include('../_foot') %>

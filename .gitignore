@@ -5,3 +5,4 @@ data/uploads/
 *.log
 .DS_Store
 dist/
+data/wa-*.json

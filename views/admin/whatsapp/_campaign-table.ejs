@@ -1,0 +1,18 @@
+<table class="table">
+  <thead><tr><th>Campanha</th><th>Status</th><th>Destinatários</th><th>Enviadas</th><th>Entregues</th><th>Lidas</th><th>Responderam</th><th>Falhas</th><th></th></tr></thead>
+  <tbody>
+    <% campaigns.forEach((c) => { const s = c.stats; %>
+      <tr>
+        <td><strong><%= c.name %></strong><br><small class="muted"><%= c.kit ? c.kit.name : '' %><%= c.scheduledAt && c.status === 'scheduled' ? ' · ' + text.formatDateTime(c.scheduledAt) : '' %><%= c.simulated ? ' · simulação' : '' %></small></td>
+        <td><span class="status status--<%= c.status %>"><%= wa.statusLabels[c.status] || c.status %></span></td>
+        <td><%= s.total || '-' %></td>
+        <td><%= s.sentTotal %></td>
+        <td><%= s.deliveredTotal %></td>
+        <td><%= s.read %></td>
+        <td><%= s.replied %></td>
+        <td><%= s.failed %></td>
+        <td class="table__actions"><a class="btn btn--sm btn--outline" href="/admin/whatsapp/campanhas/<%= c.id %>">Abrir</a></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

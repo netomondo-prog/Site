@@ -12,6 +12,7 @@ const { csrfToken } = require('./middleware/auth');
 const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
 const apiRoutes = require('./routes/api');
+const whatsappRoutes = require('./routes/whatsapp');
 
 const app = express();
 const isProduction = process.env.NODE_ENV === 'production';
@@ -31,7 +32,15 @@ app.use((req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
-app.use(express.json({ limit: '1mb' }));
+app.use(
+  express.json({
+    limit: '5mb',
+    // corpo bruto usado para validar a assinatura do webhook do WhatsApp
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 app.use(
   express.static(path.join(__dirname, '..', 'public'), {
     maxAge: isProduction ? '7d' : 0,
@@ -80,6 +89,7 @@ app.use((req, res, next) => {
 
 app.use('/', publicRoutes);
 app.use('/api', apiRoutes);
+app.use('/webhooks/whatsapp', whatsappRoutes.webhook);
 app.use('/admin', adminRoutes);
 
 // 404

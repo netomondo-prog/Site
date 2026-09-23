@@ -1,0 +1,29 @@
+<%- include('../_head', { title, actions: '<a class="btn btn--primary btn--sm" href="/admin/whatsapp/kits/novo">+ Novo kit</a>' }) %>
+<%- include('_nav') %>
+
+<div class="panel">
+  <% if (kits.length) { %>
+    <table class="table">
+      <thead><tr><th>Kit</th><th>Modelo (template)</th><th>Conteúdo</th><th>Entrega</th><th></th></tr></thead>
+      <tbody>
+        <% const labels = { on_reply: 'Após resposta', immediate: 'Imediata', template_only: 'Só o modelo' }; %>
+        <% kits.forEach((k) => { const items = k.items || []; %>
+          <tr>
+            <td><strong><%= k.name %></strong><% if (k.description) { %><br><small class="muted"><%= k.description %></small><% } %></td>
+            <td><code><%= k.templateName || '—' %></code> <small class="muted"><%= k.templateLanguage %></small></td>
+            <td><%= items.filter((i) => i.type === 'image').length %> imagem(ns) · <%= items.filter((i) => i.type === 'video').length %> vídeo(s)<%= items.some((i) => i.type === 'document') ? ' · ' + items.filter((i) => i.type === 'document').length + ' PDF' : '' %></td>
+            <td><%= labels[k.delivery] || k.delivery %></td>
+            <td class="table__actions">
+              <a class="btn btn--sm btn--outline" href="/admin/whatsapp/kits/<%= k.id %>"><%- include('../../partials/icon', { name: 'edit', cls: 'icon icon--sm' }) %> Editar</a>
+              <a class="btn btn--sm btn--ghost-dark" href="/admin/whatsapp/campanhas/nova?kit=<%= k.id %>">Usar em campanha</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhum kit cadastrado. Um kit reúne o modelo aprovado pela Meta e as imagens/vídeo que serão enviados. <a href="/admin/whatsapp/kits/novo">Criar o primeiro</a>.</p>
+  <% } %>
+</div>
+
+<%- include('../_foot') %>

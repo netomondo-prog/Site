@@ -1,0 +1,14 @@
+<%
+  const tabs = [
+    { href: '/admin/whatsapp', label: 'Visão geral', exact: true },
+    { href: '/admin/whatsapp/grupos', label: 'Grupos de interesse' },
+    { href: '/admin/whatsapp/kits', label: 'Kits de mídia' },
+    { href: '/admin/whatsapp/campanhas', label: 'Campanhas' },
+  ];
+%>
+<nav class="subnav">
+  <% tabs.forEach((t) => { %>
+    <a class="subnav__link<%= (t.exact ? path === t.href || path === t.href + '/' : path.startsWith(t.href)) ? ' is-active' : '' %>" href="<%= t.href %>"><%= t.label %></a>
+  <% }) %>
+  <% if (wa.config.dryRun) { %><span class="status status--warn" title="Sem credenciais da API: nenhuma mensagem real é enviada">Modo simulação</span><% } else { %><span class="status status--on">API conectada</span><% } %>
+</nav>

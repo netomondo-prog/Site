@@ -1,0 +1,126 @@
+<% const v = values || {}; const items = (kit && kit.items) || []; const media = items.filter((i) => i.type === 'image' || i.type === 'video'); %>
+<%- include('../_head', { title: kit ? 'Kit: ' + title : title }) %>
+<%- include('_nav') %>
+
+<div class="alert alert--info">
+  <strong>Como o kit é entregue.</strong> A Meta só permite iniciar conversa com um <em>modelo de mensagem aprovado</em>, que leva no máximo <strong>uma</strong> imagem ou vídeo no cabeçalho.
+  Por isso: (1) o sistema envia o modelo com a mídia escolhida como cabeçalho; (2) quando o contato responde ou toca no botão de resposta rápida do modelo (ex.: “Quero receber”), a janela de 24h se abre e o restante do kit — imagens, vídeo e texto final — é enviado automaticamente.
+</div>
+
+<form class="panel form form--admin" method="post" action="/admin/whatsapp/kits/<%= kit ? kit.id : 'novo' %>">
+  <h2 class="panel__title">Configuração</h2>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form__row">
+    <div class="field"><label for="k-name">Nome do kit*</label><input id="k-name" name="name" type="text" value="<%= v.name || '' %>" required placeholder="Ex.: Lançamento válvula JT-G"></div>
+    <div class="field"><label for="k-desc">Descrição interna</label><input id="k-desc" name="description" type="text" value="<%= v.description || '' %>"></div>
+  </div>
+  <div class="form__row">
+    <div class="field">
+      <label for="k-tpl">Nome do modelo aprovado*</label>
+      <input id="k-tpl" name="templateName" type="text" value="<%= v.templateName || '' %>" list="tpl-list" placeholder="ex.: lancamento_valvula_jtg" pattern="[a-z0-9_]+">
+      <datalist id="tpl-list"><% (templates || []).filter((t) => t.status === 'APPROVED').forEach((t) => { %><option value="<%= t.name %>"><%= t.language %> · <%= t.category %></option><% }) %></datalist>
+      <small class="help">Exatamente como aparece no WhatsApp Manager (minúsculas e _).</small>
+    </div>
+    <div class="field">
+      <label for="k-lang">Idioma do modelo</label>
+      <input id="k-lang" name="templateLanguage" type="text" value="<%= v.templateLanguage || 'pt_BR' %>">
+    </div>
+  </div>
+  <div class="field">
+    <label for="k-params">Variáveis do corpo do modelo (uma por linha: 1ª linha = {{1}}, 2ª = {{2}}…)</label>
+    <textarea id="k-params" name="bodyParams" rows="3"><%= (v.bodyParams || []).join('\n') %></textarea>
+    <small class="help">Use <code>{nome}</code> (primeiro nome), <code>{nome_completo}</code>, <code>{telefone}</code> ou qualquer coluna da lista, ex.: <code>{empresa}</code>. Valor padrão quando vazio: <code>{nome|cliente}</code>. Deixe em branco se o modelo não tiver variáveis.</small>
+  </div>
+  <div class="form__row">
+    <div class="field">
+      <label for="k-header">Mídia do cabeçalho do modelo</label>
+      <select id="k-header" name="headerItemId">
+        <option value="">Nenhuma (modelo sem cabeçalho de mídia)</option>
+        <% media.forEach((i) => { %><option value="<%= i.id %>"<%= v.headerItemId === i.id ? ' selected' : '' %>><%= i.type === 'video' ? 'Vídeo' : 'Imagem' %>: <%= i.originalName %></option><% }) %>
+      </select>
+      <small class="help">Precisa ser do mesmo tipo do cabeçalho cadastrado no modelo (imagem ou vídeo).</small>
+    </div>
+    <div class="field">
+      <label for="k-delivery">Entrega do restante do kit</label>
+      <select id="k-delivery" name="delivery">
+        <option value="on_reply"<%= v.delivery === 'on_reply' ? ' selected' : '' %>>Quando o contato responder (recomendado)</option>
+        <option value="immediate"<%= v.delivery === 'immediate' ? ' selected' : '' %>>Logo após o modelo (só funciona com quem falou com a empresa nas últimas 24h)</option>
+        <option value="template_only"<%= v.delivery === 'template_only' ? ' selected' : '' %>>Enviar somente o modelo</option>
+      </select>
+    </div>
+  </div>
+  <div class="field field--check"><label><input type="checkbox" name="repeatHeader"<%= v.repeatHeader ? ' checked' : '' %>> Reenviar também a mídia do cabeçalho junto com o restante do kit</label></div>
+  <div class="field">
+    <label for="k-follow">Texto final (enviado depois das mídias)</label>
+    <textarea id="k-follow" name="followupText" rows="4" placeholder="Obrigado pelo interesse, {nome}! Para orçamento, responda com a quantidade e o diâmetro."><%= v.followupText || '' %></textarea>
+  </div>
+
+  <% if (items.length) { %>
+    <h2 class="panel__title">Arquivos do kit (ordem de envio)</h2>
+    <input type="hidden" name="order" id="k-order" value="<%= items.map((i) => i.id).join(',') %>">
+    <div class="media-list" data-order-input="k-order">
+      <% items.forEach((i) => { %>
+        <div class="media-item" data-id="<%= i.id %>">
+          <div class="media-item__preview">
+            <% if (i.type === 'image') { %><img src="/admin/whatsapp/midia/<%= kit.id %>/<%= i.id %>" alt="" loading="lazy">
+            <% } else if (i.type === 'video') { %><video src="/admin/whatsapp/midia/<%= kit.id %>/<%= i.id %>" controls preload="metadata"></video>
+            <% } else { %><span class="media-item__doc">PDF</span><% } %>
+          </div>
+          <div class="media-item__body">
+            <strong><%= i.originalName %></strong>
+            <small class="muted"><%= i.type %> · <%= (i.size / 1024 / 1024).toFixed(1) %> MB<%= v.headerItemId === i.id ? ' · cabeçalho do modelo' : '' %></small>
+            <input type="text" name="captions[<%= i.id %>]" value="<%= i.caption || '' %>" placeholder="Legenda (opcional, aceita {nome})">
+          </div>
+          <div class="media-item__actions">
+            <button class="btn btn--sm btn--ghost-dark" type="button" data-move="-1" title="Subir">↑</button>
+            <button class="btn btn--sm btn--ghost-dark" type="button" data-move="1" title="Descer">↓</button>
+            <button class="btn btn--sm btn--danger" type="submit" form="del-<%= i.id %>" title="Remover"><%- include('../../partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <div class="form__actions form__actions--sticky">
+    <button class="btn btn--primary" type="submit">Salvar kit</button>
+    <a class="btn btn--outline" href="/admin/whatsapp/kits">Voltar</a>
+  </div>
+</form>
+
+<% if (kit) { %>
+  <% items.forEach((i) => { %>
+    <form id="del-<%= i.id %>" method="post" action="/admin/whatsapp/kits/<%= kit.id %>/midia/<%= i.id %>/excluir" data-confirm="Remover &quot;<%= i.originalName %>&quot; do kit?">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+    </form>
+  <% }) %>
+
+  <form class="panel form form--admin" method="post" action="/admin/whatsapp/kits/<%= kit.id %>/midia" enctype="multipart/form-data">
+    <h2 class="panel__title">Adicionar imagens e vídeo</h2>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field">
+      <label for="k-files">Arquivos</label>
+      <input id="k-files" name="arquivos" type="file" multiple accept="image/jpeg,image/png,video/mp4,video/3gpp,application/pdf">
+      <small class="help">Imagens JPG/PNG até 5 MB · vídeo MP4 (H.264 + AAC) até 16 MB · PDF até 100 MB. Os arquivos ficam guardados no sistema e são enviados à Meta automaticamente no disparo.</small>
+    </div>
+    <div class="field"><label for="k-cap">Legenda para estes arquivos (opcional)</label><input id="k-cap" name="caption" type="text"></div>
+    <button class="btn btn--primary" type="submit">Enviar arquivos</button>
+  </form>
+
+  <form class="panel form form--admin" method="post" action="/admin/whatsapp/kits/<%= kit.id %>/testar">
+    <h2 class="panel__title">Enviar teste</h2>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="form__row">
+      <div class="field"><label for="t-phone">Seu WhatsApp*</label><input id="t-phone" name="phone" type="text" required placeholder="(19) 99999-0000"></div>
+      <div class="field"><label for="t-name">Nome para as variáveis</label><input id="t-name" name="name" type="text" placeholder="Maria"></div>
+    </div>
+    <button class="btn btn--whatsapp" type="submit"><%- include('../../partials/icon', { name: 'whatsapp', cls: 'icon icon--sm' }) %> Enviar teste</button>
+    <p class="help">Envia o modelo para o número informado. Responda no celular para receber o restante do kit (confere se o webhook está funcionando).</p>
+  </form>
+
+  <form method="post" action="/admin/whatsapp/kits/<%= kit.id %>/excluir" data-confirm="Excluir o kit e todos os seus arquivos?">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <button class="btn btn--sm btn--danger" type="submit">Excluir kit</button>
+  </form>
+<% } %>
+
+<%- include('../_foot') %>

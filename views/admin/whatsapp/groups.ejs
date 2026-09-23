@@ -1,0 +1,38 @@
+<%- include('../_head', { title }) %>
+<%- include('_nav') %>
+
+<div class="panel">
+  <div class="panel__head"><h2>Grupos</h2></div>
+  <% if (groups.length) { %>
+    <table class="table">
+      <thead><tr><th>Grupo</th><th>Contatos</th><th>Criado em</th><th></th></tr></thead>
+      <tbody>
+        <% groups.forEach((g) => { %>
+          <tr>
+            <td><strong><%= g.name %></strong><% if (g.description) { %><br><small class="muted"><%= g.description %></small><% } %></td>
+            <td><%= g.count %></td>
+            <td><%= text.formatDate(g.createdAt) %></td>
+            <td class="table__actions">
+              <a class="btn btn--sm btn--outline" href="/admin/whatsapp/grupos/<%= g.id %>">Abrir / importar</a>
+              <a class="btn btn--sm btn--ghost-dark" href="/admin/whatsapp/campanhas/nova?grupo=<%= g.id %>">Disparar</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="muted">Nenhum grupo ainda. Cada lista que você subir vira um grupo de interesse (ex.: "Usinas de açúcar", "Clientes de manutenção de PSV", "Feira 2026").</p>
+  <% } %>
+</div>
+
+<form class="panel form form--admin" method="post" action="/admin/whatsapp/grupos">
+  <h2 class="panel__title">Novo grupo de interesse</h2>
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form__row">
+    <div class="field"><label for="g-name">Nome*</label><input id="g-name" name="name" type="text" required placeholder="Ex.: Indústria química — SP"></div>
+    <div class="field"><label for="g-desc">Descrição</label><input id="g-desc" name="description" type="text" placeholder="Origem da lista, interesse, observações"></div>
+  </div>
+  <button class="btn btn--primary" type="submit">Criar grupo</button>
+</form>
+
+<%- include('../_foot') %>

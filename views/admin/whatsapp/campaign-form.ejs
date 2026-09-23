@@ -1,0 +1,38 @@
+<%- include('../_head', { title }) %>
+<%- include('_nav') %>
+
+<% if (!kits.length || !groups.length) { %>
+  <div class="alert alert--warn">Antes de criar a campanha, cadastre <% if (!groups.length) { %><a href="/admin/whatsapp/grupos">um grupo com contatos</a><% } %><%= !kits.length && !groups.length ? ' e ' : '' %><% if (!kits.length) { %><a href="/admin/whatsapp/kits/novo">um kit de mídia</a><% } %>.</div>
+<% } %>
+
+<form class="panel form form--admin" method="post" action="/admin/whatsapp/campanhas/nova">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="field"><label for="c-name">Nome da campanha*</label><input id="c-name" name="name" type="text" required placeholder="Ex.: Lançamento JT-G — usinas"></div>
+  <div class="field">
+    <label for="c-kit">Kit de mídia*</label>
+    <select id="c-kit" name="kitId" required>
+      <option value="">Selecione</option>
+      <% kits.forEach((k) => { %><option value="<%= k.id %>"<%= values.kitId === k.id ? ' selected' : '' %>><%= k.name %> (<%= k.templateName || 'sem modelo' %>)</option><% }) %>
+    </select>
+  </div>
+  <fieldset class="field">
+    <legend>Grupos de interesse*</legend>
+    <div class="check-grid">
+      <% groups.forEach((g) => { %>
+        <label class="check-card"><input type="checkbox" name="groupIds" value="<%= g.id %>"<%= values.groupIds.includes(g.id) ? ' checked' : '' %>> <span><strong><%= g.name %></strong><small class="muted"><%= g.count %> contatos</small></span></label>
+      <% }) %>
+    </div>
+    <small class="help">Contatos presentes em mais de um grupo recebem uma única vez. Descadastrados são ignorados.</small>
+  </fieldset>
+  <div class="field">
+    <label for="c-when">Agendar para (opcional)</label>
+    <input id="c-when" name="scheduledAt" type="datetime-local">
+    <small class="help">Horário do servidor. Deixe em branco para enviar agora ou salvar como rascunho.</small>
+  </div>
+  <div class="form__actions">
+    <button class="btn btn--primary" type="submit" name="action" value="start" data-confirm-click="Iniciar o disparo agora para os grupos selecionados?">Salvar e disparar agora</button>
+    <button class="btn btn--outline" type="submit" name="action" value="save">Salvar (rascunho ou agendada)</button>
+  </div>
+</form>
+
+<%- include('../_foot') %>

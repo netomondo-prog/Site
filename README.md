@@ -45,6 +45,7 @@ public/                # css, js e imagens (SVG)
 - **Blog**: título, resumo, capa, autor, data, tags, conteúdo
 - **Segmentos**: nome, descrição, ícone
 - **Mensagens**: caixa de entrada do formulário de contato
+- **WhatsApp**: disparo de campanhas pela API oficial (veja abaixo)
 - **Configurações**: telefones, WhatsApp, e-mail, endereço, redes sociais, textos da página Empresa e SEO
 
 Os textos longos aceitam uma formatação simples: linha em branco separa parágrafos,
@@ -103,6 +104,35 @@ docker run -p 3000:3000 -e SESSION_SECRET=... -e ADMIN_PASSWORD=... -v jtec-data
 Em produção defina `NODE_ENV=production`, um `SESSION_SECRET` forte, uma senha de admin
 e, se os dados precisarem persistir fora do container, `DATA_DIR` apontando para um volume
 (os JSON iniciais são copiados automaticamente para lá no primeiro acesso).
+
+## Disparo de WhatsApp (API oficial)
+
+Módulo em `/admin/whatsapp` para campanhas pela **WhatsApp Cloud API** da Meta:
+
+- **Grupos de interesse**: cada lista (CSV ou colada) vira um grupo. Colunas
+  `telefone` e `nome`, mais quaisquer outras (`empresa`, `segmento`…) usadas como
+  variáveis. Números são normalizados (+55), duplicados são unificados e um
+  contato pode estar em vários grupos. Exemplo: `docs/exemplo-lista-whatsapp.csv`.
+- **Kits de mídia**: imagens, vídeo (e PDF) guardados no sistema, com legenda e
+  ordem, ligados a um modelo (template) aprovado. O modelo leva uma mídia no
+  cabeçalho; quando o contato responde (ex.: botão “Quero receber”) o restante
+  do kit é entregue automaticamente dentro da janela de 24h.
+- **Campanhas**: escolha kit + um ou mais grupos, dispare agora ou agende.
+  Fila com limite por segundo, pausa/retomada, acompanhamento de enviadas,
+  entregues, lidas, respostas, kits entregues e falhas, e relatório CSV.
+- **Descadastro**: respostas SAIR/PARAR/STOP descadastram o contato.
+- **Webhook**: `GET/POST /webhooks/whatsapp` (verificação e assinatura).
+
+Sem credenciais o módulo roda em **modo simulação**. O passo a passo para
+cadastrar o número e obter as credenciais está em
+[`docs/whatsapp-api-setup.md`](docs/whatsapp-api-setup.md).
+
+```
+src/lib/whatsapp/api.js     # cliente da Cloud API (envio, upload de mídia, modelos)
+src/lib/whatsapp/engine.js  # grupos, kits, fila de campanhas e webhook
+src/lib/whatsapp/log.js     # histórico de envios (data/wa-log.json)
+src/routes/whatsapp.js      # telas do painel e rota do webhook
+```
 
 ## Testes
 
