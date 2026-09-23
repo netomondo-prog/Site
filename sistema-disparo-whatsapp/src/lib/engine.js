@@ -14,13 +14,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const store = require('../store');
+const store = require('./store');
 const api = require('./api');
 const log = require('./log');
 const phone = require('./phone');
 const csv = require('./csv');
 
-const MEDIA_DIR = path.join(store.DATA_DIR, 'uploads', 'whatsapp');
+const MEDIA_DIR = path.join(store.DATA_DIR, 'midias');
 const MEDIA_TTL_MS = 25 * 24 * 60 * 60 * 1000; // media id da Meta vale 30 dias
 const OPT_OUT_WORDS = ['sair', 'parar', 'pare', 'stop', 'cancelar', 'descadastrar', 'remover'];
 
@@ -46,7 +46,7 @@ const CAMPAIGN_STATUS = {
 
 function groupCounts() {
   const counts = {};
-  for (const c of store.waContacts.all()) {
+  for (const c of store.contacts.all()) {
     for (const g of c.groups || []) counts[g] = (counts[g] || 0) + 1;
   }
   return counts;
@@ -57,7 +57,7 @@ function groupCounts() {
  * Contatos já existentes (mesmo telefone) são mesclados e ganham o grupo.
  */
 function importContacts(groupId, rows, { source = 'csv' } = {}) {
-  const contacts = store.waContacts.all();
+  const contacts = store.contacts.all();
   const index = new Map();
   contacts.forEach((c) => phone.variants(c.phone).forEach((v) => index.set(v, c)));
   const now = new Date().toISOString();
@@ -99,7 +99,7 @@ function importContacts(groupId, rows, { source = 'csv' } = {}) {
       result.added += 1;
     }
   }
-  store.waContacts.replaceAll(contacts);
+  store.contacts.replaceAll(contacts);
   return result;
 }
 
@@ -109,28 +109,28 @@ function importCsv(groupId, content) {
 
 function removeFromGroup(groupId, contactIds) {
   const ids = new Set(contactIds);
-  const contacts = store.waContacts.all().map((c) => (ids.has(c.id) ? { ...c, groups: (c.groups || []).filter((g) => g !== groupId) } : c));
-  store.waContacts.replaceAll(contacts);
+  const contacts = store.contacts.all().map((c) => (ids.has(c.id) ? { ...c, groups: (c.groups || []).filter((g) => g !== groupId) } : c));
+  store.contacts.replaceAll(contacts);
 }
 
 /** Exclui o grupo; contatos que ficarem sem grupo algum também são excluídos. */
 function deleteGroup(groupId) {
-  const contacts = store.waContacts
+  const contacts = store.contacts
     .all()
     .map((c) => ({ ...c, groups: (c.groups || []).filter((g) => g !== groupId) }))
     .filter((c) => c.groups.length || c.optOut);
-  store.waContacts.replaceAll(contacts);
-  store.waGroups.remove(groupId);
+  store.contacts.replaceAll(contacts);
+  store.groups.remove(groupId);
 }
 
 function findContactByPhone(number) {
-  return store.waContacts.all().find((c) => phone.same(c.phone, number)) || null;
+  return store.contacts.all().find((c) => phone.same(c.phone, number)) || null;
 }
 
 function setOptOut(contactId, optOut) {
-  const c = store.waContacts.findById(contactId);
+  const c = store.contacts.findById(contactId);
   if (!c) return null;
-  return store.waContacts.save({ ...c, optOut, optOutAt: optOut ? new Date().toISOString() : null });
+  return store.contacts.save({ ...c, optOut, optOutAt: optOut ? new Date().toISOString() : null });
 }
 
 /** Destinatários de uma campanha: união dos grupos, sem duplicados e sem descadastrados. */
@@ -139,7 +139,7 @@ function recipientsFor(groupIds) {
   const seen = new Set();
   const out = [];
   let optedOut = 0;
-  for (const c of store.waContacts.all()) {
+  for (const c of store.contacts.all()) {
     if (!(c.groups || []).some((g) => wanted.has(g))) continue;
     if (c.optOut) {
       optedOut += 1;
@@ -199,7 +199,7 @@ function removeKitItem(kit, itemId) {
 
 function deleteKit(kitId) {
   fs.rmSync(kitDir(kitId), { recursive: true, force: true });
-  store.waKits.remove(kitId);
+  store.kits.remove(kitId);
 }
 
 /** Garante que cada mídia do kit está hospedada na Meta (media id válido). */
@@ -213,7 +213,7 @@ async function ensureMedia(kit) {
     item.mediaUploadedAt = new Date().toISOString();
     changed = true;
   }
-  if (changed) store.waKits.save(kit);
+  if (changed) store.kits.save(kit);
   return kit;
 }
 
@@ -249,7 +249,7 @@ function followupItems(kit) {
 }
 
 async function deliverKit(record, kit) {
-  kit = kit || store.waKits.findById(record.kitId);
+  kit = kit || store.kits.findById(record.kitId);
   if (!kit) return;
   log.update(record, { kitStatus: 'sending' });
   const contact = { name: record.name, phone: record.phone, fields: record.fields };
@@ -295,14 +295,14 @@ function campaignStats(campaignId) {
 
 /** Monta a fila de destinatários e coloca a campanha para enviar. */
 async function startCampaign(campaignId) {
-  const campaign = store.waCampaigns.findById(campaignId);
+  const campaign = store.campaigns.findById(campaignId);
   if (!campaign) throw new Error('Campanha não encontrada.');
-  const kit = store.waKits.findById(campaign.kitId);
+  const kit = store.kits.findById(campaign.kitId);
   if (!kit) throw new Error('Kit da campanha não encontrado.');
   if (!kit.templateName) throw new Error('O kit precisa de um modelo (template) aprovado.');
 
   if (campaign.status === 'paused') {
-    store.waCampaigns.save({ ...campaign, status: 'running' });
+    store.campaigns.save({ ...campaign, status: 'running' });
     kick();
     return campaign;
   }
@@ -323,7 +323,7 @@ async function startCampaign(campaignId) {
       kitStatus: 'none',
     }))
   );
-  store.waCampaigns.save({
+  store.campaigns.save({
     ...campaign,
     status: 'running',
     startedAt: new Date().toISOString(),
@@ -336,21 +336,21 @@ async function startCampaign(campaignId) {
 }
 
 function pauseCampaign(id) {
-  const c = store.waCampaigns.findById(id);
-  if (c && c.status === 'running') store.waCampaigns.save({ ...c, status: 'paused' });
+  const c = store.campaigns.findById(id);
+  if (c && c.status === 'running') store.campaigns.save({ ...c, status: 'paused' });
 }
 
 function cancelCampaign(id) {
-  const c = store.waCampaigns.findById(id);
+  const c = store.campaigns.findById(id);
   if (!c || ['done', 'canceled'].includes(c.status)) return;
   for (const r of log.byCampaign(id)) if (r.status === 'queued') log.update(r, { status: 'canceled' });
-  store.waCampaigns.save({ ...c, status: 'canceled', finishedAt: new Date().toISOString() });
+  store.campaigns.save({ ...c, status: 'canceled', finishedAt: new Date().toISOString() });
 }
 
 function deleteCampaign(id) {
   cancelCampaign(id);
   log.removeCampaign(id);
-  store.waCampaigns.remove(id);
+  store.campaigns.remove(id);
 }
 
 async function sendOne(record, kit) {
@@ -377,19 +377,19 @@ let running = null;
 async function drain() {
   const interval = 1000 / api.config().rate;
   for (;;) {
-    const active = store.waCampaigns.all().filter((c) => c.status === 'running');
+    const active = store.campaigns.all().filter((c) => c.status === 'running');
     if (!active.length) return;
     let sentAny = false;
     for (const campaign of active) {
-      const kit = store.waKits.findById(campaign.kitId);
+      const kit = store.kits.findById(campaign.kitId);
       const queue = log.byCampaign(campaign.id).filter((r) => r.status === 'queued');
       if (!queue.length || !kit) {
-        store.waCampaigns.save({ ...campaign, status: 'done', finishedAt: new Date().toISOString() });
+        store.campaigns.save({ ...campaign, status: 'done', finishedAt: new Date().toISOString() });
         continue;
       }
       // envia em blocos para poder reagir a pausa/cancelamento
       for (const record of queue.slice(0, 20)) {
-        const fresh = store.waCampaigns.findById(campaign.id);
+        const fresh = store.campaigns.findById(campaign.id);
         if (!fresh || fresh.status !== 'running') break;
         const started = Date.now();
         await sendOne(record, kit);
@@ -417,12 +417,12 @@ function kick() {
 /** Inicia campanhas agendadas cujo horário chegou. */
 async function checkSchedule() {
   const now = Date.now();
-  for (const c of store.waCampaigns.all()) {
+  for (const c of store.campaigns.all()) {
     if (c.status === 'scheduled' && c.scheduledAt && new Date(c.scheduledAt).getTime() <= now) {
       try {
         await startCampaign(c.id);
       } catch (err) {
-        store.waCampaigns.save({ ...c, status: 'draft', lastError: err.message });
+        store.campaigns.save({ ...c, status: 'draft', lastError: err.message });
       }
     }
   }
@@ -485,7 +485,7 @@ async function handleMessage(msg, profileName) {
 
   const contact = findContactByPhone(from);
   if (contact) {
-    store.waContacts.save({ ...contact, lastInboundAt: new Date().toISOString(), profileName: profileName || contact.profileName });
+    store.contacts.save({ ...contact, lastInboundAt: new Date().toISOString(), profileName: profileName || contact.profileName });
   }
 
   if (OPT_OUT_WORDS.includes(normalized)) {

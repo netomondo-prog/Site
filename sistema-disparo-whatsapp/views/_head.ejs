@@ -1,0 +1,46 @@
+<%
+  const t = typeof title !== 'undefined' ? title : 'Painel';
+  const menu = [
+    { href: '/', label: 'Visão geral', icon: 'home', exact: true },
+    { href: '/grupos', label: 'Grupos de interesse', icon: 'users' },
+    { href: '/kits', label: 'Kits de mídia', icon: 'image' },
+    { href: '/campanhas', label: 'Campanhas', icon: 'send' },
+  ];
+  const active = (m) => (m.exact ? path === m.href : path.startsWith(m.href));
+%><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title><%= t %> | <%= appName %></title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+<div class="admin">
+  <aside class="admin__sidebar">
+    <a class="admin__brand" href="/"><%- include('partials/brand') %></a>
+    <nav class="admin__nav">
+      <% menu.forEach((m) => { %>
+        <a class="admin__link<%= active(m) ? ' is-active' : '' %>" href="<%= m.href %>"><%- include('partials/icon', { name: m.icon, cls: 'icon icon--sm' }) %> <%= m.label %></a>
+      <% }) %>
+    </nav>
+    <div class="admin__sidebar-foot">
+      <% if (wa.config.dryRun) { %><span class="status status--warn" title="Sem credenciais da API: nenhuma mensagem real é enviada">Modo simulação</span><% } else { %><span class="status status--on">API conectada</span><% } %>
+      <form method="post" action="/logout">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="admin__link admin__link--btn" type="submit"><%- include('partials/icon', { name: 'logout', cls: 'icon icon--sm' }) %> Sair</button>
+      </form>
+    </div>
+  </aside>
+  <div class="admin__main">
+    <header class="admin__topbar">
+      <h1 class="admin__title"><%= t %></h1>
+      <% if (typeof actions !== 'undefined') { %><div class="admin__actions"><%- actions %></div><% } %>
+    </header>
+    <% if (flash) { %>
+      <div class="alert alert--<%= flash.type %>" role="status"><%= flash.message %></div>
+    <% } %>
+    <div class="admin__content">

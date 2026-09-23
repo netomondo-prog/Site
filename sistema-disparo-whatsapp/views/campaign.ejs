@@ -1,5 +1,4 @@
-<%- include('../_head', { title: 'Campanha: ' + title, actions: '<a class="btn btn--sm btn--outline" href="/admin/whatsapp/campanhas/' + campaign.id + '/relatorio.csv">Baixar relatório</a>' }) %>
-<%- include('_nav') %>
+<%- include('_head', { title: 'Campanha: ' + title, actions: '<a class="btn btn--sm btn--outline" href="/campanhas/' + campaign.id + '/relatorio.csv">Baixar relatório</a>' }) %>
 <% const st = campaign.status; const kitLabels = { none: '-', pending: 'Aguardando resposta', sending: 'Enviando', delivered: 'Entregue', failed: 'Falhou' }; const statusLabels = { queued: 'Na fila', sent: 'Enviada', delivered: 'Entregue', read: 'Lida', failed: 'Falhou', canceled: 'Cancelada' }; %>
 
 <% if (st === 'running') { %><meta http-equiv="refresh" content="10"><% } %>
@@ -9,21 +8,21 @@
     <h2><span class="status status--<%= st %>"><%= wa.statusLabels[st] || st %></span> <%= campaign.simulated ? '(simulação)' : '' %></h2>
     <div class="shortcuts">
       <% if (['draft', 'scheduled', 'paused'].includes(st)) { %>
-        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/iniciar" data-confirm="<%= st === 'paused' ? 'Retomar o envio?' : 'Iniciar o disparo agora?' %>"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--primary" type="submit"><%= st === 'paused' ? 'Retomar' : 'Disparar agora' %></button></form>
+        <form method="post" action="/campanhas/<%= campaign.id %>/iniciar" data-confirm="<%= st === 'paused' ? 'Retomar o envio?' : 'Iniciar o disparo agora?' %>"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--primary" type="submit"><%= st === 'paused' ? 'Retomar' : 'Disparar agora' %></button></form>
       <% } %>
       <% if (st === 'running') { %>
-        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/pausar"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--outline" type="submit">Pausar</button></form>
+        <form method="post" action="/campanhas/<%= campaign.id %>/pausar"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--outline" type="submit">Pausar</button></form>
       <% } %>
       <% if (['running', 'paused', 'scheduled'].includes(st)) { %>
-        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/cancelar" data-confirm="Cancelar a campanha? As mensagens ainda na fila não serão enviadas."><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit">Cancelar</button></form>
+        <form method="post" action="/campanhas/<%= campaign.id %>/cancelar" data-confirm="Cancelar a campanha? As mensagens ainda na fila não serão enviadas."><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit">Cancelar</button></form>
       <% } %>
       <% if (!['running'].includes(st)) { %>
-        <form method="post" action="/admin/whatsapp/campanhas/<%= campaign.id %>/excluir" data-confirm="Excluir a campanha e o histórico de envios?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit"><%- include('../../partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button></form>
+        <form method="post" action="/campanhas/<%= campaign.id %>/excluir" data-confirm="Excluir a campanha e o histórico de envios?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--sm btn--danger" type="submit"><%- include('partials/icon', { name: 'trash', cls: 'icon icon--sm' }) %></button></form>
       <% } %>
     </div>
   </div>
   <dl class="message__meta">
-    <div><dt>Kit</dt><dd><% if (kit) { %><a href="/admin/whatsapp/kits/<%= kit.id %>"><%= kit.name %></a> · <code><%= kit.templateName %></code><% } else { %>excluído<% } %></dd></div>
+    <div><dt>Kit</dt><dd><% if (kit) { %><a href="/kits/<%= kit.id %>"><%= kit.name %></a> · <code><%= kit.templateName %></code><% } else { %>excluído<% } %></dd></div>
     <div><dt>Grupos</dt><dd><%= groups.map((g) => g.name).join(', ') || '-' %></dd></div>
     <div><dt><%= campaign.startedAt ? 'Início' : campaign.scheduledAt ? 'Agendada para' : 'Criada em' %></dt><dd><%= text.formatDateTime(campaign.startedAt || campaign.scheduledAt || campaign.createdAt) %><%= campaign.finishedAt ? ' → ' + text.formatDateTime(campaign.finishedAt) : '' %></dd></div>
   </dl>
@@ -71,4 +70,4 @@
   </div>
 <% } %>
 
-<%- include('../_foot') %>
+<%- include('_foot') %>

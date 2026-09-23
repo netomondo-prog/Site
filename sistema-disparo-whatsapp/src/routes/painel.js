@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Painel de disparo de WhatsApp (/admin/whatsapp) e webhook público
+ * Painel de disparo de WhatsApp (/) e webhook público
  * (/webhooks/whatsapp) da API oficial.
  */
 
@@ -10,10 +10,10 @@ const fs = require('fs');
 const express = require('express');
 const multer = require('multer');
 const store = require('../lib/store');
-const api = require('../lib/whatsapp/api');
-const engine = require('../lib/whatsapp/engine');
-const log = require('../lib/whatsapp/log');
-const phone = require('../lib/whatsapp/phone');
+const api = require('../lib/api');
+const engine = require('../lib/engine');
+const log = require('../lib/log');
+const phone = require('../lib/phone');
 const { verifyCsrf } = require('../middleware/auth');
 
 const upload = multer({ dest: os.tmpdir(), limits: { fileSize: 100 * 1024 * 1024, files: 20 } });
@@ -28,7 +28,7 @@ function withUpload(middleware) {
     middleware(req, res, (err) => {
       if (!err) return next();
       flash(req, 'error', err.code === 'LIMIT_FILE_SIZE' ? 'Arquivo grande demais.' : `Falha no envio do arquivo: ${err.message}`);
-      return res.redirect(req.get('referer') || '/admin/whatsapp');
+      return res.redirect(req.get('referer') || '/');
     });
 }
 
@@ -49,16 +49,16 @@ function sendCsv(res, filename, header, rows) {
   res.send(`﻿${body}`);
 }
 
-const admin = express.Router();
+const painel = express.Router();
 
-admin.use((req, res, next) => {
+painel.use((req, res, next) => {
   res.locals.wa = { config: api.config(), phone, statusLabels: engine.CAMPAIGN_STATUS };
   next();
 });
 
 // ---------- Visão geral ----------
 
-admin.get('/', async (req, res) => {
+painel.get('/', async (req, res) => {
   const cfg = api.config();
   let info = null;
   let templates = [];
@@ -70,55 +70,55 @@ admin.get('/', async (req, res) => {
       apiError = engine.describeError(err);
     }
   }
-  const contacts = store.waContacts.all();
-  res.render('admin/whatsapp/index', {
-    title: 'WhatsApp',
+  const contacts = store.contacts.all();
+  res.render('index', {
+    title: 'Visão geral',
     info,
     templates,
     apiError,
     counts: {
-      groups: store.waGroups.all().length,
+      groups: store.groups.all().length,
       contacts: contacts.length,
       optOut: contacts.filter((c) => c.optOut).length,
-      kits: store.waKits.all().length,
-      campaigns: store.waCampaigns.all().length,
+      kits: store.kits.all().length,
+      campaigns: store.campaigns.all().length,
     },
-    campaigns: store.waCampaigns.all().slice().reverse().slice(0, 5).map((c) => ({ ...c, stats: engine.campaignStats(c.id) })),
+    campaigns: store.campaigns.all().slice().reverse().slice(0, 5).map((c) => ({ ...c, kit: store.kits.findById(c.kitId), stats: engine.campaignStats(c.id) })),
     webhookUrl: `${req.protocol}://${req.get('host')}/webhooks/whatsapp`,
   });
 });
 
 // ---------- Grupos de interesse ----------
 
-admin.get('/grupos', (req, res) => {
+painel.get('/grupos', (req, res) => {
   const counts = engine.groupCounts();
-  const groups = store.waGroups.all().map((g) => ({ ...g, count: counts[g.id] || 0 }));
-  res.render('admin/whatsapp/groups', { title: 'Grupos de interesse', groups });
+  const groups = store.groups.all().map((g) => ({ ...g, count: counts[g.id] || 0 }));
+  res.render('groups', { title: 'Grupos de interesse', groups });
 });
 
-admin.post('/grupos', verifyCsrf, (req, res) => {
+painel.post('/grupos', verifyCsrf, (req, res) => {
   const name = String(req.body.name || '').trim();
   if (!name) {
     flash(req, 'error', 'Informe o nome do grupo.');
-    return res.redirect('/admin/whatsapp/grupos');
+    return res.redirect('/grupos');
   }
-  const group = store.waGroups.save({ name, description: String(req.body.description || '').trim() });
+  const group = store.groups.save({ name, description: String(req.body.description || '').trim() });
   flash(req, 'success', 'Grupo criado. Agora importe a lista de contatos.');
-  return res.redirect(`/admin/whatsapp/grupos/${group.id}`);
+  return res.redirect(`/grupos/${group.id}`);
 });
 
-admin.get('/grupos/:id', (req, res, next) => {
-  const group = store.waGroups.findById(req.params.id);
+painel.get('/grupos/:id', (req, res, next) => {
+  const group = store.groups.findById(req.params.id);
   if (!group) return next();
   const q = String(req.query.q || '').trim().toLowerCase();
-  let contacts = store.waContacts.all().filter((c) => (c.groups || []).includes(group.id));
+  let contacts = store.contacts.all().filter((c) => (c.groups || []).includes(group.id));
   const total = contacts.length;
   const optOut = contacts.filter((c) => c.optOut).length;
   if (q) contacts = contacts.filter((c) => c.phone.includes(q.replace(/\D/g, '') || '§') || String(c.name || '').toLowerCase().includes(q));
   const limit = 500;
   const importResult = req.session.importResult || null;
   delete req.session.importResult;
-  return res.render('admin/whatsapp/group', {
+  return res.render('group', {
     title: group.name,
     group,
     contacts: contacts.slice(0, limit),
@@ -131,16 +131,16 @@ admin.get('/grupos/:id', (req, res, next) => {
   });
 });
 
-admin.post('/grupos/:id', verifyCsrf, (req, res, next) => {
-  const group = store.waGroups.findById(req.params.id);
+painel.post('/grupos/:id', verifyCsrf, (req, res, next) => {
+  const group = store.groups.findById(req.params.id);
   if (!group) return next();
-  store.waGroups.save({ ...group, name: String(req.body.name || group.name).trim(), description: String(req.body.description || '').trim() });
+  store.groups.save({ ...group, name: String(req.body.name || group.name).trim(), description: String(req.body.description || '').trim() });
   flash(req, 'success', 'Grupo atualizado.');
-  return res.redirect(`/admin/whatsapp/grupos/${group.id}`);
+  return res.redirect(`/grupos/${group.id}`);
 });
 
-admin.post('/grupos/:id/importar', withUpload(upload.single('lista')), verifyCsrf, (req, res, next) => {
-  const group = store.waGroups.findById(req.params.id);
+painel.post('/grupos/:id/importar', withUpload(upload.single('lista')), verifyCsrf, (req, res, next) => {
+  const group = store.groups.findById(req.params.id);
   if (!group) {
     cleanupFiles(req);
     return next();
@@ -150,39 +150,39 @@ admin.post('/grupos/:id/importar', withUpload(upload.single('lista')), verifyCsr
   cleanupFiles(req);
   if (!content.trim()) {
     flash(req, 'error', 'Envie um arquivo CSV ou cole a lista.');
-    return res.redirect(`/admin/whatsapp/grupos/${group.id}`);
+    return res.redirect(`/grupos/${group.id}`);
   }
   const result = engine.importCsv(group.id, content);
   req.session.importResult = { ...result, invalid: result.invalid.slice(0, 50), invalidCount: result.invalid.length };
   flash(req, 'success', `Importação concluída: ${result.added} novos, ${result.updated} já existentes adicionados ao grupo.`);
-  return res.redirect(`/admin/whatsapp/grupos/${group.id}`);
+  return res.redirect(`/grupos/${group.id}`);
 });
 
-admin.post('/grupos/:id/contato', verifyCsrf, (req, res, next) => {
-  const group = store.waGroups.findById(req.params.id);
+painel.post('/grupos/:id/contato', verifyCsrf, (req, res, next) => {
+  const group = store.groups.findById(req.params.id);
   if (!group) return next();
   const r = engine.importContacts(group.id, [{ phone: req.body.phone, name: String(req.body.name || '').trim() }], { source: 'manual' });
   flash(req, r.added || r.updated ? 'success' : 'error', r.added || r.updated ? 'Contato adicionado.' : 'Telefone inválido.');
-  return res.redirect(`/admin/whatsapp/grupos/${group.id}`);
+  return res.redirect(`/grupos/${group.id}`);
 });
 
-admin.post('/grupos/:id/remover', verifyCsrf, (req, res) => {
+painel.post('/grupos/:id/remover', verifyCsrf, (req, res) => {
   const ids = [].concat(req.body.ids || []);
   engine.removeFromGroup(req.params.id, ids);
   flash(req, 'success', `${ids.length} contato(s) removido(s) do grupo.`);
-  res.redirect(`/admin/whatsapp/grupos/${req.params.id}`);
+  res.redirect(`/grupos/${req.params.id}`);
 });
 
-admin.post('/grupos/:id/excluir', verifyCsrf, (req, res) => {
+painel.post('/grupos/:id/excluir', verifyCsrf, (req, res) => {
   engine.deleteGroup(req.params.id);
   flash(req, 'success', 'Grupo excluído.');
-  res.redirect('/admin/whatsapp/grupos');
+  res.redirect('/grupos');
 });
 
-admin.get('/grupos/:id/exportar', (req, res, next) => {
-  const group = store.waGroups.findById(req.params.id);
+painel.get('/grupos/:id/exportar', (req, res, next) => {
+  const group = store.groups.findById(req.params.id);
   if (!group) return next();
-  const contacts = store.waContacts.all().filter((c) => (c.groups || []).includes(group.id));
+  const contacts = store.contacts.all().filter((c) => (c.groups || []).includes(group.id));
   const extra = [...new Set(contacts.flatMap((c) => Object.keys(c.fields || {})))];
   return sendCsv(
     res,
@@ -192,10 +192,10 @@ admin.get('/grupos/:id/exportar', (req, res, next) => {
   );
 });
 
-admin.post('/contatos/:id/optout', verifyCsrf, (req, res) => {
+painel.post('/contatos/:id/optout', verifyCsrf, (req, res) => {
   const c = engine.setOptOut(req.params.id, req.body.optOut === 'true');
   flash(req, 'success', c && c.optOut ? 'Contato descadastrado: não receberá campanhas.' : 'Contato reativado.');
-  res.redirect(req.get('referer') || '/admin/whatsapp/grupos');
+  res.redirect(req.get('referer') || '/grupos');
 });
 
 // ---------- Kits de mídia ----------
@@ -222,12 +222,12 @@ async function templatesSafe() {
   }
 }
 
-admin.get('/kits', (req, res) => {
-  res.render('admin/whatsapp/kits', { title: 'Kits de mídia', kits: store.waKits.all() });
+painel.get('/kits', (req, res) => {
+  res.render('kits', { title: 'Kits de mídia', kits: store.kits.all() });
 });
 
-admin.get('/kits/novo', async (req, res) => {
-  res.render('admin/whatsapp/kit', {
+painel.get('/kits/novo', async (req, res) => {
+  res.render('kit', {
     title: 'Novo kit',
     kit: null,
     values: { templateLanguage: 'pt_BR', delivery: 'on_reply', bodyParams: ['{nome|cliente}'] },
@@ -235,38 +235,38 @@ admin.get('/kits/novo', async (req, res) => {
   });
 });
 
-admin.post('/kits/novo', verifyCsrf, (req, res) => {
+painel.post('/kits/novo', verifyCsrf, (req, res) => {
   const values = kitFromForm(req.body);
   if (!values.name) {
     flash(req, 'error', 'Informe o nome do kit.');
-    return res.redirect('/admin/whatsapp/kits/novo');
+    return res.redirect('/kits/novo');
   }
-  const kit = store.waKits.save({ ...values, items: [] });
+  const kit = store.kits.save({ ...values, items: [] });
   flash(req, 'success', 'Kit criado. Agora envie as imagens e o vídeo.');
-  return res.redirect(`/admin/whatsapp/kits/${kit.id}`);
+  return res.redirect(`/kits/${kit.id}`);
 });
 
-admin.get('/kits/:id', async (req, res, next) => {
-  const kit = store.waKits.findById(req.params.id);
+painel.get('/kits/:id', async (req, res, next) => {
+  const kit = store.kits.findById(req.params.id);
   if (!kit) return next();
-  return res.render('admin/whatsapp/kit', { title: kit.name, kit, values: kit, templates: await templatesSafe() });
+  return res.render('kit', { title: kit.name, kit, values: kit, templates: await templatesSafe() });
 });
 
-admin.post('/kits/:id', verifyCsrf, (req, res, next) => {
-  const kit = store.waKits.findById(req.params.id);
+painel.post('/kits/:id', verifyCsrf, (req, res, next) => {
+  const kit = store.kits.findById(req.params.id);
   if (!kit) return next();
   const values = kitFromForm(req.body);
   const captions = req.body.captions || {};
   const items = (kit.items || []).map((i) => (i.id in captions ? { ...i, caption: String(captions[i.id]).trim() } : i));
   const order = String(req.body.order || '').split(',').filter(Boolean);
   if (order.length) items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
-  store.waKits.save({ ...kit, ...values, name: values.name || kit.name, items });
+  store.kits.save({ ...kit, ...values, name: values.name || kit.name, items });
   flash(req, 'success', 'Kit salvo.');
-  return res.redirect(`/admin/whatsapp/kits/${kit.id}`);
+  return res.redirect(`/kits/${kit.id}`);
 });
 
-admin.post('/kits/:id/midia', withUpload(upload.array('arquivos', 20)), verifyCsrf, (req, res, next) => {
-  const kit = store.waKits.findById(req.params.id);
+painel.post('/kits/:id/midia', withUpload(upload.array('arquivos', 20)), verifyCsrf, (req, res, next) => {
+  const kit = store.kits.findById(req.params.id);
   if (!kit) {
     cleanupFiles(req);
     return next();
@@ -283,22 +283,22 @@ admin.post('/kits/:id/midia', withUpload(upload.array('arquivos', 20)), verifyCs
     }
   }
   cleanupFiles(req);
-  store.waKits.save(kit);
+  store.kits.save(kit);
   flash(req, errors.length ? 'error' : 'success', errors.length ? errors.join(' ') : `${added} arquivo(s) adicionado(s) ao kit.`);
-  return res.redirect(`/admin/whatsapp/kits/${kit.id}`);
+  return res.redirect(`/kits/${kit.id}`);
 });
 
-admin.post('/kits/:id/midia/:itemId/excluir', verifyCsrf, (req, res, next) => {
-  const kit = store.waKits.findById(req.params.id);
+painel.post('/kits/:id/midia/:itemId/excluir', verifyCsrf, (req, res, next) => {
+  const kit = store.kits.findById(req.params.id);
   if (!kit) return next();
   engine.removeKitItem(kit, req.params.itemId);
-  store.waKits.save(kit);
+  store.kits.save(kit);
   flash(req, 'success', 'Arquivo removido do kit.');
-  return res.redirect(`/admin/whatsapp/kits/${kit.id}`);
+  return res.redirect(`/kits/${kit.id}`);
 });
 
-admin.post('/kits/:id/testar', verifyCsrf, async (req, res, next) => {
-  const kit = store.waKits.findById(req.params.id);
+painel.post('/kits/:id/testar', verifyCsrf, async (req, res, next) => {
+  const kit = store.kits.findById(req.params.id);
   if (!kit) return next();
   try {
     if (!kit.templateName) throw new Error('Defina o nome do modelo aprovado antes de testar.');
@@ -308,22 +308,22 @@ admin.post('/kits/:id/testar', verifyCsrf, async (req, res, next) => {
   } catch (err) {
     flash(req, 'error', `Falha no teste: ${err.message}`);
   }
-  return res.redirect(`/admin/whatsapp/kits/${kit.id}`);
+  return res.redirect(`/kits/${kit.id}`);
 });
 
-admin.post('/kits/:id/excluir', verifyCsrf, (req, res) => {
-  const inUse = store.waCampaigns.all().some((c) => c.kitId === req.params.id && ['running', 'scheduled', 'paused'].includes(c.status));
+painel.post('/kits/:id/excluir', verifyCsrf, (req, res) => {
+  const inUse = store.campaigns.all().some((c) => c.kitId === req.params.id && ['running', 'scheduled', 'paused'].includes(c.status));
   if (inUse) {
     flash(req, 'error', 'Este kit está em uma campanha ativa ou agendada.');
-    return res.redirect(`/admin/whatsapp/kits/${req.params.id}`);
+    return res.redirect(`/kits/${req.params.id}`);
   }
   engine.deleteKit(req.params.id);
   flash(req, 'success', 'Kit excluído.');
-  return res.redirect('/admin/whatsapp/kits');
+  return res.redirect('/kits');
 });
 
-admin.get('/midia/:kitId/:itemId', (req, res, next) => {
-  const kit = store.waKits.findById(req.params.kitId);
+painel.get('/midia/:kitId/:itemId', (req, res, next) => {
+  const kit = store.kits.findById(req.params.kitId);
   const item = kit && (kit.items || []).find((i) => i.id === req.params.itemId);
   if (!item) return next();
   res.type(item.mime);
@@ -332,41 +332,41 @@ admin.get('/midia/:kitId/:itemId', (req, res, next) => {
 
 // ---------- Campanhas ----------
 
-admin.get('/campanhas', (req, res) => {
-  const kits = Object.fromEntries(store.waKits.all().map((k) => [k.id, k]));
-  const campaigns = store.waCampaigns
+painel.get('/campanhas', (req, res) => {
+  const kits = Object.fromEntries(store.kits.all().map((k) => [k.id, k]));
+  const campaigns = store.campaigns
     .all()
     .slice()
     .reverse()
     .map((c) => ({ ...c, kit: kits[c.kitId], stats: engine.campaignStats(c.id) }));
-  res.render('admin/whatsapp/campaigns', { title: 'Campanhas', campaigns });
+  res.render('campaigns', { title: 'Campanhas', campaigns });
 });
 
-admin.get('/campanhas/nova', (req, res) => {
+painel.get('/campanhas/nova', (req, res) => {
   const counts = engine.groupCounts();
-  res.render('admin/whatsapp/campaign-form', {
+  res.render('campaign-form', {
     title: 'Nova campanha',
-    kits: store.waKits.all(),
-    groups: store.waGroups.all().map((g) => ({ ...g, count: counts[g.id] || 0 })),
+    kits: store.kits.all(),
+    groups: store.groups.all().map((g) => ({ ...g, count: counts[g.id] || 0 })),
     values: { groupIds: [].concat(req.query.grupo || []), kitId: req.query.kit || '' },
   });
 });
 
-admin.post('/campanhas/nova', verifyCsrf, async (req, res) => {
-  const groupIds = [].concat(req.body.groupIds || []).filter((id) => store.waGroups.findById(id));
-  const kit = store.waKits.findById(req.body.kitId);
+painel.post('/campanhas/nova', verifyCsrf, async (req, res) => {
+  const groupIds = [].concat(req.body.groupIds || []).filter((id) => store.groups.findById(id));
+  const kit = store.kits.findById(req.body.kitId);
   const name = String(req.body.name || '').trim();
   if (!name || !kit || !groupIds.length) {
     flash(req, 'error', 'Informe o nome, escolha o kit e pelo menos um grupo.');
-    return res.redirect('/admin/whatsapp/campanhas/nova');
+    return res.redirect('/campanhas/nova');
   }
   const when = String(req.body.scheduledAt || '').trim();
   const scheduledAt = when ? new Date(when) : null;
   if (scheduledAt && Number.isNaN(scheduledAt.getTime())) {
     flash(req, 'error', 'Data de agendamento inválida.');
-    return res.redirect('/admin/whatsapp/campanhas/nova');
+    return res.redirect('/campanhas/nova');
   }
-  const campaign = store.waCampaigns.save({
+  const campaign = store.campaigns.save({
     name,
     kitId: kit.id,
     groupIds,
@@ -383,11 +383,11 @@ admin.post('/campanhas/nova', verifyCsrf, async (req, res) => {
   } else {
     flash(req, 'success', scheduledAt ? 'Campanha agendada.' : 'Campanha salva como rascunho.');
   }
-  return res.redirect(`/admin/whatsapp/campanhas/${campaign.id}`);
+  return res.redirect(`/campanhas/${campaign.id}`);
 });
 
-admin.get('/campanhas/:id', (req, res, next) => {
-  const campaign = store.waCampaigns.findById(req.params.id);
+painel.get('/campanhas/:id', (req, res, next) => {
+  const campaign = store.campaigns.findById(req.params.id);
   if (!campaign) return next();
   const records = log.byCampaign(campaign.id);
   const filter = String(req.query.filtro || '');
@@ -400,11 +400,11 @@ admin.get('/campanhas/:id', (req, res, next) => {
   const list = filters[filter] ? records.filter(filters[filter]) : records;
   const counts = engine.groupCounts();
   const preview = ['draft', 'scheduled'].includes(campaign.status) ? engine.recipientsFor(campaign.groupIds || []) : null;
-  return res.render('admin/whatsapp/campaign', {
+  return res.render('campaign', {
     title: campaign.name,
     campaign,
-    kit: store.waKits.findById(campaign.kitId),
-    groups: store.waGroups.all().filter((g) => (campaign.groupIds || []).includes(g.id)).map((g) => ({ ...g, count: counts[g.id] || 0 })),
+    kit: store.kits.findById(campaign.kitId),
+    groups: store.groups.all().filter((g) => (campaign.groupIds || []).includes(g.id)).map((g) => ({ ...g, count: counts[g.id] || 0 })),
     stats: log.stats(records),
     records: list.slice(-500).reverse(),
     matched: list.length,
@@ -413,36 +413,36 @@ admin.get('/campanhas/:id', (req, res, next) => {
   });
 });
 
-admin.post('/campanhas/:id/iniciar', verifyCsrf, async (req, res) => {
+painel.post('/campanhas/:id/iniciar', verifyCsrf, async (req, res) => {
   try {
     await engine.startCampaign(req.params.id);
     flash(req, 'success', 'Envio iniciado.');
   } catch (err) {
     flash(req, 'error', err.message);
   }
-  res.redirect(`/admin/whatsapp/campanhas/${req.params.id}`);
+  res.redirect(`/campanhas/${req.params.id}`);
 });
 
-admin.post('/campanhas/:id/pausar', verifyCsrf, (req, res) => {
+painel.post('/campanhas/:id/pausar', verifyCsrf, (req, res) => {
   engine.pauseCampaign(req.params.id);
   flash(req, 'success', 'Campanha pausada.');
-  res.redirect(`/admin/whatsapp/campanhas/${req.params.id}`);
+  res.redirect(`/campanhas/${req.params.id}`);
 });
 
-admin.post('/campanhas/:id/cancelar', verifyCsrf, (req, res) => {
+painel.post('/campanhas/:id/cancelar', verifyCsrf, (req, res) => {
   engine.cancelCampaign(req.params.id);
   flash(req, 'success', 'Campanha cancelada. Mensagens ainda na fila não serão enviadas.');
-  res.redirect(`/admin/whatsapp/campanhas/${req.params.id}`);
+  res.redirect(`/campanhas/${req.params.id}`);
 });
 
-admin.post('/campanhas/:id/excluir', verifyCsrf, (req, res) => {
+painel.post('/campanhas/:id/excluir', verifyCsrf, (req, res) => {
   engine.deleteCampaign(req.params.id);
   flash(req, 'success', 'Campanha excluída.');
-  res.redirect('/admin/whatsapp/campanhas');
+  res.redirect('/campanhas');
 });
 
-admin.get('/campanhas/:id/relatorio.csv', (req, res, next) => {
-  const campaign = store.waCampaigns.findById(req.params.id);
+painel.get('/campanhas/:id/relatorio.csv', (req, res, next) => {
+  const campaign = store.campaigns.findById(req.params.id);
   if (!campaign) return next();
   return sendCsv(
     res,
@@ -475,4 +475,4 @@ webhook.post('/', (req, res) => {
   return undefined;
 });
 
-module.exports = { admin, webhook };
+module.exports = { painel, webhook };

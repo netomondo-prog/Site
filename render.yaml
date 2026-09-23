@@ -30,17 +30,6 @@ services:
         sync: false
       - key: MAIL_TO
         value: contato@jtec.com.br
-      # WhatsApp Cloud API (docs/whatsapp-api-setup.md). Preencha no painel do Render.
-      - key: WHATSAPP_TOKEN
-        sync: false
-      - key: WHATSAPP_PHONE_NUMBER_ID
-        sync: false
-      - key: WHATSAPP_BUSINESS_ACCOUNT_ID
-        sync: false
-      - key: WHATSAPP_APP_SECRET
-        sync: false
-      - key: WHATSAPP_VERIFY_TOKEN
-        generateValue: true
     # Para manter as edições do painel entre deploys é preciso um disco
     # persistente (plano pago). Descomente as linhas abaixo e defina DATA_DIR.
     # disk:

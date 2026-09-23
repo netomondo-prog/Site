@@ -9,7 +9,6 @@ const express = require('express');
 const store = require('../lib/store');
 const text = require('../lib/text');
 const { checkCredentials, requireAuth, verifyCsrf } = require('../middleware/auth');
-const whatsapp = require('./whatsapp');
 
 const router = express.Router();
 
@@ -168,10 +167,6 @@ router.post('/logout', verifyCsrf, (req, res) => {
 });
 
 router.use(requireAuth);
-
-// ---------- Disparo de WhatsApp ----------
-
-router.use('/whatsapp', whatsapp.admin);
 
 // ---------- Dashboard ----------
 

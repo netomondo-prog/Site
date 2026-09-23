@@ -1,5 +1,4 @@
-<%- include('../_head', { title: 'Grupo: ' + title, actions: '<a class="btn btn--sm btn--outline" href="/admin/whatsapp/grupos/' + group.id + '/exportar">Exportar CSV</a> <a class="btn btn--sm btn--primary" href="/admin/whatsapp/campanhas/nova?grupo=' + group.id + '">Disparar para este grupo</a>' }) %>
-<%- include('_nav') %>
+<%- include('_head', { title: 'Grupo: ' + title, actions: '<a class="btn btn--sm btn--outline" href="/grupos/' + group.id + '/exportar">Exportar CSV</a> <a class="btn btn--sm btn--primary" href="/campanhas/nova?grupo=' + group.id + '">Disparar para este grupo</a>' }) %>
 
 <div class="tiles tiles--3">
   <div class="tile"><span class="tile__value"><%= total %></span><span class="tile__label">Contatos no grupo</span></div>
@@ -16,7 +15,7 @@
 <% } %>
 
 <div class="grid-2">
-  <form class="panel form form--admin" method="post" action="/admin/whatsapp/grupos/<%= group.id %>/importar" enctype="multipart/form-data">
+  <form class="panel form form--admin" method="post" action="/grupos/<%= group.id %>/importar" enctype="multipart/form-data">
     <h2 class="panel__title">Subir lista</h2>
     <input type="hidden" name="_csrf" value="<%= csrf %>">
     <div class="field">
@@ -26,14 +25,14 @@
     </div>
     <div class="field">
       <label for="colar">…ou cole a lista</label>
-      <textarea id="colar" name="colar" rows="5" placeholder="telefone;nome;empresa&#10;19999990000;Maria Silva;Usina X&#10;(11) 98888-7777;João;Química Y"></textarea>
+      <textarea id="colar" name="colar" rows="5" placeholder="telefone;nome;empresa&#10;19999990000;Maria Silva;Empresa Alfa&#10;(11) 98888-7777;João;Empresa Beta"></textarea>
     </div>
     <button class="btn btn--primary" type="submit">Importar para o grupo</button>
     <p class="help">Importe apenas contatos que autorizaram receber mensagens da empresa pelo WhatsApp (exigência da Meta e da LGPD).</p>
   </form>
 
   <div>
-    <form class="panel form form--admin" method="post" action="/admin/whatsapp/grupos/<%= group.id %>/contato">
+    <form class="panel form form--admin" method="post" action="/grupos/<%= group.id %>/contato">
       <h2 class="panel__title">Adicionar contato</h2>
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <div class="form__row">
@@ -43,7 +42,7 @@
       <button class="btn btn--outline" type="submit">Adicionar</button>
     </form>
 
-    <form class="panel form form--admin" method="post" action="/admin/whatsapp/grupos/<%= group.id %>">
+    <form class="panel form form--admin" method="post" action="/grupos/<%= group.id %>">
       <h2 class="panel__title">Dados do grupo</h2>
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <div class="field"><label for="e-name">Nome</label><input id="e-name" name="name" type="text" value="<%= group.name %>" required></div>
@@ -62,7 +61,7 @@
     </form>
   </div>
   <% if (contacts.length) { %>
-    <form id="remove-form" method="post" action="/admin/whatsapp/grupos/<%= group.id %>/remover" data-confirm="Remover os contatos selecionados deste grupo?">
+    <form id="remove-form" method="post" action="/grupos/<%= group.id %>/remover" data-confirm="Remover os contatos selecionados deste grupo?">
       <input type="hidden" name="_csrf" value="<%= csrf %>">
     </form>
     <table class="table">
@@ -76,7 +75,7 @@
             <td><small class="muted"><%= Object.entries(c.fields || {}).filter(([, v]) => v).map(([k, v]) => k + ': ' + v).join(' · ') %></small></td>
             <td><span class="status status--<%= c.optOut ? 'off' : 'on' %>"><%= c.optOut ? 'Descadastrado' : 'Ativo' %></span></td>
             <td class="table__actions">
-              <form method="post" action="/admin/whatsapp/contatos/<%= c.id %>/optout">
+              <form method="post" action="/contatos/<%= c.id %>/optout">
                 <input type="hidden" name="_csrf" value="<%= csrf %>">
                 <input type="hidden" name="optOut" value="<%= c.optOut ? 'false' : 'true' %>">
                 <button class="btn btn--sm btn--ghost-dark" type="submit"><%= c.optOut ? 'Reativar' : 'Descadastrar' %></button>
@@ -89,7 +88,7 @@
     <p class="muted"><small>Mostrando <%= shown %> de <%= matched %>.</small></p>
     <div class="form__actions">
       <button class="btn btn--sm btn--danger" type="submit" form="remove-form">Remover selecionados do grupo</button>
-      <form method="post" action="/admin/whatsapp/grupos/<%= group.id %>/excluir" data-confirm="Excluir o grupo &quot;<%= group.name %>&quot;? Contatos que não estiverem em outro grupo também serão apagados.">
+      <form method="post" action="/grupos/<%= group.id %>/excluir" data-confirm="Excluir o grupo &quot;<%= group.name %>&quot;? Contatos que não estiverem em outro grupo também serão apagados.">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
         <button class="btn btn--sm btn--danger" type="submit">Excluir grupo</button>
       </form>
@@ -97,7 +96,7 @@
   <% } else { %>
     <p class="muted"><%= q ? 'Nenhum contato encontrado.' : 'Grupo vazio. Suba uma lista acima.' %></p>
     <% if (!q) { %>
-      <form method="post" action="/admin/whatsapp/grupos/<%= group.id %>/excluir" data-confirm="Excluir o grupo?">
+      <form method="post" action="/grupos/<%= group.id %>/excluir" data-confirm="Excluir o grupo?">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
         <button class="btn btn--sm btn--danger" type="submit">Excluir grupo</button>
       </form>
@@ -105,4 +104,4 @@
   <% } %>
 </div>
 
-<%- include('../_foot') %>
+<%- include('_foot') %>

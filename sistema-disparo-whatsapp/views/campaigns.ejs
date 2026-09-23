@@ -1,0 +1,11 @@
+<%- include('_head', { title, actions: '<a class="btn btn--primary btn--sm" href="/campanhas/nova">+ Nova campanha</a>' }) %>
+
+<div class="panel">
+  <% if (campaigns.length) { %>
+    <%- include('_campaign-table', { campaigns }) %>
+  <% } else { %>
+    <p class="muted">Nenhuma campanha criada. <a href="/campanhas/nova">Criar a primeira</a>.</p>
+  <% } %>
+</div>
+
+<%- include('_foot') %>

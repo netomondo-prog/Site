@@ -1,12 +1,11 @@
-<%- include('../_head', { title }) %>
-<%- include('_nav') %>
+<%- include('_head', { title }) %>
 <% const cfg = wa.config; %>
 
 <div class="tiles">
-  <a class="tile" href="/admin/whatsapp/grupos"><span class="tile__value"><%= counts.groups %></span><span class="tile__label">Grupos de interesse</span></a>
-  <a class="tile" href="/admin/whatsapp/grupos"><span class="tile__value"><%= counts.contacts %></span><span class="tile__label">Contatos (<%= counts.optOut %> descadastrados)</span></a>
-  <a class="tile" href="/admin/whatsapp/kits"><span class="tile__value"><%= counts.kits %></span><span class="tile__label">Kits de mídia</span></a>
-  <a class="tile tile--accent" href="/admin/whatsapp/campanhas"><span class="tile__value"><%= counts.campaigns %></span><span class="tile__label">Campanhas</span></a>
+  <a class="tile" href="/grupos"><span class="tile__value"><%= counts.groups %></span><span class="tile__label">Grupos de interesse</span></a>
+  <a class="tile" href="/grupos"><span class="tile__value"><%= counts.contacts %></span><span class="tile__label">Contatos (<%= counts.optOut %> descadastrados)</span></a>
+  <a class="tile" href="/kits"><span class="tile__value"><%= counts.kits %></span><span class="tile__label">Kits de mídia</span></a>
+  <a class="tile tile--accent" href="/campanhas"><span class="tile__value"><%= counts.campaigns %></span><span class="tile__label">Campanhas</span></a>
 </div>
 
 <div class="panel">
@@ -18,7 +17,7 @@
     <div class="alert alert--warn">
       <strong>Modo simulação.</strong> As credenciais da WhatsApp Cloud API ainda não foram configuradas, então nenhuma mensagem real é enviada.
       Você já pode montar grupos, kits e campanhas; os envios aparecem como simulados.
-      Siga o guia <code>docs/whatsapp-api-setup.md</code> para cadastrar o número e preencha as variáveis abaixo.
+      Siga o guia <code>docs/configurar-numero-api-oficial.md</code> para cadastrar o número e preencha as variáveis abaixo.
     </div>
   <% } %>
   <% if (apiError) { %><div class="alert alert--error">Erro ao consultar a API: <%= apiError %></div><% } %>
@@ -67,7 +66,7 @@
 <div class="panel">
   <div class="panel__head">
     <h2>Últimas campanhas</h2>
-    <a class="btn btn--sm btn--primary" href="/admin/whatsapp/campanhas/nova">+ Nova campanha</a>
+    <a class="btn btn--sm btn--primary" href="/campanhas/nova">+ Nova campanha</a>
   </div>
   <% if (campaigns.length) { %>
     <%- include('_campaign-table', { campaigns }) %>
@@ -76,4 +75,4 @@
   <% } %>
 </div>
 
-<%- include('../_foot') %>
+<%- include('_foot') %>

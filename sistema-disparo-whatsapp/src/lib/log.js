@@ -2,13 +2,13 @@
 
 /**
  * Registro de envios (um item por destinatário de campanha), guardado em
- * data/wa-log.json. Fica em memória e é gravado em disco com atraso curto,
+ * data/envios.json. Fica em memória e é gravado em disco com atraso curto,
  * para não reescrever o arquivo a cada mensagem enviada.
  */
 
-const store = require('../store');
+const store = require('./store');
 
-const FILE = 'wa-log';
+const FILE = 'envios';
 const STATUS_RANK = { queued: 0, sent: 1, delivered: 2, read: 3 };
 
 let cache = null;

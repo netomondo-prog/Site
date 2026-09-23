@@ -1,13 +1,12 @@
-<%- include('../_head', { title }) %>
-<%- include('_nav') %>
+<%- include('_head', { title }) %>
 
 <% if (!kits.length || !groups.length) { %>
-  <div class="alert alert--warn">Antes de criar a campanha, cadastre <% if (!groups.length) { %><a href="/admin/whatsapp/grupos">um grupo com contatos</a><% } %><%= !kits.length && !groups.length ? ' e ' : '' %><% if (!kits.length) { %><a href="/admin/whatsapp/kits/novo">um kit de mídia</a><% } %>.</div>
+  <div class="alert alert--warn">Antes de criar a campanha, cadastre <% if (!groups.length) { %><a href="/grupos">um grupo com contatos</a><% } %><%= !kits.length && !groups.length ? ' e ' : '' %><% if (!kits.length) { %><a href="/kits/novo">um kit de mídia</a><% } %>.</div>
 <% } %>
 
-<form class="panel form form--admin" method="post" action="/admin/whatsapp/campanhas/nova">
+<form class="panel form form--admin" method="post" action="/campanhas/nova">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
-  <div class="field"><label for="c-name">Nome da campanha*</label><input id="c-name" name="name" type="text" required placeholder="Ex.: Lançamento JT-G — usinas"></div>
+  <div class="field"><label for="c-name">Nome da campanha*</label><input id="c-name" name="name" type="text" required placeholder="Ex.: Lançamento — clientes ativos"></div>
   <div class="field">
     <label for="c-kit">Kit de mídia*</label>
     <select id="c-kit" name="kitId" required>
@@ -35,4 +34,4 @@
   </div>
 </form>
 
-<%- include('../_foot') %>
+<%- include('_foot') %>

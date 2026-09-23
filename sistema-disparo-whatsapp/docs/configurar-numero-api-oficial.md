@@ -1,7 +1,7 @@
 # Cadastro do número na API oficial do WhatsApp (Cloud API)
 
 Guia passo a passo para colocar um número **novo** (ainda não cadastrado) na
-WhatsApp Cloud API da Meta e ligar ao painel de disparo (`/admin/whatsapp`).
+WhatsApp Cloud API da Meta e ligar ao Sistema de Disparo WhatsApp.
 
 > As telas da Meta mudam de nome com frequência. Se algum menu não bater
 > exatamente, procure pelo mesmo termo em inglês (entre parênteses).
@@ -37,7 +37,7 @@ WhatsApp Cloud API da Meta e ligar ao painel de disparo (`/admin/whatsapp`).
 
 1. Acesse https://developers.facebook.com → **Meus apps → Criar app**.
 2. Caso de uso: **Outro** → tipo **Empresa (Business)**.
-3. Dê um nome (ex.: “JTEC Disparos”), informe o e-mail e **selecione o portfólio
+3. Dê um nome (ex.: “Minha Empresa Disparos”), informe o e-mail e **selecione o portfólio
    empresarial** do passo 1.
 4. No painel do app, em **Adicionar produtos**, clique em **Configurar** no
    **WhatsApp**.
@@ -53,9 +53,9 @@ WhatsApp Cloud API da Meta e ligar ao painel de disparo (`/admin/whatsapp`).
    (ou pelo WhatsApp Manager: https://business.facebook.com/wa/manage/phone-numbers/).
 2. Preencha o **perfil do WhatsApp Business**:
    - **Nome de exibição**: deve ter relação clara com a empresa/marca (ex.:
-     “JTEC Válvulas Industriais”). Sem termos genéricos isolados, sem
+     “Nome da Sua Empresa”). Sem termos genéricos isolados, sem
      emojis/pontuação excessiva, capitalização normal. Ele passa por revisão.
-   - **Fuso horário**, **categoria** (ex.: Serviços industriais) e descrição.
+   - **Fuso horário**, **categoria**  e descrição.
 3. Informe o número com o código do país (+55 e DDD) e escolha **SMS** ou
    **Ligação** para receber o código de 6 dígitos. Digite o código.
 4. Anote o **ID do número de telefone (Phone number ID)** e o **ID da conta do
@@ -111,7 +111,7 @@ O webhook é o que permite ao sistema saber que a mensagem foi entregue/lida e,
 principalmente, **enviar o restante do kit quando o contato responde**.
 
 1. No servidor, defina `WHATSAPP_VERIFY_TOKEN` com uma frase qualquer (ex.:
-   `jtec-webhook-2026`) e reinicie a aplicação.
+   `meu-webhook-2026`) e reinicie a aplicação.
 2. No app (developers.facebook.com) → **WhatsApp → Configuração
    (Configuration)** → **Webhook → Editar**:
    - **URL de callback**: `https://SEU-DOMINIO/webhooks/whatsapp`
@@ -140,15 +140,15 @@ Toda campanha começa com um modelo aprovado. Em WhatsApp Manager → **Modelos
 de mensagem → Criar modelo**:
 
 - **Categoria**: *Marketing* (divulgação de produtos/materiais).
-- **Nome**: minúsculas e `_`, ex.: `lancamento_valvula_jtg`.
+- **Nome**: minúsculas e `_`, ex.: `lancamento_produto`.
 - **Idioma**: Português (BR) → `pt_BR`.
 - **Cabeçalho**: *Mídia → Vídeo* (ou *Imagem*). É a peça principal do kit; ao
   criar o modelo a Meta pede um arquivo de exemplo.
 - **Corpo**, com variáveis, por exemplo:
 
   ```
-  Olá, {{1}}! A JTEC acaba de lançar a válvula globo JT-G, pensada para {{2}}.
-  Preparamos um kit com fotos, ficha técnica e vídeo de aplicação.
+  Olá, {{1}}! Acabamos de lançar uma novidade pensada para {{2}}.
+  Preparamos um kit com fotos e vídeo de apresentação.
   Toque em "Quero receber" para ver o material completo.
   ```
 - **Rodapé**: `Responda SAIR para não receber mais mensagens.`
@@ -158,11 +158,11 @@ de mensagem → Criar modelo**:
 A aprovação costuma levar de minutos a 24h. O botão de resposta rápida é o que
 abre a janela de 24h e dispara a entrega automática do restante do kit.
 
-No painel (`/admin/whatsapp/kits`), no kit correspondente:
+No sistema (menu **Kits de mídia**), no kit correspondente:
 
 | Campo do kit | Valor para o exemplo acima |
 |---|---|
-| Nome do modelo aprovado | `lancamento_valvula_jtg` |
+| Nome do modelo aprovado | `lancamento_produto` |
 | Idioma | `pt_BR` |
 | Variáveis (uma por linha) | `{nome\|cliente}` e `{segmento\|a sua operação}` |
 | Mídia do cabeçalho | o vídeo do kit |
@@ -177,7 +177,7 @@ WHATSAPP_TOKEN=EAAG...                 # token permanente do passo 5
 WHATSAPP_PHONE_NUMBER_ID=1234567890    # passo 3
 WHATSAPP_BUSINESS_ACCOUNT_ID=987654321 # WABA ID, passo 3 (lista os modelos no painel)
 WHATSAPP_APP_SECRET=abc123...          # passo 7.4
-WHATSAPP_VERIFY_TOKEN=jtec-webhook-2026
+WHATSAPP_VERIFY_TOKEN=meu-webhook-2026
 WHATSAPP_API_VERSION=v23.0             # versão da Graph API
 WHATSAPP_RATE_PER_SECOND=10            # velocidade máxima do disparo
 DATA_DIR=/data                         # disco persistente (listas, kits e histórico)
@@ -185,7 +185,7 @@ DATA_DIR=/data                         # disco persistente (listas, kits e hist�
 
 Sem `WHATSAPP_TOKEN`/`WHATSAPP_PHONE_NUMBER_ID` o painel funciona em **modo
 simulação** (nada é enviado), o que permite montar tudo antes do número estar
-pronto. Depois de configurar, a página **WhatsApp → Visão geral** mostra o
+pronto. Depois de configurar, a página ****Visão geral** do sistema** mostra o
 número, o nome verificado, a qualidade e a lista de modelos aprovados.
 
 > **Disco persistente**: listas, kits (imagens/vídeos) e histórico ficam em

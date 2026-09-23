@@ -151,11 +151,4 @@ module.exports = {
   posts: collection('posts'),
   messages: collection('messages'),
   segments: collection('segments'),
-  // Módulo de disparo de WhatsApp (API oficial)
-  waGroups: collection('wa-groups'),
-  waContacts: collection('wa-contacts'),
-  waKits: collection('wa-kits'),
-  waCampaigns: collection('wa-campaigns'),
-  read,
-  write,
 };

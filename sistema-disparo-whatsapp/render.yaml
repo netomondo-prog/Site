@@ -1,0 +1,37 @@
+# Blueprint do Render (https://render.com/docs/blueprint-spec)
+# O sistema fica na pasta sistema-disparo-whatsapp do repositório (rootDir).
+services:
+  - type: web
+    name: sistema-disparo-whatsapp
+    runtime: node
+    rootDir: sistema-disparo-whatsapp
+    plan: starter            # disco persistente exige plano pago
+    region: oregon
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /health
+    disk:
+      name: disparo-dados
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /data
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_BUSINESS_ACCOUNT_ID
+        sync: false
+      - key: WHATSAPP_APP_SECRET
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        generateValue: true

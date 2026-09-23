@@ -1,5 +1,4 @@
-<%- include('../_head', { title, actions: '<a class="btn btn--primary btn--sm" href="/admin/whatsapp/kits/novo">+ Novo kit</a>' }) %>
-<%- include('_nav') %>
+<%- include('_head', { title, actions: '<a class="btn btn--primary btn--sm" href="/kits/novo">+ Novo kit</a>' }) %>
 
 <div class="panel">
   <% if (kits.length) { %>
@@ -14,16 +13,16 @@
             <td><%= items.filter((i) => i.type === 'image').length %> imagem(ns) · <%= items.filter((i) => i.type === 'video').length %> vídeo(s)<%= items.some((i) => i.type === 'document') ? ' · ' + items.filter((i) => i.type === 'document').length + ' PDF' : '' %></td>
             <td><%= labels[k.delivery] || k.delivery %></td>
             <td class="table__actions">
-              <a class="btn btn--sm btn--outline" href="/admin/whatsapp/kits/<%= k.id %>"><%- include('../../partials/icon', { name: 'edit', cls: 'icon icon--sm' }) %> Editar</a>
-              <a class="btn btn--sm btn--ghost-dark" href="/admin/whatsapp/campanhas/nova?kit=<%= k.id %>">Usar em campanha</a>
+              <a class="btn btn--sm btn--outline" href="/kits/<%= k.id %>"><%- include('partials/icon', { name: 'edit', cls: 'icon icon--sm' }) %> Editar</a>
+              <a class="btn btn--sm btn--ghost-dark" href="/campanhas/nova?kit=<%= k.id %>">Usar em campanha</a>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
   <% } else { %>
-    <p class="muted">Nenhum kit cadastrado. Um kit reúne o modelo aprovado pela Meta e as imagens/vídeo que serão enviados. <a href="/admin/whatsapp/kits/novo">Criar o primeiro</a>.</p>
+    <p class="muted">Nenhum kit cadastrado. Um kit reúne o modelo aprovado pela Meta e as imagens/vídeo que serão enviados. <a href="/kits/novo">Criar o primeiro</a>.</p>
   <% } %>
 </div>
 
-<%- include('../_foot') %>
+<%- include('_foot') %>
