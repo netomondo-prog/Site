@@ -1,0 +1,46 @@
+JTECK VALVE SERVICE · IDENTIDADE VISUAL
+Pacote de entrega · Artefacto
+
+01-defesa-da-marca      Apresentação do conceito da marca (PDF, 21 páginas).
+02-manual-de-identidade-visual
+                        Regras de uso: construção, área de proteção, redução,
+                        cores (CMYK, RGB, HEX, Pantone), versões, proibições.
+03-papelaria            Mockups para aprovação + arquivos de impressão.
+  arquivos-de-impressao Todos com 3 mm de sangria e TrimBox/BleedBox gravados.
+                        Cartão 90x50 (frente e verso) + máscara de verniz do verso,
+                        timbrado A4, envelope carta, envelope saco, pasta (capa e
+                        bolso), caderno A5, crachá CR80.
+04-logotipo             Kit do logotipo. Veja a folha-de-apresentacao.pdf.
+05-digital              Assinatura de e-mail em HTML (texto e links clicáveis)
+                        e em PNG.
+
+QUAL ARQUIVO USAR
+  Gráfica, offset, brindes ........ 04-logotipo/impressao-cmyk/*.pdf ou *.eps
+  Cor especial (Pantone) .......... 04-logotipo/pantone/*.pdf
+  Site, redes, apresentações ...... 04-logotipo/digital-rgb/*.svg ou png/
+  Avatar, favicon, aplicativo ..... 04-logotipo/icone/ (SVG, PNG e favicon.ico)
+  Bordado, laser, recorte ......... versões "sem-dobra" (uma cor, sem meio-tom)
+  Sobre Azul JTECK ou Cinza aço ... jteck-logo-branco-sem-dobra
+  Fundos escuros .................. jteck-logo-negativo
+
+TIPO DE VETOR
+  Todo o logotipo é vetor de curvas: formas geométricas desenhadas
+  (retas e arcos) e o texto VALVE SERVICE convertido em contornos.
+  Não depende de fontes instaladas e amplia sem perda.
+  SVG = RGB para tela. PDF/EPS = CMYK ou Pantone para impressão.
+
+CORES
+  Azul JTECK   #064590  C100 M72 Y0 K12   Pantone 2945 C
+  Cinza aço    #7D7D7E  K60               Pantone Cool Gray 9 C
+  Cinza claro  #D9D8D3  C0 M0 Y3 K18      Pantone Cool Gray 1 C (dobra do J)
+  Solar        #E6AF39  C0 M27 Y85 K5     Pantone 7409 C
+  Apoio: Azul profundo #0B2347 (289 C) · Cinza negativo #B8BFCA
+
+ANTES DE IMPRIMIR (pendências com a gráfica)
+  - Envelopes e pasta: montar o planificado sobre a faca da gráfica.
+  - Crachá: cantos e furo do cordão são feitos pela faca do fornecedor.
+  - Converter as peças para o perfil CMYK da gráfica (PDF/X) e pedir prova de cor.
+  - Conferir nome, cargo, telefone, e-mail e endereço antes da tiragem.
+
+Fontes: Montserrat e Inter (Google Fonts, gratuitas).
+Contato: contato@artefacto.art.br · 19 99675.8920

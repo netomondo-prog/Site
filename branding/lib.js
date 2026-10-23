@@ -21,6 +21,8 @@ const C = {
   muted: '#6b7280',
   white: '#ffffff',
 };
+/** Fundo institucional único: Azul JTECK → Azul profundo. */
+C.bgInst = `linear-gradient(165deg,${C.blue} 0%,${C.blueDeep} 70%)`;
 
 const DATA = {
   nome: 'Jean Pierre Pinheiro Silva',
@@ -30,13 +32,14 @@ const DATA = {
   site: 'www.jteck.com.br',
   tel: '+55 19 3245.2758',
   end1: 'R. Antônio Haddad, Nº 76',
-  end2: 'Parque Via Norte, Campinas - SP',
+  end2: 'Parque Via Norte, Campinas – SP',
 };
 
 /* ---------- SVGs ---------- */
 const clean = (svg) => svg.replace(/<\?xml[^>]*>/, '').replace(/\swidth="[^"]*"\s+height="[^"]*"/, '');
 const LOGO = {
   cor: clean(read('jteck-logo.svg')),
+  'preto-sem-dobra': clean(read('jteck-logo-preto-sem-dobra.svg')),
   negativo: clean(read('jteck-logo-negativo.svg')),
   preto: clean(read('jteck-logo-preto.svg')),
   branco: clean(read('jteck-logo-branco.svg')),
@@ -48,23 +51,24 @@ const logo = (v = 'cor', style = '') => LOGO[v].replace('<svg ', `<svg style="di
 const artefacto = (style = '') => ARTEFACTO.replace('<svg ', `<svg style="display:block;width:100%;height:auto;${style}" `);
 const qr = (k = 'site', style = '') => QR[k].replace('<svg ', `<svg viewBox="0 0 250 250" style="display:block;width:100%;height:auto;${style}" `);
 
-/** J com a dobra (elemento gráfico). */
+/** J com a dobra (elemento gráfico). A dobra vem antes, por baixo do J. */
 function jFold({ blue = C.blue, flap = C.grayLight, flapOpacity = 1, style = '' } = {}) {
   return `<svg viewBox="30 0 205 238" style="display:block;${style}" xmlns="http://www.w3.org/2000/svg">
-    <path fill="${blue}" d="${parts.J}"/>
     <path fill="${flap}" fill-opacity="${flapOpacity}" d="${parts.FLAP}"/>
+    <path fill="${blue}" d="${parts.J}"/>
   </svg>`;
 }
 
-/** Ícone reduzido: J com dobra dentro de um quadrado, com o acento solar. */
-function icon({ bg = C.blue, j = '#fff', flap = C.grayLight, radius = 18, style = '' } = {}) {
+const ICON_TF = (([k, x, y, ox, oy]) => `translate(${x} ${y}) scale(${k}) translate(${-ox} ${-oy})`)(parts.icon.tf);
+/** Ícone reduzido: J com dobra num quadrado de raio 14, com o acento solar (mesma geometria do arquivo jteck-icone.svg). */
+function icon({ bg = C.blue, j = '#fff', flap = C.grayLight, radius = 14, style = '' } = {}) {
   return `<svg viewBox="0 0 100 100" style="display:block;${style}" xmlns="http://www.w3.org/2000/svg">
     <rect width="100" height="100" rx="${radius}" fill="${bg}"/>
-    <g transform="translate(24 18) scale(0.25) translate(-35 -2)">
-      <path fill="${j}" d="${parts.J}"/>
+    <g transform="${ICON_TF}">
       <path fill="${flap}" d="${parts.FLAP}"/>
+      <path fill="${j}" d="${parts.J}"/>
     </g>
-    <rect x="58" y="68" width="20" height="5" rx="2.5" fill="${C.solar}"/>
+    <path fill="${C.solar}" d="${parts.icon.dash}"/>
   </svg>`;
 }
 
@@ -75,22 +79,31 @@ function eModule({ top = C.gray, mid = C.blue, bot = C.gray, style = '' } = {}) 
   </svg>`;
 }
 
-/** Padrão modular (barras do E) para fundos. */
-function pattern({ color = '#ffffff', opacity = 0.06, size = 14, id = 'p' + Math.random().toString(36).slice(2, 7) } = {}) {
-  const w = size * 2.4;
-  const h = size * 2;
-  return `<svg width="100%" height="100%" style="position:absolute;inset:0" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <defs><pattern id="${id}" width="${w}" height="${h}" patternUnits="userSpaceOnUse">
-      <g fill="${color}" fill-opacity="${opacity}">
-        <rect x="0" y="0" width="${size}" height="${size * 0.2}"/>
-        <rect x="0" y="${size * 0.39}" width="${size}" height="${size * 0.2}" fill-opacity="${opacity * 1.6}"/>
-        <rect x="0" y="${size * 0.78}" width="${size}" height="${size * 0.2}"/>
-        <rect x="${w / 2}" y="${h / 2}" width="${size}" height="${size * 0.2}"/>
-        <rect x="${w / 2}" y="${h / 2 + size * 0.39}" width="${size}" height="${size * 0.2}" fill-opacity="${opacity * 1.6}"/>
-        <rect x="${w / 2}" y="${h / 2 + size * 0.78}" width="${size}" height="${size * 0.2}"/>
-      </g></pattern></defs>
-    <rect width="100%" height="100%" fill="url(#${id})"/>
-  </svg>`;
+/**
+ * Padrão modular (barras do E) em vetor puro: retângulos explícitos, sem <pattern>,
+ * para não ser rasterizado no PDF. w/h = área em mm; size = largura do módulo em mm.
+ * Barra do meio limitada a 8% (regra do manual: 4–8%).
+ */
+function pattern({ w, h, color = '#ffffff', opacity = 0.05, size = 3.7 } = {}) {
+  const cw = size * 2.4, ch = size * 2, bh = size * 0.2, mid = Math.min(opacity * 1.6, 0.08);
+  const out = [], hi = [];
+  for (let y = -ch; y < h + ch; y += ch) {
+    for (let x = -cw; x < w + cw; x += cw) {
+      for (const [dx, dy] of [[0, 0], [cw / 2, ch / 2]]) {
+        const X = (x + dx).toFixed(2), Y = y + dy;
+        out.push(`M${X} ${Y.toFixed(2)}h${size}v${bh}h${-size}Z`, `M${X} ${(Y + size * 0.78).toFixed(2)}h${size}v${bh}h${-size}Z`);
+        hi.push(`M${X} ${(Y + size * 0.39).toFixed(2)}h${size}v${bh}h${-size}Z`);
+      }
+    }
+  }
+  return `<svg viewBox="0 0 ${w} ${h}" style="position:absolute;left:0;top:0;width:${w}mm;height:${h}mm" xmlns="http://www.w3.org/2000/svg">
+    <path fill="${color}" fill-opacity="${opacity}" d="${out.join('')}"/><path fill="${color}" fill-opacity="${mid}" d="${hi.join('')}"/></svg>`;
+}
+
+/** Faixa tricolor oficial 64/29/7, calculada sobre o formato final (w mm) com sangria b. */
+function tri(w = 100, b = 0) {
+  const p = (x) => (b + x * w).toFixed(2) + 'mm';
+  return `linear-gradient(90deg,${C.blue} 0 ${p(0.64)},${C.gray} ${p(0.64)} ${p(0.93)},${C.solar} ${p(0.93)})`;
 }
 
 /* ---------- Ícones de contato ---------- */
@@ -120,31 +133,36 @@ function baseCss(pageW, pageH) {
   `;
 }
 
-/* ================= PEÇAS EM TAMANHO REAL ================= */
+/* ================= PEÇAS EM TAMANHO REAL =================
+   Todas aceitam b = sangria em mm (0 nos mockups, 3 nos arquivos de impressão).
+   O conteúdo é deslocado +b; fundos e faixas avançam até a borda da sangria. */
+const box = (W, H, bg, extra = '') => `width:${W}mm;height:${H}mm;background:${bg};position:relative;overflow:hidden;font-family:Inter;${extra}`;
+const stripe = (w, h, b, where = 'bottom') => `<div style="position:absolute;left:0;right:0;${where}:0;height:${h + b}mm;background:${tri(w, b)}"></div>`;
+const RULE = (w = 0.25, color = C.blue) => `height:${w}mm;background:${color}`;
 
-/** Cartão de visita frente (90x50 mm + sangria). */
+/** Cartão de visita frente (90x50 mm). */
 function cardFront(b = 0) {
   const W = 90 + 2 * b, H = 50 + 2 * b;
-  return `<div style="width:${W}mm;height:${H}mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;right:${-6 + b}mm;top:${-14 + b}mm;width:33mm">
-      ${jFold({ blue: C.blue, flap: C.grayLight, style: 'width:33mm;height:auto' })}
+  return `<div style="${box(W, H, '#fff')}">
+    <div style="position:absolute;right:${-2 + b}mm;top:${3 + b}mm;width:22mm">
+      ${jFold({ blue: C.blue, flap: C.grayLight, style: 'width:22mm;height:auto' })}
     </div>
     <div style="position:absolute;left:${7 + b}mm;top:${7 + b}mm;width:40mm">${logo('cor')}</div>
-    <div style="position:absolute;left:${7 + b}mm;top:${25 + b}mm">
+    <div style="position:absolute;left:${7 + b}mm;top:${22.5 + b}mm">
       <div style="display:flex;align-items:center;gap:1.6mm">
         <span style="display:block;width:4mm;height:0.9mm;border-radius:0.45mm;background:${C.solar}"></span>
         <span class="mont" style="font-weight:700;font-size:8.4pt;color:${C.blueDeep};letter-spacing:.01em">${DATA.nome}</span>
       </div>
       <div style="font-size:6.6pt;color:${C.gray};margin:0.6mm 0 0 5.6mm;letter-spacing:.04em">${DATA.cargo}</div>
     </div>
-    <div style="position:absolute;left:${7 + b}mm;right:${7 + b}mm;top:${33 + b}mm;height:0.25mm;background:linear-gradient(90deg,${C.blue},${C.gray})"></div>
-    <div style="position:absolute;left:${7 + b}mm;top:${35.6 + b}mm;font-size:5.8pt;line-height:1.8;color:${C.ink}">
-      <div style="display:flex;align-items:center;gap:1.3mm">${ic('mail', C.blue, '2.3mm')}${DATA.email}</div>
-      <div style="display:flex;align-items:center;gap:1.3mm">${ic('globe', C.blue, '2.3mm')}${DATA.site}</div>
+    <div style="position:absolute;left:${7 + b}mm;right:${7 + b}mm;top:${30.5 + b}mm;${RULE(0.25)}"></div>
+    <div style="position:absolute;left:${7 + b}mm;top:${32.6 + b}mm;font-size:6.3pt;line-height:1.7;color:${C.ink}">
+      <div style="display:flex;align-items:center;gap:1.3mm">${ic('mail', C.blue, '2.4mm')}${DATA.email}</div>
+      <div style="display:flex;align-items:center;gap:1.3mm">${ic('globe', C.blue, '2.4mm')}${DATA.site}</div>
     </div>
-    <div style="position:absolute;right:${7 + b}mm;top:${35.6 + b}mm;font-size:5.8pt;line-height:1.8;color:${C.ink};text-align:right">
-      <div style="display:flex;align-items:center;gap:1.3mm;justify-content:flex-end">${DATA.tel}${ic('phone', C.blue, '2.3mm')}</div>
-      <div style="display:flex;align-items:flex-start;gap:1.3mm;justify-content:flex-end;line-height:1.45;margin-top:.4mm"><span>${DATA.end1}<br>${DATA.end2}</span>${ic('pin', C.blue, '2.3mm')}</div>
+    <div style="position:absolute;right:${7 + b}mm;top:${32.6 + b}mm;font-size:6.3pt;line-height:1.7;color:${C.ink};text-align:right">
+      <div style="display:flex;align-items:center;gap:1.3mm;justify-content:flex-end">${DATA.tel}${ic('phone', C.blue, '2.4mm')}</div>
+      <div style="display:flex;align-items:flex-start;gap:1.3mm;justify-content:flex-end;line-height:1.45;margin-top:.4mm"><span>${DATA.end1}<br>${DATA.end2}</span><span style="margin-top:.3mm">${ic('pin', C.blue, '2.4mm')}</span></div>
     </div>
   </div>`;
 }
@@ -152,26 +170,36 @@ function cardFront(b = 0) {
 /** Cartão de visita verso. */
 function cardBack(b = 0) {
   const W = 90 + 2 * b, H = 50 + 2 * b;
-  return `<div style="width:${W}mm;height:${H}mm;background:linear-gradient(160deg,#0f3a78 0%,${C.blueDeep} 55%,${C.blueNight} 100%);position:relative;overflow:hidden">
-    ${pattern({ color: '#ffffff', opacity: 0.05, size: 11 })}
-    <div style="position:absolute;left:50%;top:50%;width:46mm;transform:translate(-50%,-58%)">${logo('negativo')}</div>
-    <div style="position:absolute;left:0;right:0;bottom:${6 + b}mm;text-align:center;font-family:Montserrat;font-weight:500;font-size:6pt;letter-spacing:.32em;color:rgba(255,255,255,.7)">${DATA.site.toUpperCase()}</div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:${1.6 + b}mm;background:linear-gradient(90deg,${C.blue} 0 62%,${C.gray} 62% 92%,${C.solar} 92%)"></div>
+  return `<div style="${box(W, H, C.bgInst)}">
+    ${pattern({ w: W, h: H, opacity: 0.05, size: 2.9 })}
+    <div style="position:absolute;left:50%;top:${b + 22}mm;width:46mm;transform:translate(-50%,-50%)">${logo('negativo')}</div>
+    <div style="position:absolute;left:0;right:0;bottom:${8 + b}mm;text-align:center;font-family:Montserrat;font-weight:600;font-size:6.5pt;letter-spacing:.24em;color:#fff">${DATA.site.toUpperCase()}</div>
+    ${stripe(90, 3, b)}
+  </div>`;
+}
+
+/** Máscara de verniz localizado do verso: preto 100% = área com verniz. */
+function cardBackVerniz(b = 0) {
+  const W = 90 + 2 * b, H = 50 + 2 * b;
+  return `<div style="${box(W, H, '#fff')}">
+    <div style="position:absolute;left:50%;top:${b + 22}mm;width:46mm;transform:translate(-50%,-50%)">${logo('preto-sem-dobra').replace(/fill="#[0-9a-fA-F]{3,6}"/g, 'fill="#000"')}</div>
+    <div style="position:absolute;left:${b + 3}mm;bottom:${b + 3}mm;font-family:Inter;font-size:5pt;color:#999">MÁSCARA DE VERNIZ LOCALIZADO · preto 100% = verniz · não imprimir</div>
   </div>`;
 }
 
 /** Papel timbrado A4. */
-function letterhead() {
-  return `<div style="width:210mm;height:297mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:20mm;top:18mm;width:58mm">${logo('cor')}</div>
-    <div style="position:absolute;right:20mm;top:22mm;text-align:right;font-size:7.5pt;line-height:1.6;color:${C.muted}">
+function letterhead(b = 0) {
+  const W = 210 + 2 * b, H = 297 + 2 * b;
+  return `<div style="${box(W, H, '#fff')}">
+    <div style="position:absolute;left:${20 + b}mm;top:${18 + b}mm;width:58mm">${logo('cor')}</div>
+    <div style="position:absolute;right:${20 + b}mm;top:${22 + b}mm;text-align:right;font-size:7.5pt;line-height:1.6;color:${C.muted}">
       <div style="font-family:Montserrat;font-weight:600;color:${C.blueDeep};letter-spacing:.18em;font-size:7pt">MANUTENÇÃO · TESTES · CERTIFICAÇÃO</div>
       <div>Válvulas de segurança, alívio e controle</div>
     </div>
-    <div style="position:absolute;left:20mm;right:20mm;top:42mm;height:0.3mm;background:linear-gradient(90deg,${C.blue},${C.grayLight})"></div>
-    <div style="position:absolute;right:-38mm;bottom:22mm;width:150mm;opacity:.06">${jFold({ blue: C.blue, flap: C.gray, style: 'width:150mm;height:auto' })}</div>
-    <div style="position:absolute;left:20mm;right:20mm;bottom:11mm;font-size:7.3pt;color:${C.ink};line-height:1;white-space:nowrap">
-      <div style="height:0.25mm;background:linear-gradient(90deg,${C.blue},${C.grayLight});margin-bottom:4mm"></div>
+    <div style="position:absolute;left:${20 + b}mm;right:${20 + b}mm;top:${42 + b}mm;${RULE(0.25)}"></div>
+    <div style="position:absolute;right:${-38 + b}mm;bottom:${32 + b}mm;width:140mm">${jFold({ blue: '#e8eef6', flap: '#ededeb', style: 'width:140mm;height:auto' })}</div>
+    <div style="position:absolute;left:${20 + b}mm;right:${20 + b}mm;bottom:${11 + b}mm;font-size:7.3pt;color:${C.ink};line-height:1;white-space:nowrap">
+      <div style="${RULE(0.2, C.gray)};margin-bottom:4mm"></div>
       <div style="display:flex;justify-content:center;gap:7mm">
         <span style="display:flex;align-items:center;gap:1.5mm">${ic('phone', C.blue, '3mm')}${DATA.tel}</span>
         <span style="display:flex;align-items:center;gap:1.5mm">${ic('mail', C.blue, '3mm')}${DATA.emailGeral}</span>
@@ -179,113 +207,129 @@ function letterhead() {
       </div>
       <div style="display:flex;justify-content:center;margin-top:2.6mm"><span style="display:flex;align-items:center;gap:1.5mm">${ic('pin', C.blue, '3mm')}${DATA.end1} · ${DATA.end2}</span></div>
     </div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:5mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+    ${stripe(210, 5, b)}
   </div>`;
 }
 
+const destinatario = (style, fs) => `<div style="position:absolute;${style};border:0.3mm solid #b4b4b5;border-radius:2mm;padding:4mm;font-family:Montserrat;font-size:${fs};letter-spacing:.2em;color:${C.gray}">DESTINATÁRIO</div>`;
+
 /** Envelope carta (229 x 114 mm) — frente e verso. */
-function envelopeCartaFrente() {
-  return `<div style="width:229mm;height:114mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:14mm;top:12mm;width:52mm">${logo('cor')}</div>
-    <div style="position:absolute;left:14mm;top:31mm;font-size:7pt;line-height:1.6;color:${C.muted}">${DATA.end1}<br>${DATA.end2}<br>${DATA.tel} · ${DATA.site}</div>
-    <div style="position:absolute;right:14mm;top:58mm;width:96mm;height:36mm;border:0.25mm dashed ${C.grayLight};border-radius:2mm;display:flex;align-items:flex-start;padding:4mm;font-family:Montserrat;font-size:6.5pt;letter-spacing:.2em;color:${C.gray}">DESTINATÁRIO</div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:4mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+function envelopeCartaFrente(b = 0) {
+  return `<div style="${box(229 + 2 * b, 114 + 2 * b, '#fff')}">
+    <div style="position:absolute;left:${14 + b}mm;top:${12 + b}mm;width:52mm">${logo('cor')}</div>
+    <div style="position:absolute;left:${14 + b}mm;top:${31 + b}mm;font-size:7pt;line-height:1.6;color:${C.muted}">${DATA.end1}<br>${DATA.end2}<br>${DATA.tel} · ${DATA.site}</div>
+    ${destinatario(`right:${14 + b}mm;top:${58 + b}mm;width:96mm;height:36mm`, '6.5pt')}
+    ${stripe(229, 4, b)}
   </div>`;
 }
-function envelopeCartaVerso() {
-  return `<div style="width:229mm;height:114mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:0;top:0;width:229mm;height:40mm;background:linear-gradient(170deg,#0f3a78,${C.blueDeep});clip-path:polygon(0 0,100% 0,100% 38%,52% 100%,48% 100%,0 38%)">${pattern({ opacity: 0.06, size: 9 })}</div>
-    <div style="position:absolute;right:-10mm;bottom:-30mm;width:86mm;opacity:.07">${jFold({ blue: C.blue, flap: C.gray, style: 'width:86mm;height:auto' })}</div>
-    <div style="position:absolute;left:50%;top:58mm;width:58mm;transform:translateX(-50%)">${logo('cor')}</div>
-    <div style="position:absolute;left:0;right:0;top:80mm;text-align:center;font-size:7pt;color:${C.muted}">${DATA.tel} · ${DATA.site}</div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:4mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+function envelopeCartaVerso(b = 0) {
+  const W = 229 + 2 * b;
+  return `<div style="${box(W, 114 + 2 * b, '#fff')}">
+    <div style="position:absolute;left:0;top:0;width:${W}mm;height:${40 + b}mm;background:${C.bgInst};clip-path:polygon(0 0,100% 0,100% 38%,52% 100%,48% 100%,0 38%)">${pattern({ w: W, h: 40 + b, opacity: 0.05, size: 2.4 })}</div>
+    <div style="position:absolute;right:${-6 + b}mm;bottom:${8 + b}mm;width:60mm">${jFold({ blue: '#e8eef6', flap: '#ededeb', style: 'width:60mm;height:auto' })}</div>
+    <div style="position:absolute;left:50%;top:${58 + b}mm;width:58mm;transform:translateX(-50%)">${logo('cor')}</div>
+    <div style="position:absolute;left:0;right:0;top:${80 + b}mm;text-align:center;font-size:7pt;color:${C.muted}">${DATA.tel} · ${DATA.site}</div>
+    ${stripe(229, 4, b)}
   </div>`;
 }
 
 /** Envelope saco A4 (240 x 340 mm). */
-function envelopeA4Frente() {
-  return `<div style="width:240mm;height:340mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:0;right:0;top:0;height:6mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
-    <div style="position:absolute;left:50%;top:120mm;width:120mm;transform:translateX(-50%)">${logo('cor')}</div>
-    <div style="position:absolute;right:22mm;bottom:40mm;width:110mm;height:44mm;border:0.3mm dashed ${C.grayLight};border-radius:2.5mm;padding:5mm;font-family:Montserrat;font-size:8pt;letter-spacing:.2em;color:${C.gray}">DESTINATÁRIO</div>
-    <div style="position:absolute;left:22mm;bottom:20mm;font-size:8pt;line-height:1.6;color:${C.muted}">
+function envelopeA4Frente(b = 0) {
+  return `<div style="${box(240 + 2 * b, 340 + 2 * b, '#fff')}">
+    <div style="position:absolute;left:50%;top:${120 + b}mm;width:120mm;transform:translateX(-50%)">${logo('cor')}</div>
+    ${destinatario(`right:${22 + b}mm;bottom:${44 + b}mm;width:110mm;height:44mm`, '8pt')}
+    <div style="position:absolute;left:${22 + b}mm;bottom:${20 + b}mm;font-size:8pt;line-height:1.6;color:${C.muted}">
       <b style="color:${C.blueDeep};font-family:Montserrat;letter-spacing:.14em;font-size:7.5pt">REMETENTE</b><br>${DATA.end1} · ${DATA.end2}<br>${DATA.tel} · ${DATA.site}</div>
+    ${stripe(240, 6, b)}
   </div>`;
 }
-function envelopeA4Verso() {
-  return `<div style="width:240mm;height:340mm;background:#fff;position:relative;overflow:hidden">
-    <div style="position:absolute;left:0;top:0;right:0;height:70mm;background:linear-gradient(170deg,#0f3a78,${C.blueDeep});border-radius:0 0 18mm 18mm">${pattern({ opacity: 0.05, size: 12 })}</div>
-    <div style="position:absolute;left:50%;bottom:62mm;width:44mm;transform:translateX(-50%)">${jFold({ style: 'width:44mm;height:auto' })}</div>
-    <div style="position:absolute;left:0;right:0;bottom:30mm;text-align:center;font-family:Inter;font-size:8pt;color:${C.muted};line-height:1.6">${DATA.tel} · ${DATA.site}<br>${DATA.end1} · ${DATA.end2}</div>
+function envelopeA4Verso(b = 0) {
+  const W = 240 + 2 * b;
+  return `<div style="${box(W, 340 + 2 * b, '#fff')}">
+    <div style="position:absolute;left:0;top:0;right:0;height:${70 + b}mm;background:${C.bgInst};border-radius:0 0 18mm 18mm">${pattern({ w: W, h: 70 + b, opacity: 0.05, size: 3.2 })}</div>
+    <div style="position:absolute;left:50%;bottom:${58 + b}mm;width:60mm;transform:translateX(-50%)">${logo('cor')}</div>
+    <div style="position:absolute;left:0;right:0;bottom:${30 + b}mm;text-align:center;font-family:Inter;font-size:8pt;color:${C.muted};line-height:1.6">${DATA.tel} · ${DATA.site}<br>${DATA.end1} · ${DATA.end2}</div>
+    ${stripe(240, 6, b)}
   </div>`;
 }
 
 /** Pasta A4 — capa (220 x 310 mm) e bolso interno. */
-function pastaCapa() {
-  return `<div style="width:220mm;height:310mm;background:linear-gradient(165deg,#134887 0%,${C.blueDeep} 50%,${C.blueNight} 100%);position:relative;overflow:hidden">
-    ${pattern({ opacity: 0.045, size: 16 })}
-    <div style="position:absolute;right:-30mm;top:-34mm;width:150mm;opacity:.16">${jFold({ blue: '#fff', flap: '#fff', flapOpacity: 0.6, style: 'width:150mm;height:auto' })}</div>
-    <div style="position:absolute;left:24mm;top:150mm;width:120mm">${logo('negativo')}</div>
-    <div style="position:absolute;left:24mm;bottom:24mm;font-family:Montserrat;font-weight:500;font-size:9pt;letter-spacing:.3em;color:rgba(255,255,255,.75)">${DATA.site.toUpperCase()}</div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:6mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+function pastaCapa(b = 0) {
+  const W = 220 + 2 * b, H = 310 + 2 * b;
+  return `<div style="${box(W, H, C.bgInst)}">
+    ${pattern({ w: W, h: H, opacity: 0.05, size: 4.2 })}
+    <div style="position:absolute;right:${-30 + b}mm;top:${-34 + b}mm;width:150mm">${jFold({ blue: '#25518d', flap: '#3c639a', style: 'width:150mm;height:auto' })}</div>
+    <div style="position:absolute;left:${24 + b}mm;top:${150 + b}mm;width:120mm">${logo('negativo')}</div>
+    <div style="position:absolute;left:${24 + b}mm;bottom:${24 + b}mm;font-family:Montserrat;font-weight:600;font-size:9pt;letter-spacing:.3em;color:#fff">${DATA.site.toUpperCase()}</div>
+    ${stripe(220, 6, b)}
   </div>`;
 }
-function pastaBolso() {
-  return `<div style="width:220mm;height:110mm;background:#fff;position:relative;overflow:hidden;font-family:Inter;clip-path:polygon(0 18%,62% 0,100% 0,100% 100%,0 100%)">
-    <div style="position:absolute;left:0;right:0;top:0;height:6mm;background:linear-gradient(90deg,${C.solar},${C.gray})"></div>
-    <div style="position:absolute;left:16mm;top:40mm;width:80mm">${logo('cor')}</div>
-    <div style="position:absolute;left:16mm;top:68mm;font-size:8pt;line-height:1.75;color:${C.ink}">
+function pastaBolso(b = 0) {
+  const W = 220 + 2 * b, H = 110 + 2 * b;
+  /* diagonal da faca: de (0, 18% de 110 = 19,8 mm) até (62% de 220 = 136,4 mm, 0) */
+  const y0 = 19.8 + b, x1 = 136.4 + b, t = 4;
+  const clip = `polygon(0 ${y0}mm,${x1}mm ${b}mm,${W}mm ${b}mm,${W}mm ${H}mm,0 ${H}mm)`;
+  const band = `polygon(0 ${y0 - b}mm,${x1}mm ${0}mm,${W}mm 0,${W}mm ${b + t}mm,${x1 + 0.6}mm ${b + t}mm,0 ${y0 + t}mm)`;
+  return `<div style="${box(W, H, 'transparent')}">
+    <div style="position:absolute;inset:0;background:#fff;clip-path:${clip}"></div>
+    <div style="position:absolute;inset:0;background:${tri(220, b)};clip-path:${band}"></div>
+    <div style="position:absolute;left:${16 + b}mm;top:${40 + b}mm;width:80mm">${logo('cor')}</div>
+    <div style="position:absolute;left:${16 + b}mm;top:${68 + b}mm;font-size:8pt;line-height:1.75;color:${C.ink}">
       <div style="display:flex;gap:2mm;align-items:center">${ic('phone', C.blue, '3.4mm')}${DATA.tel}</div>
       <div style="display:flex;gap:2mm;align-items:center">${ic('mail', C.blue, '3.4mm')}${DATA.emailGeral}</div>
       <div style="display:flex;gap:2mm;align-items:center">${ic('pin', C.blue, '3.4mm')}${DATA.end1} · ${DATA.end2}</div>
     </div>
-    <div style="position:absolute;right:16mm;top:46mm;width:30mm">${qr('site')}</div>
-    <div style="position:absolute;right:16mm;top:79mm;width:30mm;text-align:center;font-size:6pt;letter-spacing:.2em;color:${C.gray};font-family:Montserrat">ACESSE O SITE</div>
+    <div style="position:absolute;right:${16 + b}mm;top:${41.5 + b}mm;width:34.5mm">${qr('site')}</div>
+    <div style="position:absolute;right:${16 + b}mm;top:${81.5 + b}mm;width:34.5mm;text-align:center;font-size:6pt;letter-spacing:.2em;color:${C.gray};font-family:Montserrat">ACESSE O SITE</div>
   </div>`;
 }
 
 /** Caderno A5 — capa e contracapa. */
-function cadernoCapa() {
-  return `<div style="width:148mm;height:210mm;background:linear-gradient(170deg,#134887 0%,${C.blueDeep} 55%,${C.blueNight} 100%);position:relative;overflow:hidden">
-    ${pattern({ opacity: 0.05, size: 12 })}
-    <div style="position:absolute;left:50%;top:50%;width:70mm;transform:translate(-50%,-62%);opacity:.18">${jFold({ blue: '#fff', flap: '#fff', flapOpacity: .6, style: 'width:70mm;height:auto' })}</div>
-    <div style="position:absolute;right:12mm;bottom:14mm;width:44mm">${logo('negativo')}</div>
+function cadernoCapa(b = 0) {
+  const W = 148 + 2 * b, H = 210 + 2 * b;
+  return `<div style="${box(W, H, C.bgInst)}">
+    ${pattern({ w: W, h: H, opacity: 0.05, size: 3.2 })}
+    <div style="position:absolute;left:50%;top:${b + 95}mm;width:70mm;transform:translate(-50%,-62%)">${jFold({ blue: '#25518d', flap: '#3c639a', style: 'width:70mm;height:auto' })}</div>
+    <div style="position:absolute;right:${12 + b}mm;bottom:${16 + b}mm;width:44mm">${logo('negativo')}</div>
+    ${stripe(148, 5, b)}
   </div>`;
 }
-function cadernoContracapa() {
-  return `<div style="width:148mm;height:210mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:50%;top:62mm;width:76mm;transform:translateX(-50%)">${logo('cor')}</div>
-    <div style="position:absolute;left:12mm;right:12mm;top:138mm;height:0.4mm;background:linear-gradient(90deg,${C.blue},transparent)"></div>
-    <div style="position:absolute;left:12mm;top:146mm;font-size:7.5pt;line-height:2;color:${C.ink}">
+function cadernoContracapa(b = 0) {
+  return `<div style="${box(148 + 2 * b, 210 + 2 * b, '#fff')}">
+    <div style="position:absolute;left:50%;top:${62 + b}mm;width:76mm;transform:translateX(-50%)">${logo('cor')}</div>
+    <div style="position:absolute;left:${12 + b}mm;right:${12 + b}mm;top:${138 + b}mm;${RULE(0.25)}"></div>
+    <div style="position:absolute;left:${12 + b}mm;top:${146 + b}mm;font-size:7.5pt;line-height:2;color:${C.ink}">
       <div style="display:flex;gap:2mm;align-items:center">${ic('phone', C.blue, '3.2mm')}${DATA.tel}</div>
       <div style="display:flex;gap:2mm;align-items:center">${ic('mail', C.blue, '3.2mm')}${DATA.emailGeral}</div>
-      <div style="display:flex;gap:2mm;align-items:center">${ic('pin', C.blue, '3.2mm')}<span>${DATA.end1}<br>${DATA.end2}</span></div>
+      <div style="display:flex;gap:2mm;align-items:center">${ic('pin', C.blue, '3.2mm')}<span style="line-height:1.45">${DATA.end1}<br>${DATA.end2}</span></div>
     </div>
-    <div style="position:absolute;right:12mm;top:146mm;width:24mm">${qr('site')}</div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:5mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+    <div style="position:absolute;right:${12 + b}mm;top:${146 + b}mm;width:24mm">${qr('site')}</div>
+    <div style="position:absolute;right:${12 + b}mm;top:${172 + b}mm;width:24mm;text-align:center;font-size:5pt;letter-spacing:.2em;color:${C.gray};font-family:Montserrat">ACESSE O SITE</div>
+    ${stripe(148, 5, b)}
   </div>`;
 }
 
-/** Crachá 54 x 86 mm. */
-function cracha(nome = 'Nome do Colaborador', funcao = 'Técnico de Válvulas') {
-  return `<div style="width:54mm;height:86mm;background:#fff;position:relative;overflow:hidden;border-radius:3mm;font-family:Inter">
-    <div style="position:absolute;left:0;right:0;top:0;height:30mm;background:linear-gradient(165deg,#134887,${C.blueDeep})">${pattern({ opacity: 0.06, size: 8 })}
-      <div style="position:absolute;left:50%;top:7mm;width:6mm;height:2mm;border-radius:1mm;background:rgba(255,255,255,.35);transform:translateX(-50%)"></div>
-      <div style="position:absolute;left:50%;top:14mm;width:34mm;transform:translateX(-50%)">${logo('negativo')}</div></div>
-    <div style="position:absolute;left:50%;top:24mm;width:26mm;height:30mm;transform:translateX(-50%);border-radius:2mm;background:linear-gradient(180deg,#e9ecf0,#cfd4da);border:0.8mm solid #fff;display:flex;align-items:center;justify-content:center;color:#9aa3ad;font-size:5pt;letter-spacing:.2em">FOTO</div>
-    <div style="position:absolute;left:0;right:0;top:58mm;text-align:center">
+/** Crachá CR80 (53,98 x 85,6 mm). print=true: sem cantos nem furo (vão na faca do fornecedor). */
+function cracha(nome = 'Nome do Colaborador', funcao = 'Técnico de Válvulas', b = 0, print = false) {
+  const W = 53.98 + 2 * b, H = 85.6 + 2 * b;
+  return `<div style="${box(W, H, '#fff', print ? '' : 'border-radius:3.18mm')}">
+    <div style="position:absolute;left:0;right:0;top:0;height:${30 + b}mm;background:${C.bgInst}">${pattern({ w: W, h: 30 + b, opacity: 0.05, size: 2.1 })}
+      ${print ? '' : `<div style="position:absolute;left:50%;top:${3.5 + b}mm;width:13mm;height:3mm;border-radius:1.5mm;background:#fff;transform:translateX(-50%);box-shadow:inset 0 .3mm .6mm rgba(0,0,0,.35)"></div>`}
+      <div style="position:absolute;left:50%;top:${12 + b}mm;width:32mm;transform:translateX(-50%)">${logo('negativo')}</div></div>
+    <div style="position:absolute;left:50%;top:${25 + b}mm;width:26mm;height:30mm;transform:translateX(-50%);border-radius:2mm;background:#e3e6ea;border:0.8mm solid #fff;display:flex;align-items:center;justify-content:center;color:#9aa3ad;font-size:6pt;letter-spacing:.2em">FOTO</div>
+    <div style="position:absolute;left:0;right:0;top:${61 + b}mm;text-align:center">
       <div class="mont" style="font-family:Montserrat;font-weight:700;font-size:8pt;color:${C.blueDeep}">${nome}</div>
-      <div style="font-size:6pt;color:${C.gray};margin-top:1mm;letter-spacing:.06em">${funcao}</div>
+      <div style="font-size:6.3pt;color:${C.gray};margin-top:1mm;letter-spacing:.06em">${funcao}</div>
       <div style="width:6mm;height:0.9mm;background:${C.solar};border-radius:.45mm;margin:2.5mm auto 0"></div>
     </div>
-    <div style="position:absolute;left:0;right:0;bottom:0;height:3mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
+    ${stripe(53.98, 3, b)}
   </div>`;
 }
 
-/** Assinatura de e-mail (600 x 170 px). */
+/** Assinatura de e-mail (600 x 170 px) — versão imagem. */
 function emailSignature() {
   return `<div style="width:600px;height:170px;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;left:0;top:0;bottom:0;width:150px;background:linear-gradient(165deg,#134887,${C.blueDeep});clip-path:polygon(0 0,100% 0,72% 100%,0 100%)">${pattern({ opacity: 0.07, size: 9 })}
+    <div style="position:absolute;left:0;top:0;bottom:0;width:150px;background:${C.bgInst};clip-path:polygon(0 0,100% 0,72% 100%,0 100%)">
       <div style="position:absolute;left:24px;top:38px;width:62px">${jFold({ blue: '#fff', flap: C.grayLight, style: 'width:62px;height:auto' })}</div></div>
     <div style="position:absolute;left:150px;top:22px">
       <div style="display:flex;align-items:center;gap:8px"><span style="display:block;width:16px;height:4px;border-radius:2px;background:${C.solar}"></span>
@@ -297,19 +341,45 @@ function emailSignature() {
         <div style="display:flex;gap:6px;align-items:center">${ic('pin', C.blue, '13px')}${DATA.end1} · ${DATA.end2}</div>
       </div>
     </div>
-    <div style="position:absolute;right:22px;top:26px;width:130px">${logo('cor')}</div>
-    <div style="position:absolute;right:22px;top:70px;width:130px;text-align:center;font-family:Montserrat;font-weight:600;font-size:9px;letter-spacing:.22em;color:${C.blue}">${DATA.site.toUpperCase()}</div>
+    <div style="position:absolute;right:22px;top:30px;width:120px">${logo('cor')}</div>
+    <div style="position:absolute;right:22px;top:68px;width:120px;text-align:center;font-family:Montserrat;font-weight:600;font-size:9px;letter-spacing:.2em;color:${C.blue}">${DATA.site.toUpperCase()}</div>
     <div style="position:absolute;left:150px;right:0;bottom:0;height:5px;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
   </div>`;
 }
 
-/** Logotipo como grupo SVG em coordenadas originais (viewBox 30 0 1348 350). */
-function logoPaths({ blue = C.blue, gray = C.gray, flap = C.grayLight, flapOpacity = 1, gold = C.solar } = {}) {
-  return `<g fill="${blue}"><path d="${parts.J}"/><path d="${parts.T}"/><path d="${parts.E_MID}"/><path d="${parts.TEXT}"/></g>
-    <path fill="${flap}" fill-opacity="${flapOpacity}" d="${parts.FLAP}"/>
-    <g fill="${gray}"><path d="${parts.E_TOP}"/><path d="${parts.E_BOT}"/><path d="${parts.C}"/><path d="${parts.K}"/></g>
-    <rect fill="${gold}" x="945" y="126" width="82.5" height="14" rx="7"/>`;
+/** Assinatura de e-mail em HTML de tabela (texto vivo e links clicáveis). logoUrl = PNG hospedado. */
+function emailSignatureHtml(logoUrl = 'https://www.jteck.com.br/img/brand/jteck-logo-assinatura.png') {
+  const tel = DATA.tel.replace(/[^\d+]/g, '');
+  const a = (href, t) => `<a href="${href}" style="color:${C.ink};text-decoration:none">${t}</a>`;
+  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Inter,Arial,Helvetica,sans-serif;color:${C.ink};border-collapse:collapse">
+  <tr>
+    <td style="padding:0 18px 0 0;vertical-align:middle;border-right:3px solid ${C.blue}">
+      <a href="https://${DATA.site}"><img src="${logoUrl}" width="130" alt="JTECK Valve Service" style="display:block;border:0;width:130px;height:auto"></a>
+    </td>
+    <td style="padding:0 0 0 18px;vertical-align:middle;font-size:12px;line-height:18px">
+      <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:15px;line-height:20px;color:${C.blueDeep}">${DATA.nome}</div>
+      <div style="color:${C.gray};margin-bottom:6px">${DATA.cargo} · JTECK Valve Service</div>
+      <div>${a('tel:' + tel, DATA.tel)}</div>
+      <div>${a('mailto:' + DATA.email, DATA.email)} · ${a('https://' + DATA.site, DATA.site)}</div>
+      <div style="color:${C.muted}">${DATA.end1} · ${DATA.end2}</div>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="padding-top:10px"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+    <td width="64%" height="4" style="background:${C.blue};font-size:0;line-height:0">&nbsp;</td>
+    <td width="29%" height="4" style="background:${C.gray};font-size:0;line-height:0">&nbsp;</td>
+    <td width="7%" height="4" style="background:${C.solar};font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>
+</table>`;
 }
+
+/** Logotipo como grupo SVG em coordenadas originais (viewBox = parts.viewBox). flap=null remove a dobra. */
+function logoPaths({ blue = C.blue, gray = C.gray, flap = C.grayLight, flapOpacity = 1, gold = C.solar } = {}) {
+  return `${flap ? `<path fill="${flap}" fill-opacity="${flapOpacity}" d="${parts.FLAP}"/>` : ''}
+    <g fill="${blue}"><path d="${parts.J}"/><path d="${parts.T}"/><path d="${parts.E_MID}"/><path d="${parts.TEXT}"/></g>
+    <g fill="${gray}"><path d="${parts.E_TOP}"/><path d="${parts.E_BOT}"/><path d="${parts.C}"/><path d="${parts.K}"/></g>
+    <path fill="${gold}" d="${parts.DASH}"/>`;
+}
+const svgLogo = (opts = {}, style = '') =>
+  `<svg viewBox="${parts.viewBox}" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;${style}">${logoPaths(opts)}</svg>`;
 
 /* ---------- Elementos de página dos documentos A4 deitados ---------- */
 function tab(label) {
@@ -319,13 +389,13 @@ function tab(label) {
 }
 function folio(n, doc, dark = false) {
   const c = dark ? 'rgba(255,255,255,.55)' : '#9aa0a8';
-  return `<div style="position:absolute;left:18mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;font-family:Montserrat;font-size:6.5pt;letter-spacing:.18em;color:${c}">
+  return `<div style="position:absolute;left:28mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;font-family:Montserrat;font-size:6.5pt;letter-spacing:.18em;color:${c}">
     <span>JTECK VALVE SERVICE · ${doc}</span><span style="font-weight:700">${String(n).padStart(2, '0')}</span></div>`;
 }
 
 module.exports = {
-  logoPaths, tab, folio,
+  logoPaths, svgLogo, tri, tab, folio,
   C, DATA, parts, logo, artefacto, qr, jFold, icon, eModule, pattern, ic, baseCss,
   cardFront, cardBack, letterhead, envelopeCartaFrente, envelopeCartaVerso, envelopeA4Frente, envelopeA4Verso,
-  pastaCapa, pastaBolso, cadernoCapa, cadernoContracapa, cracha, emailSignature,
+  pastaCapa, pastaBolso, cadernoCapa, cadernoContracapa, cracha, emailSignature, emailSignatureHtml, cardBackVerniz,
 };
