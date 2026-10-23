@@ -242,8 +242,8 @@ pages.push(page(`${L.pattern({ opacity: 0.035, size: 18 })}<div style="position:
 const place = (inner, w, h, { left, top, scale = 1, rotate = 0 }) => `<div style="position:absolute;left:${left}mm;top:${top}mm;width:${w * scale}mm;height:${h * scale}mm;transform:rotate(${rotate}deg)">
   <div style="width:${w}mm;height:${h}mm;transform:scale(${scale});transform-origin:top left;box-shadow:0 2mm 4mm rgba(10,25,50,.18),0 12mm 26mm rgba(10,25,50,.25);overflow:hidden">${inner}</div></div>`;
 pages.push(page(`
-  ${place(L.cardBack(), 90, 50, { left: 60, top: 44, scale: 1.55, rotate: -6 })}
-  ${place(L.cardFront(), 90, 50, { left: 112, top: 98, scale: 1.55, rotate: 4 })}
+  ${place(L.cardBack(), 90, 50, { left: 52, top: 40, scale: 1.45 })}
+  ${place(L.cardFront(), 90, 50, { left: 114, top: 92, scale: 1.45 })}
 `, { bg: 'linear-gradient(150deg,#ecebe7 0%,#d6d3cc 100%)', folio: false }));
 
 /* 19 · Mockup: fachada */

@@ -39,8 +39,8 @@ pages.push(`<section class="page" style="background:${BG.claro}">
 // Cartão de visitas
 pages.push(scene(BG.claro, `
   ${note('Cartão 90 × 50 mm · couché 300 g · laminação fosca nas duas faces · verniz localizado no logotipo do verso.')}
-  ${place(L.cardBack(), 90, 50, { left: 38, top: 34, scale: 1.48, rotate: -4 })}
-  ${place(L.cardFront(), 90, 50, { left: 38, top: 112, scale: 1.48, rotate: 2, z: 2 })}
+  ${place(L.cardBack(), 90, 50, { left: 26, top: 40, scale: 1.4 })}
+  ${place(L.cardFront(), 90, 50, { left: 58, top: 96, scale: 1.4, z: 2 })}
 `, 'CARTÃO DE VISITAS'));
 
 // Cartão em detalhe (plano, escala maior)
@@ -79,8 +79,8 @@ pages.push(scene(BG.claro, `
 
 // Pasta A4
 pages.push(scene(BG.mesa, `
-  ${place(`<div style="width:220mm;height:310mm;background:#f4f5f7;position:relative">${'<div style="position:absolute;left:0;right:0;bottom:0">' + L.pastaBolso() + '</div>'}</div>`, 220, 310, { left: 92, top: 26, scale: 0.47, rotate: 6 })}
-  ${place(L.pastaCapa(), 220, 310, { left: 24, top: 30, scale: 0.47, rotate: -3, z: 2, radius: 2 })}
+  ${place(L.pastaCapa(), 220, 310, { left: 13, top: 38, scale: 0.4, radius: 1.5 })}
+  ${place(`<div style="width:220mm;height:310mm;background:#f4f5f7;position:relative"><div style="position:absolute;left:0;right:0;bottom:0">${L.pastaBolso()}</div></div>`, 220, 310, { left: 109, top: 38, scale: 0.4, radius: 1.5 })}
 `, 'PASTA A4'));
 
 // Caderno
@@ -92,7 +92,7 @@ pages.push(scene(BG.mesa, `
 // Crachá
 const cord = (x, rot) => `<div style="position:absolute;left:${x}mm;top:-4mm;width:7mm;height:66mm;background:linear-gradient(90deg,${C.blueDeep},#163f7c,${C.blueDeep});transform:rotate(${rot}deg);transform-origin:top center;box-shadow:0 2mm 4mm rgba(0,0,0,.15)">${L.pattern({ opacity: 0.12, size: 4 })}</div>`;
 pages.push(scene(BG.claro, `
-  ${cord(92, 14)}${cord(111, -14)}
+  ${cord(96, 0)}${cord(107, 0)}
   <div style="position:absolute;left:99mm;top:56mm;width:12mm;height:8mm;border:1.2mm solid #b9bec5;border-radius:2mm;z-index:3"></div>
   ${place(L.cracha('Jean Pierre P. Silva', 'Diretor'), 54, 86, { left: 70, top: 62, scale: 1.3, radius: 3, z: 2 })}
 `, 'CRACHÁ DE IDENTIFICAÇÃO'));
@@ -107,7 +107,7 @@ const mug = (art, flip = false) => `<div style="position:relative;width:62mm;hei
   <div style="position:absolute;left:0;right:0;top:-2.5mm;height:5mm;border-radius:50%;background:radial-gradient(ellipse at center,#b8bcc2 0%,#eef0f2 70%)"></div>
 </div>`;
 pages.push(scene(BG.azul, `
-  <div style="position:absolute;left:30mm;top:64mm;transform:rotate(-8deg)">${mug(`<div style="width:46mm">${L.logo('cor')}</div>`, true)}</div>
+  <div style="position:absolute;left:30mm;top:64mm">${mug(`<div style="width:46mm">${L.logo('cor')}</div>`, true)}</div>
   <div style="position:absolute;left:118mm;top:64mm">${mug(`<div style="width:26mm">${L.icon({ radius: 14, style: 'width:26mm;height:26mm' })}</div>`)}</div>
 `, 'CANECAS', { dark: true }));
 

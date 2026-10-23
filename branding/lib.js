@@ -46,7 +46,7 @@ const QR = { site: clean(read('qr-site.svg')), whats: clean(read('qr-whats.svg')
 
 const logo = (v = 'cor', style = '') => LOGO[v].replace('<svg ', `<svg style="display:block;width:100%;height:auto;${style}" `);
 const artefacto = (style = '') => ARTEFACTO.replace('<svg ', `<svg style="display:block;width:100%;height:auto;${style}" `);
-const qr = (k = 'site', style = '') => QR[k].replace('<svg ', `<svg style="display:block;width:100%;height:auto;${style}" `);
+const qr = (k = 'site', style = '') => QR[k].replace('<svg ', `<svg viewBox="0 0 250 250" style="display:block;width:100%;height:auto;${style}" `);
 
 /** J com a dobra (elemento gráfico). */
 function jFold({ blue = C.blue, flap = C.grayLight, flapOpacity = 1, style = '' } = {}) {
@@ -170,13 +170,14 @@ function letterhead() {
     </div>
     <div style="position:absolute;left:20mm;right:20mm;top:42mm;height:0.3mm;background:linear-gradient(90deg,${C.blue},${C.grayLight})"></div>
     <div style="position:absolute;right:-38mm;bottom:22mm;width:150mm;opacity:.06">${jFold({ blue: C.blue, flap: C.gray, style: 'width:150mm;height:auto' })}</div>
-    <div style="position:absolute;left:20mm;right:20mm;bottom:14mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:7.3pt;color:${C.ink};line-height:1.55">
-      <div style="display:flex;gap:6mm">
+    <div style="position:absolute;left:20mm;right:20mm;bottom:11mm;font-size:7.3pt;color:${C.ink};line-height:1;white-space:nowrap">
+      <div style="height:0.25mm;background:linear-gradient(90deg,${C.blue},${C.grayLight});margin-bottom:4mm"></div>
+      <div style="display:flex;justify-content:center;gap:7mm">
         <span style="display:flex;align-items:center;gap:1.5mm">${ic('phone', C.blue, '3mm')}${DATA.tel}</span>
         <span style="display:flex;align-items:center;gap:1.5mm">${ic('mail', C.blue, '3mm')}${DATA.emailGeral}</span>
         <span style="display:flex;align-items:center;gap:1.5mm">${ic('globe', C.blue, '3mm')}${DATA.site}</span>
       </div>
-      <span style="display:flex;align-items:center;gap:1.5mm">${ic('pin', C.blue, '3mm')}${DATA.end1} · ${DATA.end2}</span>
+      <div style="display:flex;justify-content:center;margin-top:2.6mm"><span style="display:flex;align-items:center;gap:1.5mm">${ic('pin', C.blue, '3mm')}${DATA.end1} · ${DATA.end2}</span></div>
     </div>
     <div style="position:absolute;left:0;right:0;bottom:0;height:5mm;background:linear-gradient(90deg,${C.blue} 0 64%,${C.gray} 64% 93%,${C.solar} 93%)"></div>
   </div>`;
