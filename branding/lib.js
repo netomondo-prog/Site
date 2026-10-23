@@ -112,7 +112,7 @@ function baseCss(pageW, pageH) {
   ${[300, 400, 500, 600].map((w) => f('Inter', w)).join('\n')}
   @page{size:${pageW} ${pageH};margin:0}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{background:#fff;width:${pageW};-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{font-family:'Inter',sans-serif;color:${C.ink}}
   .page{width:${pageW};height:${pageH};position:relative;overflow:hidden;page-break-after:always;break-after:page}
   .page:last-child{page-break-after:auto;break-after:auto}
@@ -126,8 +126,8 @@ function baseCss(pageW, pageH) {
 function cardFront(b = 0) {
   const W = 90 + 2 * b, H = 50 + 2 * b;
   return `<div style="width:${W}mm;height:${H}mm;background:#fff;position:relative;overflow:hidden;font-family:Inter">
-    <div style="position:absolute;right:${-7 + b}mm;top:${-15 + b}mm;width:40mm;transform:rotate(0deg)">
-      ${jFold({ blue: C.blue, flap: C.grayLight, style: 'width:40mm;height:auto' })}
+    <div style="position:absolute;right:${-6 + b}mm;top:${-14 + b}mm;width:33mm">
+      ${jFold({ blue: C.blue, flap: C.grayLight, style: 'width:33mm;height:auto' })}
     </div>
     <div style="position:absolute;left:${7 + b}mm;top:${7 + b}mm;width:40mm">${logo('cor')}</div>
     <div style="position:absolute;left:${7 + b}mm;top:${25 + b}mm">
