@@ -44,7 +44,8 @@
   </div>
   <div class="footer__bottom">
     <div class="container footer__bottom-inner">
-      <span>&copy; <%= new Date().getFullYear() %> <%= site.legalName || site.name %>. Todos os direitos reservados.</span>
+      <span>&copy; <%= new Date().getFullYear() %> <%= String(site.legalName || site.name).replace(/\.$/, "") %>. Todos os direitos reservados.</span>
+      <span class="footer__credit">Desenvolvido por <a href="https://artefacto.art.br/" target="_blank" rel="noopener">Artefacto Marketing</a></span>
       <span><a href="/admin" class="footer__admin">Área restrita</a></span>
     </div>
   </div>
