@@ -375,9 +375,10 @@ button { font-family: inherit; }
 .whatsapp-float__icon { width: 30px; height: 30px; }
 .whatsapp-float__pulse { position: absolute; inset: 0; border-radius: 999px; border: 2px solid var(--whatsapp); animation: wa-pulse 2.2s ease-out infinite; pointer-events: none; }
 .whatsapp-float__label { white-space: nowrap; max-width: 200px; overflow: hidden; transition: max-width .4s, opacity .3s; }
-.whatsapp-float.is-compact { padding: 12px; }
+.whatsapp-float.is-compact { padding: 12px; gap: 0; width: 56px; height: 56px; justify-content: center; }
+.whatsapp-float.is-compact .whatsapp-float__icon { flex: none; }
 .whatsapp-float.is-compact .whatsapp-float__label { max-width: 0; opacity: 0; }
-.whatsapp-float.is-compact:hover { padding: 10px 18px 10px 12px; }
+.whatsapp-float.is-compact:hover { padding: 10px 18px 10px 12px; gap: 10px; width: auto; justify-content: flex-start; }
 .whatsapp-float.is-compact:hover .whatsapp-float__label { max-width: 200px; opacity: 1; }
 @keyframes wa-pulse { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.5); opacity: 0; } }
 
