@@ -10,12 +10,12 @@
   "hours": "Segunda a sexta, das 8h às 18h",
   "emergency": "Plantão 24h para paradas e emergências",
   "address": {
-    "street": "Rua Antônio Haddad, 76",
-    "district": "Parque Via Norte",
+    "street": "R. João Carlos Amaral, 431",
+    "district": "Nova Aparecida",
     "city": "Campinas",
     "state": "SP",
-    "zip": "13065-000",
-    "mapsQuery": "Rua Antônio Haddad, 76, Parque Via Norte, Campinas - SP"
+    "zip": "13068-617",
+    "mapsQuery": "R. João Carlos Amaral, 431 - Nova Aparecida, Campinas - SP, 13068-617"
   },
   "social": {
     "instagram": "https://instagram.com/",

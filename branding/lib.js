@@ -31,8 +31,8 @@ const DATA = {
   emailGeral: 'contato@jteck.com.br',
   site: 'www.jteck.com.br',
   tel: '+55 19 3245.2758',
-  end1: 'R. Antônio Haddad, Nº 76',
-  end2: 'Parque Via Norte, Campinas – SP',
+  end1: 'R. João Carlos Amaral, 431',
+  end2: 'Nova Aparecida, Campinas – SP, 13068-617',
 };
 
 /* ---------- SVGs ---------- */
