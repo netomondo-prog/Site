@@ -30,7 +30,7 @@ const DATA = {
   email: 'jean@jteck.com.br',
   emailGeral: 'contato@jteck.com.br',
   site: 'www.jteck.com.br',
-  tel: '+55 19 3245.2758',
+  tel: '+55 19 99695-6270',
   end1: 'R. João Carlos Amaral, 431',
   end2: 'Nova Aparecida, Campinas – SP, 13068-617',
 };
